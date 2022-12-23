@@ -1,7 +1,9 @@
-function TankView() {
-    return (<div className="tank">
-        <div className="tank-nose"></div>
-        <div className="tank-body"></div>
+function TankView({id,  name, size }) {
+    return (<div key={id} className="tank-text" style={{
+        width: size + "px",
+        height: size + "px"
+    }}>
+        <div>{name}</div>
     </div>);
 }
 
