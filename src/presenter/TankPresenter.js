@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { stateAtom } from "../model/Game";
 import { elementTypes, orientations } from "../maps/maps";
 
-function TankPresenter({ id, position, orientation, size, name }) {
+function TankPresenter({ id, damageTaken, maxHealth, position, orientation, size, name }) {
 
     let rotation = 0;
 
@@ -31,6 +31,8 @@ function TankPresenter({ id, position, orientation, size, name }) {
                 size={size}
                 name={name}
                 id={id}
+                damageTaken={damageTaken}
+                maxHealth={maxHealth}
             ></TankView>
         </div>
     );

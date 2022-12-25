@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { maps } from "../maps/maps";
+import { elementTypes, maps } from "../maps/maps";
 
 
 export const stateAtom = atom({
@@ -26,7 +26,7 @@ export function createGame(params) {
     console.log(map);
     const boardRows = map.elements.length;
     const boardColumns = map.elements[0].length;
-    let board = Array.from(Array(boardRows), () => new Array(boardColumns));
+    let board = Array.from(Array(boardRows), () => new Array(boardColumns)); 
     for (let r = 0; r < boardRows; r++) {
         const row = map.elements[r];
         for (let c = 0; c < boardColumns; c++) {
@@ -41,7 +41,7 @@ export function createGame(params) {
                     r, c
                 }
             };
-            board[pos] = element;
+            board[pos] = element; 
 
         }
     }
@@ -54,8 +54,8 @@ export function createGame(params) {
             columns: boardColumns,
         },
         board,
-        bullets: map.bullets,
-        tanks: map.tanks
+        bullets: [],
+        distructedElements: [], 
     }
 }
 

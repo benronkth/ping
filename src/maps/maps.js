@@ -1,9 +1,11 @@
 
 export const elementTypes = {
+    space: "space",
     wall: "wall",
     target: "target",
     tank: "tank",
     bullet: "bullet",
+    distructed: "distructed",
 }
 
 export const orientations = {
@@ -18,23 +20,47 @@ export const maps = {
 
     map1: {
         elements: [
-            "wwwwwwwwww",
-            "wwa00000ww",
-            "www000ww0w",
-            "w00000000w",
-            "ww0wwwwwww",
-            "wwwww0wwww",
-            "wwwww0000w",
-            "w0000000ww",
-            "w0www0wwww",
+            "wwwwwawwww",
+            "wwasssssww",
+            "wwwssswwsw",
+            "wssssssssw",
+            "wwstwwwwww",
+            "wwwwwswwww",
+            "wwwwwtsssw",
+            "wsssssssww",
+            "wswwwswwww",
             "wwwwwxwwww",
-        ],
-        bullets: [],
-        tanks: [{
+        ], 
+        s: {
+            type: elementTypes.space,
+            position: {
+                r: 0,
+                c: 0,
+            }
+        },
+        w: {
+            name: "",
+            id: "wall",
+            type: elementTypes.wall,
+            blocked: true,
+            distructable: true,
+            maxHealth: 50,
+            damageTaken: 0,
+            position: {
+                r: 0,
+                c: 0,
+            }
+        },
+
+        t: {
             name: "Ahmad",
-            id: "AhamdTank",
+            id: "AhamdTank1",
             type: elementTypes.tank,
             orientation: orientations.up,
+            blocked: true,
+            distructable: true,
+            maxHealth: 50,
+            damageTaken: 0,
             position: {
                 r: 3,
                 c: 3,
@@ -44,29 +70,22 @@ export const maps = {
                 id: "ahmadbullet",
                 type: elementTypes.bullet,
                 orientation: orientations.up,
+                attack: 8,
                 position: {
                     r: 0,
                     c: 0,
                 }
             }
-        }],
-        w: {
-            name: "wall",
-            id: "wall",
-            type: elementTypes.wall,
-            blocked: true,
-            position: {
-                r: 0,
-                c: 0,
-            }
         },
 
-
         x: {
-            name: "Ahm",
+            name: "Ahmad",
             type: elementTypes.target,
             id: "AhamdTarget",
             blocked: true,
+            distructable: true,
+            maxHealth: 150,
+            damageTaken: 0,
             position: {
                 r: 0,
                 c: 0,
@@ -79,6 +98,9 @@ export const maps = {
             type: elementTypes.target,
             id: "BenTarget",
             blocked: true,
+            distructable: true,
+            maxHealth: 50,
+            damageTaken: 0,
             position: {
                 r: 0,
                 c: 0,
@@ -86,80 +108,7 @@ export const maps = {
         },
 
     },
-
-    map2: {
-        elements: [
-            "wwwwwwwwwwwwwwwwwwww",
-            "wwa00000w1wwwwwwwwww",
-            "wwwww0ww0wwwwwwwwwww",
-            "w0000000000000000www",
-            "ww0wwtwwwwwwww0w0www",
-            "wwwww0wwww0wwwww0www",
-            "wwwww0000w0wwwww0www",
-            "w0000000ww0wwwww0www",
-            "w0www0w0000wwwwwbwww",
-            "wwwwwxwwwwwwwwwwwwww",
-        ],
-        w: {
-            name: "wall",
-            type: elementTypes.wall,
-            blocked: true,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-
-
-        1: {
-            name: "bullet",
-            type: elementTypes.bullet,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-        t: {
-            name: "Ahmad",
-            type: elementTypes.tank,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-
-
-        x: {
-            name: "Ahm",
-            type: elementTypes.target,
-            blocked: true,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-
-
-        a: {
-            name: "Ben",
-            type: elementTypes.target,
-            blocked: true,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-        b: {
-            name: "BASH",
-            type: elementTypes.target,
-            blocked: true,
-            position: {
-                r: 0,
-                c: 0,
-            }
-        },
-
-    }
+ 
 
 }
 

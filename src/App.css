@@ -71,8 +71,13 @@ body {
 }
 
 .wall {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   background: #e8b14b;
+  background-image: url("./assets/image/wall.svg");
+  background-size: contain;
   /* fallback for old browsers */
   /* background: -webkit-linear-gradient(to right, #1e9600, #fff200); */
   /* Chrome 10-25, Safari 5.1-6 */
@@ -89,7 +94,9 @@ body {
   background: rgb(255, 236, 0);
   background: radial-gradient(circle, rgba(255, 236, 0, 1) 0%, rgba(228, 233, 148, 0) 80%);
   background-image: url("./assets/image/tank.svg");
+  background-size: contain;
   scale: 0.8;
+  z-index: 3;
 }
 
 .tank-text {
@@ -98,7 +105,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1;
-  color: #282c3496;
+  color: #ffffff;
   font-size: 10px;
 }
 
@@ -108,16 +115,31 @@ body {
   align-items: center;
   position: absolute;
   /* background: #FF0099; */
+  font-size: 1vw;
+  text-shadow: 2px 2px 1px #000000;
   border-radius: 2px;
-  color: white;
+  color: #FFDD09;
   font-weight: bold;
   background-image: url("./assets/image/target.svg");
+  background-size: contain;
   scale: 0.8;
 }
 
 .bullet {
   position: absolute;
-  background: #e84bc1; 
   z-index: 2;
-  scale: 0.2;
+  background-image: url("./assets/image/bulletUp.svg");
+  background-size: contain;
+}
+
+.distructed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 2px;
+  color: white;
+  font-weight: bold;
+  background-image: url("./assets/image/fire.svg");
+  background-size: contain;
 }
