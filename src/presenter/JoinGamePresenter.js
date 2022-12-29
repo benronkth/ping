@@ -18,11 +18,11 @@ function JoinGamePresenter() {
     const [playerName, setPlayerName] = useRecoilState(playerNameAtom);
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
 
-   
+
 
     function resizeBlocks() {
         const width = window.innerWidth;
-        const height = window.innerHeight - 100;
+        const height = window.innerHeight - 120;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);
@@ -39,7 +39,20 @@ function JoinGamePresenter() {
 
     function onGameIdChanged(event) {
         const value = event.target.value;
-        setGameId(parseInt(value));
+        console.log(value)
+        try {
+            if (!value) { return };
+            if (value === NaN) { return };
+            const intValue = parseInt(value);
+            setGameId(intValue);
+            if (intValue < 0) {
+                setGameId(0);
+            }
+            if (intValue > 10000) {
+                setGameId(10000);
+            }
+        } catch (error) {
+        }
     }
     async function onJoinGameClicked(event) {
         event.preventDefault();
@@ -47,7 +60,7 @@ function JoinGamePresenter() {
         const playerColor = getRandomColor();
         let boardColumns = 0;
         let boardRows = 0;
- 
+
         var boardRowsRef = ref(db, 'games/' + gameId + "/boardSize/rows");
         var snapshot = await get(boardRowsRef);
         boardRows = snapshot.val();
@@ -75,11 +88,11 @@ function JoinGamePresenter() {
             ownerId: playerId,
             color: playerColor,
             type: elementTypes.target,
-            id: Math.ceil(Math.random() * 1000),
+            id: "t" + Math.ceil(Math.random() * 1000),
             blocked: true,
-            distructable: true,
             maxHealth: 150,
             damageTaken: 0,
+            attack: 1,
             position: {
                 r: locations.target.r,
                 c: locations.target.c,
@@ -93,9 +106,9 @@ function JoinGamePresenter() {
             type: elementTypes.tank,
             orientation: orientations.up,
             blocked: true,
-            distructable: true,
             maxHealth: 50,
             damageTaken: 0,
+            attack: 1,
             position: {
                 r: locations.tank.r,
                 c: locations.tank.c,
@@ -104,6 +117,8 @@ function JoinGamePresenter() {
                 name: "bullet",
                 type: elementTypes.bullet,
                 orientation: orientations.up,
+                maxHealth: 1,
+                damageTaken: 0,
                 attack: 8,
                 position: {
                     r: locations.tank.r,

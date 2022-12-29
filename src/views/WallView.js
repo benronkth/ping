@@ -8,7 +8,7 @@ function WallView({ id, damageTaken, maxHealth, name, position, size }) {
             width: size + "px",
             height: size + "px",
             opacity: opacity < 0 ? 0 : opacity + 0.3
-        }} >{name}
+        }} >{name}  
         </div>
     );
 }

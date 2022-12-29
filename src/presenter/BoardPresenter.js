@@ -7,6 +7,7 @@ import DistructedPresenter from "./DistructedPresenter";
 import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom } from "../model/Game";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
+import { Animation, pushBalls } from "../animations/animations";
 
 function BoardPresenter() {
 
@@ -20,7 +21,7 @@ function BoardPresenter() {
 
     function handleScreenResize(event) {
         const width = event.target.innerWidth;
-        const height = event.target.innerHeight - 100;
+        const height = event.target.innerHeight - 120;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);
@@ -42,16 +43,15 @@ function BoardPresenter() {
         }
 
     }, [])
-
-
-
+ 
 
     return (
         <div className="board-holder" style={{
             marginLeft: boardMarginLeft + "px",
             marginTop: boardMarginTop + "px",
         }}>
-            <div className="board">
+ 
+            <div id="board" className="board">
                 <WallPresenter></WallPresenter>
                 <TargetPresenter></TargetPresenter>
                 <TankPresenter></TankPresenter>

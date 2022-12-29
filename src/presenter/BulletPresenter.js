@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, bulletsAtom, distructedsAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentBulletsAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom } from "../model/Game";
+import { blockSizeAtom, bulletsAtom, distructedsAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom, gameOwnerIdAtom } from "../model/Game";
 import BulletView from "../views/BulletView";
 import { useEffect } from "react";
 import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
@@ -9,6 +9,7 @@ import { playerIdAtom } from "../model/User";
 function BulletPresenter() {
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
     const [gameId, setGameId] = useRecoilState(gameIdAtom);
+    const [gameOwnerId, setGameOwnerId] = useRecoilState(gameOwnerIdAtom);
     const [bullets, setBullets] = useRecoilState(bulletsAtom);
     const [boardRowsCount, setBoardRowsCount] = useRecoilState(boardRowsCountAtom);
     const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
@@ -18,7 +19,7 @@ function BulletPresenter() {
     const [targets, setTargets] = useRecoilState(targetsAtom);
     const [distructeds, setDistructeds] = useRecoilState(distructedsAtom);
     const [opponentTanks, setOpponentTanks] = useRecoilState(opponentTanksAtom);
-    const [opponentBullets, setOpponentBullets] = useRecoilState(opponentBulletsAtom);
+    // const [opponentBullets, setOpponentBullets] = useRecoilState(opponentBulletsAtom);
     const [opponentTargets, setOpponentTargets] = useRecoilState(opponentTargetsAtom);
     const [joinedPlayers, setJoinedPlayers] = useRecoilState(joinedPlayersAtom);
 
@@ -57,6 +58,12 @@ function BulletPresenter() {
 
     function getElement(row, column) {
 
+        for (let i = 0; i < bullets.length; i++) {
+            const bullet = bullets[i];
+            if (bullet.position.r === row && bullet.position.c === column) {
+                return bullet
+            }
+        }
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
             if (tank.position.r === row && tank.position.c === column) {
@@ -100,61 +107,174 @@ function BulletPresenter() {
 
             const infrontPosition = getInfrontPostion(bullet);
 
-            if (infrontPosition.r < boardRowsCount && infrontPosition.r >= 0 && infrontPosition.c < boardColumnsCount && infrontPosition.c >= 0) {
-                const elementInFrontOfBullet = getElement(infrontPosition.r, infrontPosition.c);
+            if (infrontPosition.r > boardRowsCount - 1 || infrontPosition.r < 0 || infrontPosition.c > boardColumnsCount - 1 || infrontPosition.c < 0) {
+                // infront position is a out of the board. 
+                removeElement(bullet);
+                continue;
+            }
+            const elementInFrontOfBullet = getElement(infrontPosition.r, infrontPosition.c);
+
+
+            if (!elementInFrontOfBullet) {
+                // Element infront is undifined => space
+                // We check if the element after the space is an enemy bullet 
+                let updatedBullet = {
+                    ...bullet, position: {
+                        r: infrontPosition.r,
+                        c: infrontPosition.c
+                    }
+                };
+                const twoStepInfrontPosition = getInfrontPostion(updatedBullet);
+                const elementTwoStepInFrontOfBullet = getElement(twoStepInfrontPosition.r, twoStepInfrontPosition.c);
+                if (elementTwoStepInFrontOfBullet
+                    && elementTwoStepInFrontOfBullet.type === elementTypes.bullet
+                    && elementTwoStepInFrontOfBullet.orientation !== updatedBullet.orientation) {
+                    // this is the enemy bullet. Decrease both bullets health.
+
+                    let updatedEnemyBullet = {
+                        ...elementTwoStepInFrontOfBullet,
+                        name: elementTwoStepInFrontOfBullet.maxHealth - elementTwoStepInFrontOfBullet.damageTaken - updatedBullet.attack,
+                        damageTaken: elementTwoStepInFrontOfBullet.damageTaken + updatedBullet.attack
+                    };
+
+                    if (updatedEnemyBullet.damageTaken < updatedEnemyBullet.maxHealth) {
+                        // Bullet is still alive. replace it with the updated one.
+                        replaceElement(elementTwoStepInFrontOfBullet, updatedEnemyBullet);
+                    } else {
+                        // Bullet is dead. destroy the element (replace it with destructed element)
+                        const distructedElement = {
+                            name: "Boom",
+                            type: elementTypes.distructed,
+                            id: "d" + Math.ceil(Math.random() * 1000),
+                            blocked: false,
+                            position: {
+                                r: twoStepInfrontPosition.r,
+                                c: twoStepInfrontPosition.c
+                            }
+                        }
+                        distructedList.push(distructedElement);
+                        // remove the element
+                        removeElement(updatedEnemyBullet);
+                    }
+
+                    updatedBullet = {
+                        ...updatedBullet,
+                        damageTaken: updatedBullet.damageTaken + updatedEnemyBullet.attack,
+                    }
+
+                    console.log("updated bullet is: ", updatedBullet);
+
+
+                    // remove dead bullets
+                    if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
+                        // uploadBullet(gameId, updatedBullet);
+                        replaceElement(bullet, updatedBullet);
+                    } else { // Element is dead. destroy the element (replace it with destructed element)
+                        const distructedElement = {
+                            name: "Boom",
+                            type: elementTypes.distructed,
+                            id: "d" + Math.ceil(Math.random() * 1000),
+                            blocked: false,
+                            position: {
+                                r: infrontPosition.r,
+                                c: infrontPosition.c
+                            }
+                        }
+                        distructedList.push(distructedElement);
+                        removeElement(updatedBullet);
+                    }
+
+                    continue;
+
+                }
+            }
+
+
+            if (!elementInFrontOfBullet  // Element infront is undifined => space
+                || (elementInFrontOfBullet // Element infront is defined but it is a friendly bullet 
+                    && (elementInFrontOfBullet.type === elementTypes.bullet)
+                    && (elementInFrontOfBullet.orientation === bullet.orientation))) {
+                // Element infront is undifined => space
                 const updatedBullet = {
                     ...bullet, position: {
                         r: infrontPosition.r,
                         c: infrontPosition.c
                     }
                 };
-                if (!elementInFrontOfBullet) {
-                    if (bullet.position.r > -1 && bullet.position.r < boardRowsCount && bullet.position.c > -1 && bullet.position.c < boardColumnsCount) {
-                        // move the bullet forward
-                        uploadBullet(gameId, updatedBullet);
-                    } else {
-                        removeBullet(gameId, updatedBullet);
-                    }
-                } else {
-                    if (elementInFrontOfBullet && elementInFrontOfBullet.distructable) {
-                        // Decrease the health or Distruct the element if it is distructable   
-                        let updatedElement = {
-                            ...elementInFrontOfBullet,
-                            name: elementInFrontOfBullet.maxHealth - elementInFrontOfBullet.damageTaken - bullet.attack,
-                            damageTaken: elementInFrontOfBullet.damageTaken + bullet.attack
-                        };
+                uploadBullet(gameId, updatedBullet);
 
-                        if (updatedElement.damageTaken > updatedElement.maxHealth) {
-                            // destroy the element 
-                            const distructedElement = {
-                                name: "",
-                                type: elementTypes.distructed,
-                                id: "d" + Math.ceil(Math.random() * 1000),
-                                blocked: false,
-                                position: {
-                                    r: infrontPosition.r,
-                                    c: infrontPosition.c
-                                }
-                            }
-                            distructedList.push(distructedElement);
-                            // remove the element with space
-                            removeElement(updatedElement);
-                        } else {
-                            replaceElement(elementInFrontOfBullet, updatedElement);
+            } else {
+                // Element infront is defined 
+                // Decrease the health  
+                let updatedElementInFront = {
+                    ...elementInFrontOfBullet,
+                    name: elementInFrontOfBullet.maxHealth - elementInFrontOfBullet.damageTaken - bullet.attack,
+                    damageTaken: elementInFrontOfBullet.damageTaken + bullet.attack
+                };
+
+                if (updatedElementInFront.damageTaken < updatedElementInFront.maxHealth) {
+                    // Element is still alive. replace it with the updated one.
+                    replaceElement(elementInFrontOfBullet, updatedElementInFront);
+                } else {
+                    // Element is dead. destroy the element (replace it with destructed element)
+                    const distructedElement = {
+                        name: "Boom",
+                        type: elementTypes.distructed,
+                        id: "d" + Math.ceil(Math.random() * 1000),
+                        blocked: false,
+                        position: {
+                            r: infrontPosition.r,
+                            c: infrontPosition.c
                         }
                     }
-
-                    removeBullet(gameId, updatedBullet);
+                    distructedList.push(distructedElement);
+                    // remove the element
+                    removeElement(updatedElementInFront);
                 }
-            } else {
-                removeBullet(gameId, bullet);
+
+                const updatedBullet = {
+                    ...bullet,
+                    damageTaken: bullet.damageTaken + elementInFrontOfBullet.attack,
+                    position: {
+                        r: infrontPosition.r,
+                        c: infrontPosition.c
+                    }
+                }
+
+                console.log("updated bullet is: ", updatedBullet);
+
+
+                // remove dead bullets
+                if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
+                    // uploadBullet(gameId, updatedBullet);
+                    replaceElement(bullet, updatedBullet);
+                } else { // Element is dead. destroy the element (replace it with destructed element)
+                    const distructedElement = {
+                        name: "Boom",
+                        type: elementTypes.distructed,
+                        id: "d" + Math.ceil(Math.random() * 1000),
+                        blocked: false,
+                        position: {
+                            r: infrontPosition.r,
+                            c: infrontPosition.c
+                        }
+                    }
+                    distructedList.push(distructedElement);
+                    removeElement(updatedBullet);
+                }
+
+
             }
+
         }
         setDistructeds(distructedList);
     }
 
     function removeElement(oldElement) {
         switch (oldElement.type) {
+            case elementTypes.bullet:
+                removeBullet(gameId, oldElement);
+                break;
             case elementTypes.wall:
                 removeWall(gameId, oldElement);
                 break;
@@ -205,6 +325,8 @@ function BulletPresenter() {
 
     function replaceElement(oldElement, newElement) {
         switch (oldElement.type) {
+            case elementTypes.bullet:
+                uploadBullet(gameId, newElement);
             case elementTypes.wall:
                 uploadWall(gameId, newElement);
                 break;
@@ -220,13 +342,15 @@ function BulletPresenter() {
 
     useEffect(() => {
         var refreshIntervalId = null;
-        if (bullets.length > 0) {
-            refreshIntervalId = setTimeout(() => {
-                console.log("ticking...");
-                moveBullet();
-            }, 50);
-        }
 
+        if (gameOwnerId === playerId) {
+            if (bullets.length > 0) {
+                refreshIntervalId = setTimeout(() => {
+                    console.log("ticking...");
+                    moveBullet();
+                }, 50);
+            }
+        }
         return () => {
             clearInterval(refreshIntervalId);
         }
@@ -241,21 +365,21 @@ function BulletPresenter() {
             const bullets = snapshot.val();
             if (bullets) {
                 let tempBullets = [];
-                let tempOpponentBullets = [];
+                // let tempOpponentBullets = [];
                 const fetchedBullets = Object.values(bullets);
-                console.log("bullets are: ", fetchedBullets);
+                // console.log("bullets are: ", fetchedBullets);
                 for (let i = 0; i < fetchedBullets.length; i++) {
-                    if (fetchedBullets[i].ownerId === playerId) {
-                        tempBullets.push(fetchedBullets[i]);
-                    } else {
-                        tempOpponentBullets.push(fetchedBullets[i]);
-                    }
+                    // if (fetchedBullets[i].ownerId === playerId) {
+                    tempBullets.push(fetchedBullets[i]);
+                    // } else {
+                    //     tempOpponentBullets.push(fetchedBullets[i]);
+                    // }
                 }
                 setBullets(tempBullets);
-                setOpponentBullets(tempOpponentBullets);
+                // setOpponentBullets(tempOpponentBullets);
             } else {
                 setBullets([]);
-                setOpponentBullets([]);
+                // setOpponentBullets([]);
             }
         });
     }, []);
@@ -275,7 +399,8 @@ function BulletPresenter() {
 
     return (<div>
         {bullets.map(drawBullets)}
-        {opponentBullets.map(drawBullets)}</div>);
+        {/* {opponentBullets.map(drawBullets)} */}
+    </div>);
 }
 
 export default BulletPresenter;

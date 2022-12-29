@@ -13,9 +13,9 @@ function CreateGameView({ onGameModeChanged, onRowsChanged, onColumnsChanged, on
         </div>
         <div className="createGameInputHolder">
             <div>Game size</div>
-            <input placeholder="Rows" onChange={onRowsChanged} value={rows} style={{ width: "100px" }}></input>
+            <input type="number" min="10" max="100" placeholder="Rows" onChange={onRowsChanged} value={rows} style={{ width: "100px" }}></input>
             <div>X</div>
-            <input placeholder="Columns" onChange={onColumnsChanged} value={columns} style={{ width: "100px" }}></input>
+            <input type="number" min="10" max="100" placeholder="Columns" onChange={onColumnsChanged} value={columns} style={{ width: "100px" }}></input>
         </div>
         <div className="createGameInputHolder">
             <div style={{ padding: "4px" }}>AI</div>
@@ -23,11 +23,11 @@ function CreateGameView({ onGameModeChanged, onRowsChanged, onColumnsChanged, on
                 <input type="checkbox" onChange={onIsAiEnabledChanged} />
                 <span className="slider round" ></span>
             </label>
-            <input placeholder="Count" value={aiCount} onChange={onAiCountChanged} ></input>
+            <input placeholder="Count" type="number" min="10" max="100" value={aiCount} onChange={onAiCountChanged} ></input>
         </div>
         <div className="createGameInputHolder">
-            <div style={{ padding: "4px" }}>Wall Ratio</div> 
-            <div style={{ padding: "4px" }}>{wallRatio}%</div> 
+            <div style={{ padding: "4px" }}>Wall Ratio</div>
+            <div style={{ padding: "4px" }}>{wallRatio}%</div>
             <input type="range" min="0" max="100" placeholder="Count" value={wallRatio} onChange={onWallRatioChanged} ></input>
         </div>
         <button type="submit" onClick={onCreateGameClicked} >Create Game</button>

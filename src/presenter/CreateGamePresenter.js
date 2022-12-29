@@ -30,13 +30,38 @@ function CreateGamePresenter() {
     function onRowsChanged(event) {
         const value = event.target.value;
         console.log(event.target.value);
-        setBoardRowsCount(parseInt(value));
+        try {
+            if (!value) { return };
+            if (value === NaN) { return };
+            const intValue = parseInt(value);
+            setBoardRowsCount(intValue);
+            if (intValue < 10) {
+                setBoardRowsCount(10);
+            }
+            if (intValue > 100) {
+                setBoardRowsCount(100);
+            }
+        } catch (error) {
+        }
 
     }
     function onColumnsChanged(event) {
         const value = event.target.value;
         console.log(event.target.value);
-        setBoardColumnsCount(parseInt(value));
+        try {
+            if (!value) { return };
+            if (value === NaN) { return };
+            const intValue = parseInt(value);
+            setBoardColumnsCount(intValue);
+            if (intValue < 10) {
+                setBoardColumnsCount(10);
+            }
+            if (intValue > 100) {
+                setBoardColumnsCount(100);
+            }
+        } catch (error) {
+        }
+
 
     }
     function onIsAiEnabledChanged(event) {
@@ -48,7 +73,19 @@ function CreateGamePresenter() {
     function onAiCountChanged(event) {
         const value = event.target.value;
         console.log(event.target.value);
-        setAiCount(parseInt(value));
+        try {
+            if (!value) { return };
+            if (value === NaN) { return };
+            const intValue = parseInt(value);
+            setAiCount(intValue);
+            if (intValue < 10) {
+                setAiCount(10);
+            }
+            if (intValue > 100) {
+                setAiCount(100);
+            }
+        } catch (error) {
+        }
 
     }
     function onWallRatioChanged(event) {
@@ -90,9 +127,9 @@ function CreateGamePresenter() {
                 name: "",
                 type: elementTypes.wall,
                 blocked: true,
-                distructable: true,
                 maxHealth: 50,
                 damageTaken: 0,
+                attack: 1,
                 position: {
                     r: 0,
                     c: 0,
@@ -105,9 +142,9 @@ function CreateGamePresenter() {
                 orientation: orientations.up,
                 color: playerColor,
                 blocked: true,
-                distructable: true,
                 maxHealth: 50,
                 damageTaken: 0,
+                attack: 1,
                 position: {
                     r: locations.tank.r,
                     c: locations.tank.c,
@@ -116,7 +153,10 @@ function CreateGamePresenter() {
                     name: "bullet",
                     type: elementTypes.bullet,
                     orientation: orientations.up,
-                    color: playerColor,
+                    color: playerColor, 
+
+                    maxHealth: 1,
+                    damageTaken: 0,
                     attack: 8,
                     position: {
                         r: locations.tank.r,
@@ -130,9 +170,9 @@ function CreateGamePresenter() {
                 type: elementTypes.target,
                 color: playerColor,
                 blocked: true,
-                distructable: true,
                 maxHealth: 150,
                 damageTaken: 0,
+                attack: 1,
                 position: {
                     r: locations.target.r,
                     c: locations.target.c,
@@ -178,7 +218,7 @@ function CreateGamePresenter() {
 
     function resizeBlocks() {
         const width = window.innerWidth;
-        const height = window.innerHeight - 100;
+        const height = window.innerHeight - 120;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);

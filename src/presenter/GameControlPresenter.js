@@ -17,6 +17,7 @@ function GameControlPresenter() {
     const [targets, setTargets] = useRecoilState(targetsAtom);
     function onStartGameClicked() {
         console.log("Game is started");
+        document.getElementById("gameIdButton").focus();
         // setIsGameStarted(true);
         uploadIsGameStarted(gameId, { isGameStarted: true });
     }

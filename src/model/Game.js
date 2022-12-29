@@ -96,10 +96,10 @@ export const bulletsAtom = atom({
     default: [],
 });
 
-export const opponentBulletsAtom = atom({
-    key: 'opponentBulletsAtom',
-    default: [],
-});
+// export const opponentBulletsAtom = atom({
+//     key: 'opponentBulletsAtom',
+//     default: [],
+// });
 
 
 
