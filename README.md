@@ -1,5 +1,6 @@
 
 # PING-PONG
+[![Build and deploy to Firebase](https://github.com/benronkth/ping/actions/workflows/node.js.yml/badge.svg?branch=main&event=deployment_status)](https://github.com/benronkth/ping/actions/workflows/node.js.yml)
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
