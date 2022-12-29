@@ -1,43 +1,65 @@
-.App {
-  text-align: center;
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
 }
 
-.App-link {
-  color: #61dafb;
+input:checked+.slider {
+  background-color: #2196F3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
 }
 
+input:checked+.slider:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
+  transform: translateX(14px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 
 /* --------------------------- Our css ------------------------ */
 
@@ -50,25 +72,53 @@ body {
   font-family: 'Unbounded', cursive;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #91f321;
+  box-shadow: 0px 10px 10px 1px rgba(97, 160, 98, 0.226);
+  height: 50px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background-color: #91f321;
+  font-size: 8px;
+  height: 30px;
+}
+
+.joined-players-holder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.game-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
 
 .board-holder {
+  /* position: relative; */
+  background-color: #2521f3ae;
+
+}
+
+.board {
   position: relative;
-  background-color: yellow;
-
+  background-color: #f32198ae;
 }
 
-.background {
-  position: absolute;
-  background: #7F7FD5;
-  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  height: 600px;
-  width: 800px;
-  border-radius: 10px;
-}
 
 .wall {
   display: flex;
@@ -97,6 +147,7 @@ body {
   background-size: contain;
   scale: 0.8;
   z-index: 3;
+  transition: all 0.2s;
 }
 
 .tank-text {
@@ -130,6 +181,7 @@ body {
   z-index: 2;
   background-image: url("./assets/image/bulletUp.svg");
   background-size: contain;
+  transition: all 0.05s;
 }
 
 .distructed {
@@ -142,4 +194,125 @@ body {
   font-weight: bold;
   background-image: url("./assets/image/fire.svg");
   background-size: contain;
+}
+
+.onBoarding {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.onBoardingHolder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loggedIn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-row-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.createGameInputHolder {
+  display: flex;
+  width: 350px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 20px;
+  border: 2px solid yellowgreen;
+  background-color: yellow;
+  border-radius: 20px;
+  height: 300px;
+  box-shadow: 0px 10px 10px 1px rgba(97, 160, 98, 0.226);
+
+}
+
+input {
+  padding: 10px;
+  margin: 4px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 1em;
+  font-family: 'Unbounded', cursive;
+}
+
+select {
+  padding: 10px;
+  margin: 4px;
+  border-radius: 10px;
+  font-size: 1em;
+  font-family: 'Unbounded', cursive;
+}
+
+.square {
+  display: block;
+  position: relative;
+  margin: 0.2em;
+  padding: 0.8em 2.2em; 
+  background: #FFFFFF;
+  border: none;
+  border-radius: 0.4em;
+  text-transform: uppercase;
+  font-family: 'Unbounded', cursive;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  perspective: 500px;
+}
+
+.over {
+  text-decoration: wavy overline lime;
+}
+
+.line-through {
+  text-decoration: wavy line-through red 2px;
+}
+
+button {
+  display: block;
+  position: relative;
+  margin: 0.2em;
+  padding: 0.8em 2.2em;
+  cursor: pointer;
+  background: #FFFFFF;
+  border: none;
+  border-radius: 0.4em;
+  text-transform: uppercase;
+  font-family: 'Unbounded', cursive;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  perspective: 500px;
+}
+
+button:hover {
+  background-color: #FFF65B;
+  transition: background 0.3s 0.1s;
+}
+
+button:hover:before {
+  --z: 0.04;
+  -webkit-animation: translateWobble 2.2s ease forwards;
+  animation: translateWobble 2.2s ease forwards;
+}
+
+button:hover:after {
+  --z: -0.06;
+  -webkit-animation: translateWobble 2.2s ease forwards;
+  animation: translateWobble 2.2s ease forwards;
 }

@@ -2,7 +2,7 @@ import bulletDownImage from '../assets/image/bulletDown.svg';
 import bulletUpImage from '../assets/image/bulletUp.svg';
 import bulletLeftImage from '../assets/image/bulletLeft.svg';
 import bulletRightImage from '../assets/image/bulletRight.svg';
-import { orientations } from '../maps/maps';
+import { orientations } from '../model/Game';
 
 
 function BulletView({ id, orientation, position, size }) {

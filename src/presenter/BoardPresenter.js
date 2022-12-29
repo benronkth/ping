@@ -1,105 +1,66 @@
-import { useRecoilState } from "recoil";
-import BackgroundView from "../views/BackgroundView"
-import WallView from "../views/WallView"
-import TankView from "../views/TankView"
-import TargetView from "../views/TargetView"
-import { createGame, stateAtom } from "../model/Game";
-import { elementTypes, orientations } from "../maps/maps";
 
-
-import { useEffect } from "react";
 import TankPresenter from "./TankPresenter";
-import BulletView from "../views/BulletView";
-import DistructedView from "../views/DistructedView";
+import WallPresenter from "./WallPresenter";
+import TargetPresenter from "./TargetPresenter";
+import BulletPresenter from "./BulletPresenter";
+import DistructedPresenter from "./DistructedPresenter";
+import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom } from "../model/Game";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { onValue, ref } from "firebase/database";
+import { db } from "../firebase/firebaseConfig";
+
 function BoardPresenter() {
-    const [state, setState] = useRecoilState(stateAtom);
-    const blockSize = 48;
+
+    const [blockSize, setBlockSize] = useRecoilState(blockSizeAtom);
+    const [gameId, setGameId] = useRecoilState(gameIdAtom);
+    const [boardRowsCount, setBoardRowsCount] = useRecoilState(boardRowsCountAtom);
+    const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
+    const [boardMarginLeft, setBoardMarginLeft] = useRecoilState(boardMarginLeftAtom);
+    const [boardMarginTop, setBoardMarginTop] = useRecoilState(boardMarginTopAtom);
+
+
+    function handleScreenResize(event) {
+        const width = event.target.innerWidth;
+        const height = event.target.innerHeight - 100;
+
+        const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
+        const roundedBlockSize = Math.floor(blockSize);
+        setBlockSize(roundedBlockSize);
+        const boardWidthInPixels = roundedBlockSize * boardColumnsCount;
+        const extraWidthSpaceInPixels = width - boardWidthInPixels;
+        setBoardMarginLeft(extraWidthSpaceInPixels / 2);
+
+        const boardHeightInPixels = roundedBlockSize * boardRowsCount;
+        const extraHeightSpaceInPixels = height - boardHeightInPixels;
+        setBoardMarginTop(extraHeightSpaceInPixels / 2);
+    }
+
     useEffect(() => {
-        setState(createGame());
-    }, []);
+        window.addEventListener("resize", handleScreenResize);
 
-
-    console.log(state);
-    function drawBoard(element) {
-
-        switch (element.type) {
-            case elementTypes.wall:
-                return <WallView key={element.id}
-                    position={element.position}
-                    size={blockSize}
-                    id={element.position}
-                    name={element.name}
-                    damageTaken={element.damageTaken}
-                    maxHealth={element.maxHealth}
-                > ({element.r}) </WallView>;
-            case elementTypes.target:
-                return <TargetView key={element.id}
-                    position={element.position}
-                    size={blockSize}
-                    name={element.name}
-                    id={element.id}
-                    damageTaken={element.damageTaken}
-                    maxHealth={element.maxHealth}
-                > ({element.r}) </TargetView>;
-            case elementTypes.bullet:
-                return <BulletView key={element.id}
-                    position={element.position}
-                    size={blockSize}
-                    name={element.name}
-                    id={element.id}
-                > ({element.r}) </BulletView>;
-
-            case elementTypes.tank:
-                return <TankPresenter key={element.id}
-                    position={element.position}
-                    orientation={element.orientation}
-                    size={blockSize}
-                    name={element.health}
-                    id={element.id}
-                    damageTaken={element.damageTaken}
-                    maxHealth={element.maxHealth}
-                > ({element.r}) </TankPresenter>;
-
-            case elementTypes.distructed:
-                return <DistructedView key={element.id}
-                    position={element.position}
-                    size={blockSize}
-                    name={element.name}
-                    id={element.id}
-                > ({element.r}) </DistructedView>;
+        return () => {
+            window.removeEventListener("resize", handleScreenResize)
         }
-    }
-    function drawBullets(element) {
-        // console.log("bullet is", element); 
-        return <BulletView key={element.id}
-            position={element.position}
-            size={blockSize}
-            name={element.name}
-            id={element.id}
-            orientation={element.orientation}
-        > ({element.r}) </BulletView>;
 
-    }
+    }, [])
 
 
-    function drawTanks(element) {
-        return <TankPresenter key={element.id}
-            position={element.position}
-            orientation={element.orientation}
-            size={blockSize}
-            name={element.name}
-            id={element.id}
-        > ({element.r}) </TankPresenter>;
+ 
 
-    }
-
-
-    return (<div>
-        {state.board.map(drawBoard)}
-        {state.bullets.map(drawBullets)}
-        {/* {state.tanks.map(drawTanks)} */}
-        {/* <BackgroundView></BackgroundView> */}
-    </div>);
+    return (
+        <div className="board-holder" style={{
+            marginLeft: boardMarginLeft + "px",
+            marginTop: boardMarginTop + "px",
+        }}>
+            <div className="board">
+                <WallPresenter></WallPresenter>
+                <TargetPresenter></TargetPresenter>
+                <TankPresenter></TankPresenter>
+                <BulletPresenter></BulletPresenter>
+                <DistructedPresenter></DistructedPresenter>
+            </div>
+        </div>);
 }
 
 export default BoardPresenter;
