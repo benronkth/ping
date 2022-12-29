@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { gameIdAtom, gameOwnerAtom, gameOwnerIdAtom, isGameCreatedAtom, isGameStartedAtom, tanksAtom, targetsAtom } from "../model/Game";
+import { gameIdAtom, gameOwnerIdAtom, isGameCreatedAtom, isGameStartedAtom, tanksAtom, targetsAtom } from "../model/Game";
 import GameControlView from "../views/GameControlView";
 import { db, removeGame, removePlayer, removeTank, removeTarget, uploadIsGameStarted } from "../firebase/firebase";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ function GameControlPresenter() {
 
     function onExitGameClicked() {
         console.log("Game is exited");
-        if (playerId == gameOwnerId) {
+        if (playerId === gameOwnerId) {
             removeGame(gameId)
         } else {
             for (let i = 0; i < tanks.length; i++) {

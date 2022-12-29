@@ -7,8 +7,6 @@ import DistructedPresenter from "./DistructedPresenter";
 import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom } from "../model/Game";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
-import { onValue, ref } from "firebase/database";
-import { db } from "../firebase/firebase";
 
 function BoardPresenter() {
 

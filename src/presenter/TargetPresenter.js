@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { actionsQueueAtom, blockSizeAtom, gameIdAtom, opponentTargetsAtom, targetsAtom } from "../model/Game";
+import { blockSizeAtom, gameIdAtom, opponentTargetsAtom, targetsAtom } from "../model/Game";
 import TargetView from "../views/TargetView";
 import { useEffect } from "react";
 import { db } from "../firebase/firebase";
@@ -25,7 +25,7 @@ function TargetPresenter() {
                 const fetchedTarget = Object.values(targets);
                 console.log("targets are: ", fetchedTarget);
                 for (let i = 0; i < fetchedTarget.length; i++) {
-                    if (fetchedTarget[i].ownerId == playerId) {
+                    if (fetchedTarget[i].ownerId === playerId) {
                         tempTarget.push(fetchedTarget[i]);
                     } else {
                         tempOpponentTarget.push(fetchedTarget[i]);

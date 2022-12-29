@@ -1,5 +1,3 @@
-import { useRecoilState } from "recoil";
-import { playerNameAtom } from "../model/User";
 
 function ProfileView({ playerName, onSignOutClicked }) {
 

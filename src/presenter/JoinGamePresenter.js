@@ -3,7 +3,7 @@ import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginT
 import JoinGameView from "../views/JoinGameView";
 import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebase";
 import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
-import { get, onValue, ref } from "firebase/database";
+import { get, ref } from "firebase/database";
 
 function JoinGamePresenter() {
 
@@ -18,116 +18,7 @@ function JoinGamePresenter() {
     const [playerName, setPlayerName] = useRecoilState(playerNameAtom);
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
 
-    const [joinedPlayers, setJoinedPlayers] = useRecoilState(joinedPlayersAtom);
-
-
-    // function onCreateGameClicked(event) {
-    //     event.preventDefault();
-    //     console.log("creating the game!");
-    //     let elements = [];
-    //     for (let r = 0; r < boardRowsCount; r++) {
-    //         let row = "";
-    //         for (let c = 0; c < boardColumnsCount; c++) {
-    //             if (Math.random() < (wallRatio / 100.0)) {
-    //                 row += "w"
-    //             } else {
-    //                 row += "s"
-    //             }
-    //         }
-    //         elements.push(row);
-    //     }
-
-    //     const lastRow = elements[elements.length - 1];
-    //     elements[elements.length - 1] = lastRow.substring(0, lastRow.length - 2) + "a" + "b"
-    //     const map = {
-    //         elements,
-    //         w: {
-    //             name: "",
-    //             type: elementTypes.wall,
-    //             blocked: true,
-    //             distructable: true,
-    //             maxHealth: 50,
-    //             damageTaken: 0,
-    //             position: {
-    //                 r: 0,
-    //                 c: 0,
-    //             }
-    //         },
-    //     a: {
-    //         name: playerName,
-    //         ownerId: playerId,
-    //         type: elementTypes.tank,
-    //         orientation: orientations.up,
-    //         blocked: true,
-    //         distructable: true,
-    //         maxHealth: 50,
-    //         damageTaken: 0,
-    //         position: {
-    //             r: 0,
-    //             c: 1,
-    //         },
-    //         bullet: {
-    //             name: "bullet",
-    //             type: elementTypes.bullet,
-    //             orientation: orientations.up,
-    //             attack: 8,
-    //             position: {
-    //                 r: 0,
-    //                 c: 0,
-    //             }
-    //         }
-    //     },
-    //     b: {
-    //         name: playerName,
-    //         ownerId: playerId,
-    //         type: elementTypes.target,
-    //         blocked: true,
-    //         distructable: true,
-    //         maxHealth: 150,
-    //         damageTaken: 0,
-    //         position: {
-    //             r: 0,
-    //             c: 0,
-    //         }
-    //     },
-    // };
-
-    // console.log(map);
-    // const game = createGame(map);
-    // let tempWalls = [];
-    // let tempTanks = [];
-    // let tempTargets = [];
-    // let tempBullets = [];
-
-    // for (let i = 0; i < game.board.length; i++) {
-    //     const element = game.board[i];
-    //     switch (element.type) {
-    //         case elementTypes.wall:
-    //             tempWalls.push(element);
-    //             break;
-    //         case elementTypes.target:
-    //             tempTargets.push(element);
-    //             break;
-    //         case elementTypes.bullet:
-    //             tempBullets.push(element);
-    //             break;
-    //         case elementTypes.tank:
-    //             tempTanks.push(element);
-
-    //             break;
-    //     }
-    // }
-    //     setBoardRowsCount(game.boardSize.rows);
-    //     setBoardColumnsCount(game.boardSize.columns);
-    //     // setOpponentTanks(tempOpponentTanks);
-    //     // setTanks(tempTanks); 
-    //     const generatedGameId = Math.ceil(Math.random() * 10000);
-    //     uploadGame(generatedGameId, "ben", game.boardSize, tempWalls, tempTanks, tempTargets, map);
-    //     setGameId(generatedGameId);
-    //     setIsGameCreated(true);
-    //     resizeBlocks();
-    // }
-
+   
 
     function resizeBlocks() {
         const width = window.innerWidth;
@@ -156,14 +47,7 @@ function JoinGamePresenter() {
         const playerColor = getRandomColor();
         let boardColumns = 0;
         let boardRows = 0;
-
-        // const boardRowsRef = ref(db, 'games/' + gameId + "/boardSize/rows");
-        // const rowsUnsubscriber = onValue(boardRowsRef, (snapshot) => {
-        //     boardRows = snapshot.val();
-        //     console.log("Rows is: ", boardRows);
-        //     setBoardRowsCount(boardRows);
-        // });
-
+ 
         var boardRowsRef = ref(db, 'games/' + gameId + "/boardSize/rows");
         var snapshot = await get(boardRowsRef);
         boardRows = snapshot.val();

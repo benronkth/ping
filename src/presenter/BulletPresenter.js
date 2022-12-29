@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, bulletsAtom, distructedsAtom, boardAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentBulletsAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom } from "../model/Game";
+import { blockSizeAtom, bulletsAtom, distructedsAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentBulletsAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom } from "../model/Game";
 import BulletView from "../views/BulletView";
 import { useEffect } from "react";
 import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
@@ -59,31 +59,31 @@ function BulletPresenter() {
 
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
-            if (tank.position.r == row && tank.position.c == column) {
+            if (tank.position.r === row && tank.position.c === column) {
                 return tank
             }
         }
         for (let i = 0; i < opponentTanks.length; i++) {
             const opponentTank = opponentTanks[i];
-            if (opponentTank.position.r == row && opponentTank.position.c == column) {
+            if (opponentTank.position.r === row && opponentTank.position.c === column) {
                 return opponentTank
             }
         }
         for (let i = 0; i < targets.length; i++) {
             const target = targets[i];
-            if (target.position.r == row && target.position.c == column) {
+            if (target.position.r === row && target.position.c === column) {
                 return target
             }
         }
         for (let i = 0; i < opponentTargets.length; i++) {
             const opponentTarget = opponentTargets[i];
-            if (opponentTarget.position.r == row && opponentTarget.position.c == column) {
+            if (opponentTarget.position.r === row && opponentTarget.position.c === column) {
                 return opponentTarget
             }
         }
         for (let i = 0; i < walls.length; i++) {
             const wall = walls[i];
-            if (wall.position.r == row && wall.position.c == column) {
+            if (wall.position.r === row && wall.position.c === column) {
                 return wall
             }
         }
@@ -162,7 +162,7 @@ function BulletPresenter() {
                 removeTarget(gameId, oldElement);
                 for (let i = 0; i < joinedPlayers.length; i++) {
                     const player = joinedPlayers[i];
-                    if (player.id == oldElement.ownerId) {
+                    if (player.id === oldElement.ownerId) {
                         uploadPlayer(gameId, {
                             ...player,
                             isAlive: false
@@ -174,7 +174,7 @@ function BulletPresenter() {
                 removeTank(gameId, oldElement);
                 for (let i = 0; i < joinedPlayers.length; i++) {
                     const player = joinedPlayers[i];
-                    if (player.id == oldElement.ownerId) {
+                    if (player.id === oldElement.ownerId) {
                         const tempDeathCount = player.deathCount + 1;
                         if (tempDeathCount < player.maxLivesCount) {
                             uploadPlayer(gameId, {
@@ -245,7 +245,7 @@ function BulletPresenter() {
                 const fetchedBullets = Object.values(bullets);
                 console.log("bullets are: ", fetchedBullets);
                 for (let i = 0; i < fetchedBullets.length; i++) {
-                    if (fetchedBullets[i].ownerId == playerId) {
+                    if (fetchedBullets[i].ownerId === playerId) {
                         tempBullets.push(fetchedBullets[i]);
                     } else {
                         tempOpponentBullets.push(fetchedBullets[i]);

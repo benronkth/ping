@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import TankView from "../views/TankView";
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, bulletsAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom } from "../model/Game";
+import { blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom } from "../model/Game";
 
 import { db, uploadBullet, uploadTank, uploadTanks, writeTanks } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
@@ -29,31 +29,31 @@ function TankPresenter() {
 
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
-            if (tank.position.r == row && tank.position.c == column) {
+            if (tank.position.r === row && tank.position.c === column) {
                 return tank
             }
         }
         for (let i = 0; i < opponentTanks.length; i++) {
             const opponentTank = opponentTanks[i];
-            if (opponentTank.position.r == row && opponentTank.position.c == column) {
+            if (opponentTank.position.r === row && opponentTank.position.c === column) {
                 return opponentTank
             }
         }
         for (let i = 0; i < targets.length; i++) {
             const target = targets[i];
-            if (target.position.r == row && target.position.c == column) {
+            if (target.position.r === row && target.position.c === column) {
                 return target
             }
         }
         for (let i = 0; i < opponentTargets.length; i++) {
             const opponentTarget = opponentTargets[i];
-            if (opponentTarget.position.r == row && opponentTarget.position.c == column) {
+            if (opponentTarget.position.r === row && opponentTarget.position.c === column) {
                 return opponentTarget
             }
         }
         for (let i = 0; i < walls.length; i++) {
             const wall = walls[i];
-            if (wall.position.r == row && wall.position.c == column) {
+            if (wall.position.r === row && wall.position.c === column) {
                 return wall
             }
         }
@@ -71,25 +71,25 @@ function TankPresenter() {
 
             switch (movingOrientation) {
                 case orientations.up:
-                    tankFuturePosR = tank.orientation == orientations.up ? tank.position.r - 1 : tank.position.r;
+                    tankFuturePosR = tank.orientation === orientations.up ? tank.position.r - 1 : tank.position.r;
                     tankFuturePosC = tank.position.c;
                     tankOrientation = orientations.up;
                     break;
 
                 case orientations.down:
-                    tankFuturePosR = tank.orientation == orientations.down ? tank.position.r + 1 : tank.position.r;
+                    tankFuturePosR = tank.orientation === orientations.down ? tank.position.r + 1 : tank.position.r;
                     tankFuturePosC = tank.position.c;
                     tankOrientation = orientations.down;
                     break;
 
                 case orientations.left:
                     tankFuturePosR = tank.position.r;
-                    tankFuturePosC = tank.orientation == orientations.left ? tank.position.c - 1 : tank.position.c;
+                    tankFuturePosC = tank.orientation === orientations.left ? tank.position.c - 1 : tank.position.c;
                     tankOrientation = orientations.left;
                     break;
                 case orientations.right:
                     tankFuturePosR = tank.position.r;
-                    tankFuturePosC = tank.orientation == orientations.right ? tank.position.c + 1 : tank.position.c;
+                    tankFuturePosC = tank.orientation === orientations.right ? tank.position.c + 1 : tank.position.c;
                     tankOrientation = orientations.right;
                     break;
             }
@@ -193,7 +193,7 @@ function TankPresenter() {
                 let tempTanks = [];
                 let tempOpponentTanks = [];
                 for (let i = 0; i < fetchedTanks.length; i++) {
-                    if (fetchedTanks[i].ownerId == playerId) {
+                    if (fetchedTanks[i].ownerId === playerId) {
                         console.log("tank owned by me", fetchedTanks[i]);
                         tempTanks.push(fetchedTanks[i]);
                     } else {

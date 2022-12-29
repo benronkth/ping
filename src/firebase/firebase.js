@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, onValue, ref, remove, set, update } from "firebase/database";
+import { getDatabase, ref, remove, set, update } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { firebaseConfig } from "./config";
 // TODO: Add SDKs for Firebase products that you want to use

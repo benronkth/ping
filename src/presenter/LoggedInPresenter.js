@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { isGameCreatedAtom, isGameStartedAtom } from "../model/Game";
+import { isGameCreatedAtom } from "../model/Game";
 import LoggedInView from "../views/LoggedInView"; 
 import BoardPresenter from "./BoardPresenter";
 

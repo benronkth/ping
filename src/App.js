@@ -1,6 +1,5 @@
 
 import './App.css';
-import BoardPresenter from './presenter/BoardPresenter';
 import 'animate.css';
 import HeaderPresenter from './presenter/HeaderPresenter';
 import OnBoardingPresenter from './presenter/OnBoardingPresenter';

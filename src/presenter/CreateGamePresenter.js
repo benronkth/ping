@@ -1,9 +1,8 @@
 import { useRecoilState } from "recoil";
 import CreateGameView from "../views/CreateGameView";
-import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameModeAtom, gameModes, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, orientations, wallRatioAtom } from "../model/Game";
+import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameModeAtom, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, orientations, wallRatioAtom } from "../model/Game";
 import { uploadGame } from "../firebase/firebase";
 import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
-import { useEffect } from "react";
 
 function CreateGamePresenter() {
 
