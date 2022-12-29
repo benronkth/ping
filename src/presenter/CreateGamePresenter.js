@@ -172,7 +172,7 @@ function CreateGamePresenter() {
                 blocked: true,
                 maxHealth: 150,
                 damageTaken: 0,
-                attack: 1,
+                attack: 2,
                 position: {
                     r: locations.target.r,
                     c: locations.target.c,
