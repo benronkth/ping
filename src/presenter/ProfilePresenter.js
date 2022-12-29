@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { isPlayerLoggedInAtom, playerNameAtom } from "../model/User";
 import ProfileView from "../views/ProfileView";
-import { signOutUser } from "../firebase/firebaseConfig";
+import { signOutUser } from "../firebase/firebase";
 
 function ProfilePresenter() {
 

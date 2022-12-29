@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { blockSizeAtom, gameIdAtom, wallsAtom } from "../model/Game";
 import WallView from "../views/WallView";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { useEffect } from "react";
 
@@ -15,13 +15,13 @@ function WallPresenter() {
     useEffect(() => {
         const wallsRef = ref(db, 'games/' + gameId + "/walls");
         return onValue(wallsRef, (snapshot) => {
-            const walls = snapshot.val(); 
+            const walls = snapshot.val();
             console.log("fetched walls is: ", walls);
             if (walls) {
                 setWalls(Object.values(walls));
-            } else { 
+            } else {
                 setWalls([]);
-            } 
+            }
         });
     }, []);
 

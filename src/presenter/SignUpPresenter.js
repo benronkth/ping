@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { signUpUser } from "../firebase/firebaseConfig";
+import { signUpUser } from "../firebase/firebase";
 import { isPlayerLoggedInAtom, playerEmailAtom, playerIdAtom, playerNameAtom, playerPasswordAtom } from "../model/User";
 import SignUpView from "../views/SignUpView";
 

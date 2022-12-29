@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { actionsQueueAtom, blockSizeAtom, gameIdAtom, opponentTargetsAtom, targetsAtom } from "../model/Game";
 import TargetView from "../views/TargetView";
 import { useEffect } from "react";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 

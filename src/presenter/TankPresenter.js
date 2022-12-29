@@ -3,7 +3,7 @@ import TankView from "../views/TankView";
 import { useRecoilState } from "recoil";
 import { blockSizeAtom, bulletsAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom } from "../model/Game";
 
-import { db, uploadBullet, uploadTank, uploadTanks, writeTanks } from "../firebase/firebaseConfig";
+import { db, uploadBullet, uploadTank, uploadTanks, writeTanks } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 

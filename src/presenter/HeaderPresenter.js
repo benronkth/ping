@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import HeaderView from "../views/HeaderView";
 import { blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, createGame, gameIdAtom, opponentTanksAtom, tanksAtom, targetsAtom, wallsAtom, distructedsAtom } from "../model/Game";
 import { useEffect } from "react";
-import { db, removeBullet, removeWall, uploadBullet, uploadGame, uploadTank, uploadTarget, uploadWall } from "../firebase/firebaseConfig";
+import { db, removeBullet, removeWall, uploadBullet, uploadGame, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { isPlayerLoggedInAtom, playerIdAtom } from "../model/User";
 
@@ -15,14 +15,14 @@ function HeaderPresenter() {
     const [tanks, setTanks] = useRecoilState(tanksAtom);
     const [opponentTanks, setOpponentTanks] = useRecoilState(opponentTanksAtom);
     const [distructeds, setDistructeds] = useRecoilState(distructedsAtom);
-    const [isPlayerLoggedIn, setIsPlayerLoggedIn] = useRecoilState(isPlayerLoggedInAtom); 
+    const [isPlayerLoggedIn, setIsPlayerLoggedIn] = useRecoilState(isPlayerLoggedInAtom);
 
 
 
 
 
     // useEffect(() => {
- 
+
     //     console.log("creating the game!");
     //     const map = maps.map1;
     //     const game = createGame(map);

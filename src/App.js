@@ -8,7 +8,7 @@ import LoggedInPresenter from './presenter/LoggedInPresenter';
 import { useRecoilState } from 'recoil';
 import { isPlayerLoggedInAtom, playerIdAtom, playerNameAtom } from './model/User';
 import { useEffect } from 'react';
-import { auth } from './firebase/firebaseConfig';
+import { auth } from './firebase/firebase';
 import { useAuthState } from "react-firebase-hooks/auth";
 import FooterPresenter from './presenter/FooterPresenter';
 function App() {

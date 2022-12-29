@@ -2,21 +2,13 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, onValue, ref, remove, set, update } from "firebase/database";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { firebaseConfig } from "./config";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyDeBAuU2kGhlmVIM0AbjcwFInX46Iy7odg",
-    authDomain: "tanksss.firebaseapp.com",
-    projectId: "tanksss",
-    storageBucket: "tanksss.appspot.com",
-    messagingSenderId: "133968125770",
-    appId: "1:133968125770:web:8896c459152dc4b8b3abb3",
-    measurementId: "G-HRTRYNH2SV",
-    databaseURL: "https://tanksss-default-rtdb.europe-west1.firebasedatabase.app",
-};
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

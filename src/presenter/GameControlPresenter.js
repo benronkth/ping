@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { gameIdAtom, gameOwnerAtom, gameOwnerIdAtom, isGameCreatedAtom, isGameStartedAtom, tanksAtom, targetsAtom } from "../model/Game";
 import GameControlView from "../views/GameControlView";
-import { db, removeGame, removePlayer, removeTank, removeTarget, uploadIsGameStarted } from "../firebase/firebaseConfig";
+import { db, removeGame, removePlayer, removeTank, removeTarget, uploadIsGameStarted } from "../firebase/firebase";
 import { useEffect } from "react";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
@@ -14,7 +14,7 @@ function GameControlPresenter() {
     const [isGameCreated, setIsGameCreated] = useRecoilState(isGameCreatedAtom);
     const [gameOwnerId, setGameOwnerId] = useRecoilState(gameOwnerIdAtom);
     const [tanks, setTanks] = useRecoilState(tanksAtom);
-    const [targets, setTargets] = useRecoilState(targetsAtom); 
+    const [targets, setTargets] = useRecoilState(targetsAtom);
     function onStartGameClicked() {
         console.log("Game is started");
         // setIsGameStarted(true);
@@ -55,11 +55,11 @@ function GameControlPresenter() {
     }, []);
 
     useEffect(() => {
-        const gameOwnerRef = ref(db, 'games/' + gameId+"/gameOwnerId");
+        const gameOwnerRef = ref(db, 'games/' + gameId + "/gameOwnerId");
         const unsubscriber = onValue(gameOwnerRef, (snapshot) => {
             const gameOwnerId = snapshot.val();
             if (gameOwnerId) {
-                setGameOwnerId(gameOwnerId); 
+                setGameOwnerId(gameOwnerId);
             }
         });
 
@@ -79,7 +79,7 @@ function GameControlPresenter() {
 
     return (<GameControlView
         gameId={gameId}
-        onStartGameClicked={onStartGameClicked} 
+        onStartGameClicked={onStartGameClicked}
         isGameStarted={isGameStarted}
         onExitGameClicked={onExitGameClicked}
     ></GameControlView>);

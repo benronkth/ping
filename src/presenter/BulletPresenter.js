@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { blockSizeAtom, bulletsAtom, distructedsAtom, boardAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentBulletsAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom } from "../model/Game";
 import BulletView from "../views/BulletView";
 import { useEffect } from "react";
-import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebaseConfig";
+import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 

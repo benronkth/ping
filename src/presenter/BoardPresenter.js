@@ -8,7 +8,7 @@ import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginT
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { onValue, ref } from "firebase/database";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../firebase/firebase";
 
 function BoardPresenter() {
 
@@ -46,7 +46,7 @@ function BoardPresenter() {
     }, [])
 
 
- 
+
 
     return (
         <div className="board-holder" style={{

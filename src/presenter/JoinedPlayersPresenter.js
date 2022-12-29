@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import JoinedPlayersView from "../views/JoinedPlayersView";
 import { gameIdAtom, gameOwnerIdAtom, joinedPlayersAtom } from "../model/Game";
 import { onValue, ref } from "firebase/database";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../firebase/firebase";
 import { useEffect } from "react";
 
 function JoinedPlayersPresenter() {

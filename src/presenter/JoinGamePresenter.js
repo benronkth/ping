@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, elementTypes, gameIdAtom, getLocations, getRandomColor, isGameCreatedAtom, joinedPlayersAtom, orientations } from "../model/Game";
 import JoinGameView from "../views/JoinGameView";
-import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebaseConfig";
+import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebase";
 import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
 import { get, onValue, ref } from "firebase/database";
 

@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import CreateGameView from "../views/CreateGameView";
 import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameModeAtom, gameModes, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, orientations, wallRatioAtom } from "../model/Game";
-import { uploadGame } from "../firebase/firebaseConfig";
+import { uploadGame } from "../firebase/firebase";
 import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
 import { useEffect } from "react";
 
@@ -168,7 +168,7 @@ function CreateGamePresenter() {
         }
         setBoardRowsCount(game.boardSize.rows);
         setBoardColumnsCount(game.boardSize.columns);
-        const player = getNewPlayer(playerId,playerName,playerColor,locations);  
+        const player = getNewPlayer(playerId, playerName, playerColor, locations);
         const generatedGameId = Math.ceil(Math.random() * 10000);
         uploadGame(generatedGameId, player, game.boardSize, tempWalls, tempTanks, tempTargets, map);
         setGameId(generatedGameId);
