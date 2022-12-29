@@ -108,6 +108,7 @@ function JoinGamePresenter() {
             blocked: true,
             maxHealth: 50,
             damageTaken: 0,
+            id: "t" + Math.ceil(Math.random() * 1000),
             attack: 1,
             position: {
                 r: locations.tank.r,
