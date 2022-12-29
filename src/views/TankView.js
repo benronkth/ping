@@ -3,7 +3,9 @@ function TankView({ id, name, damageTaken, maxHealth, size, color }) {
         width: size + "px",
         height: size + "px",
         color: color,
-        boxShadow: "0px 0px 8px "+color
+        outline: "4px dashed " + color,
+        borderRadius: "50%"
+
     }}>
         <div>{maxHealth - damageTaken}</div>
     </div>);
