@@ -2,8 +2,9 @@ import { useRecoilState } from "recoil";
 import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, elementTypes, gameIdAtom, getLocations, getRandomColor, isGameCreatedAtom, joinedPlayersAtom, orientations } from "../model/Game";
 import JoinGameView from "../views/JoinGameView";
 import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebase";
-import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
+import { playerIdAtom, playerNameAtom } from "../model/User";
 import { get, ref } from "firebase/database";
+import { getNewBullet, getNewPlayer, getNewTank, getNewTarget } from "../model/Elements";
 
 function JoinGamePresenter() {
 
@@ -56,7 +57,7 @@ function JoinGamePresenter() {
     }
     async function onJoinGameClicked(event) {
         event.preventDefault();
-        console.log("joining game...");
+        console.log("joining game... Game id is: ", gameId);
         const playerColor = getRandomColor();
         let boardColumns = 0;
         let boardRows = 0;
@@ -81,53 +82,31 @@ function JoinGamePresenter() {
 
         const locations = getLocations(fetchedPlayers.length, boardRows, boardColumns);
         console.log("locations: ", locations);
-        const player = getNewPlayer(playerId, playerName, playerColor, locations);
+        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations });
         uploadPlayer(gameId, player);
-        uploadTarget(gameId, {
-            name: playerName.substring(0, 3),
+        const newTarget = getNewTarget({
+            name: playerName,
             ownerId: playerId,
             color: playerColor,
-            type: elementTypes.target,
             id: "t" + Math.ceil(Math.random() * 1000),
-            blocked: true,
-            maxHealth: 150,
-            damageTaken: 0,
-            attack: 1,
             position: {
                 r: locations.target.r,
                 c: locations.target.c,
             }
         });
+        uploadTarget(gameId, newTarget);
 
-        uploadTank(gameId, {
-            name: playerName.substring(0, 3),
+        const newTank = getNewTank({
+            name: playerName,
             ownerId: playerId,
             color: playerColor,
-            type: elementTypes.tank,
-            orientation: orientations.up,
-            blocked: true,
-            maxHealth: 50,
-            damageTaken: 0,
             id: "t" + Math.ceil(Math.random() * 1000),
-            attack: 1,
             position: {
                 r: locations.tank.r,
                 c: locations.tank.c,
             },
-            bullet: {
-                name: "bullet",
-                type: elementTypes.bullet,
-                orientation: orientations.up,
-                maxHealth: 1,
-                damageTaken: 0,
-                attack: 8,
-                position: {
-                    r: locations.tank.r,
-                    c: locations.tank.c,
-                }
-            }
-        }
-        );
+        });
+        uploadTank(gameId, newTank);
 
         setIsGameCreated(true);
         resizeBlocks();

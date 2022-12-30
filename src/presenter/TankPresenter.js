@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import TankView from "../views/TankView";
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom } from "../model/Game";
+import { blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom, getInfrontPostion } from "../model/Game";
 
 import { db, uploadBullet, uploadTank, uploadTanks, writeTanks } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
@@ -124,14 +124,15 @@ function TankPresenter() {
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
             const tankPos = tank.position;
+            const infrontPosition = getInfrontPostion(tank);
             const bullet = {
                 ...tank.bullet,
                 id: "b" + Math.ceil(Math.random() * 1000),
                 ownerId: playerId,
                 orientation: tank.orientation,
                 position: {
-                    r: tankPos.r,
-                    c: tankPos.c,
+                    r: infrontPosition.r,
+                    c: infrontPosition.c,
                 }
             };
             uploadBullet(gameId, bullet);

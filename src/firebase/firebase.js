@@ -112,6 +112,7 @@ export function uploadGame(gameId, player, boardSize, walls, tanks, targets, map
         gameId,
         gameOwnerId: player.id,
         isGameStarted: false,
+        creationDate: Date.now(),
         boardSize,
         tanks: tempTanks,
         targets: tempTargets,

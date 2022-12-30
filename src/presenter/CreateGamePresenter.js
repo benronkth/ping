@@ -2,7 +2,8 @@ import { useRecoilState } from "recoil";
 import CreateGameView from "../views/CreateGameView";
 import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameModeAtom, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, orientations, wallRatioAtom } from "../model/Game";
 import { uploadGame } from "../firebase/firebase";
-import { getNewPlayer, playerIdAtom, playerNameAtom } from "../model/User";
+import { playerIdAtom, playerNameAtom } from "../model/User";
+import { getNewPlayer, getNewTank, getNewTarget, getNewWall } from "../model/Elements";
 
 function CreateGamePresenter() {
 
@@ -120,64 +121,30 @@ function CreateGamePresenter() {
         elements[boardRowsCount - 1] = "s" + lastRow.substring(2, lastRow.length - 1) + "s";
 
         const locations = getLocations(0, boardRowsCount, boardColumnsCount);
-        console.log(locations);
+        console.log(locations); 
+
+
         const map = {
             elements,
-            w: {
-                name: "",
-                type: elementTypes.wall,
-                blocked: true,
-                maxHealth: 50,
-                damageTaken: 0,
-                attack: 1,
-                position: {
-                    r: 0,
-                    c: 0,
-                }
-            },
-            a: {
-                name: playerName.substring(0, 3),
+            w: getNewWall(),
+            a: getNewTank({
+                name: playerName,
                 ownerId: playerId,
-                type: elementTypes.tank,
-                orientation: orientations.up,
                 color: playerColor,
-                blocked: true,
-                maxHealth: 50,
-                damageTaken: 0,
-                attack: 1,
                 position: {
                     r: locations.tank.r,
                     c: locations.tank.c,
-                },
-                bullet: {
-                    name: "bullet",
-                    type: elementTypes.bullet,
-                    orientation: orientations.up,
-                    color: playerColor, 
-
-                    maxHealth: 1,
-                    damageTaken: 0,
-                    attack: 8,
-                    position: {
-                        r: locations.tank.r,
-                        c: locations.tank.c,
-                    }
                 }
-            },
-            b: {
-                name: playerName.substring(0, 3),
+            }),
+            b: getNewTarget({
+                name: playerName,
                 ownerId: playerId,
-                type: elementTypes.target,
                 color: playerColor,
-                blocked: true,
-                maxHealth: 150,
-                damageTaken: 0,
-                attack: 2,
                 position: {
                     r: locations.target.r,
                     c: locations.target.c,
                 }
-            },
+            }),
         };
 
         console.log(map);
@@ -207,7 +174,7 @@ function CreateGamePresenter() {
         }
         setBoardRowsCount(game.boardSize.rows);
         setBoardColumnsCount(game.boardSize.columns);
-        const player = getNewPlayer(playerId, playerName, playerColor, locations);
+        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations });
         const generatedGameId = Math.ceil(Math.random() * 10000);
         uploadGame(generatedGameId, player, game.boardSize, tempWalls, tempTanks, tempTargets, map);
         setGameId(generatedGameId);

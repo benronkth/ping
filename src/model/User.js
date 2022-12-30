@@ -26,15 +26,3 @@ export const isPlayerLoggedInAtom = atom({
     default: false,
 });
 
-
-export function getNewPlayer(id,name,color, locations) {
-    return {
-        id,
-        name,
-        isAlive: true,
-        maxLivesCount: 5,
-        deathCount: 0,
-        locations,
-        color
-    };
-}

@@ -26,6 +26,10 @@ export const orientations = {
 
 
 
+export const newlyCreatedGamesAtom = atom({
+    key: 'newlyCreatedGamesAtom',
+    default: [],
+});
 
 export const canPerformActionAtom = atom({
     key: 'canPerformActionAtom',
@@ -155,6 +159,38 @@ export function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+}
+
+
+export function getInfrontPostion(element) {
+
+    let elementPosR = 0;
+    let elementPosC = 0;
+    switch (element.orientation) {
+        case orientations.up:
+            elementPosR = element.position.r - 1;
+            elementPosC = element.position.c;
+            break;
+
+        case orientations.down:
+            elementPosR = element.position.r + 1;
+            elementPosC = element.position.c;
+            break;
+
+        case orientations.left:
+            elementPosR = element.position.r;
+            elementPosC = element.position.c - 1;
+            break;
+        case orientations.right:
+            elementPosR = element.position.r;
+            elementPosC = element.position.c + 1;
+            break;
+    }
+
+    return {
+        r: elementPosR,
+        c: elementPosC,
+    }
 }
 
 export function getLocations(numOfPlayers, boardRowsCount, boardColumnsCount) {

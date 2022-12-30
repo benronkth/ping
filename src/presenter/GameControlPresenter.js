@@ -24,6 +24,7 @@ function GameControlPresenter() {
 
     function onExitGameClicked() {
         console.log("Game is exited");
+
         if (playerId === gameOwnerId) {
             removeGame(gameId)
         } else {
@@ -38,6 +39,7 @@ function GameControlPresenter() {
             removePlayer(gameId, playerId);
             setIsGameStarted(false);
             setIsGameCreated(false);
+            setGameId(0);
         }
     }
 
@@ -47,6 +49,7 @@ function GameControlPresenter() {
         const unsubscriber = onValue(gameRef, (snapshot) => {
             const game = snapshot.val();
             if (!game) {
+                setGameId(0);
                 setIsGameStarted(false);
                 setIsGameCreated(false);
             }
