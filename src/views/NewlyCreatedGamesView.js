@@ -7,7 +7,7 @@ function NewlyCreatedGamesView({ games, onGameIdClicked }) {
     }
 
     function gameSorter(game1, game2) {
-        return game1.creationDate > game2.creationDate
+        return game2.creationDate - game1.creationDate; 
     }
     return (<form>
         <div key={"newlyCreatedGamesListKey2"} style={{ fontSize: "40px", margin:"5px" }}>Newly Created</div>
