@@ -146,22 +146,34 @@ function TankPresenter() {
             if (elementInFrontOfTank && elementInFrontOfTank.blocked || tankFuturePosR < 0 || tankFuturePosR >= boardRowsCount || tankFuturePosC < 0 || tankFuturePosC >= boardColumnsCount) {
                 console.log("blocked");
             } else {
+
+
+                console.log("future: ", tankFuturePosR, "-", tankFuturePosC)
+                updatedTank = {
+                    ...updatedTank, position: {
+                        r: tankFuturePosR,
+                        c: tankFuturePosC
+                    },
+                }
+
                 // artifacts
                 if (elementInFrontOfTank && elementInFrontOfTank.type === elementTypes.artifact) {
+
                     const acheivedArtifact = elementInFrontOfTank;
+                    console.log("tank position!!!!!!!!!!!!!!!!!!! ", updatedTank);
                     console.log("ARTIFACT ACHEIVED!!!!!!!!!!!!!!!!!!! ", acheivedArtifact.id, acheivedArtifact);
 
                     switch (acheivedArtifact.artifactType) {
                         case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
+                                position: acheivedArtifact.randomPosition ? acheivedArtifact.randomPosition : updatedTank.position, 
                                 damageTaken: acheivedArtifact.damageTaken ?
                                     Math.max(Math.floor(updatedTank.damageTaken - acheivedArtifact.damageTaken), 0)
                                     : updatedTank.damageTaken,
                                 maxHealth: acheivedArtifact.maxHealth ? Math.floor(updatedTank.maxHealth + acheivedArtifact.maxHealth) : updatedTank.maxHealth,
                                 attack: acheivedArtifact.attack ? Math.floor(updatedTank.attack + acheivedArtifact.attack) : updatedTank.attack,
                                 bullet: acheivedArtifact.bullet ? acheivedArtifact.bullet : updatedTank.bullet,
-                                position: acheivedArtifact.randomPosition ? acheivedArtifact.randomPosition : updatedTank.position,
                             }
 
                             console.log("after updateing :", updatedTank);
@@ -180,13 +192,6 @@ function TankPresenter() {
 
                 }
 
-                console.log("future: ", tankFuturePosR, "-", tankFuturePosC)
-                updatedTank = {
-                    ...updatedTank, position: {
-                        r: tankFuturePosR,
-                        c: tankFuturePosC
-                    },
-                }
             }
             if (updatedTank.damageTaken >= updatedTank.maxHealth) {
                 removeTank(gameId, updatedTank);

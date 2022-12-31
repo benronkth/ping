@@ -328,7 +328,7 @@ export function getNewRandomPositionArtifact(params) {
         params = {};
     }
     return {
-        name: params.damageTaken ? params.damageTaken : "Random Position",
+        name: params.name ? params.name : "",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -338,11 +338,9 @@ export function getNewRandomPositionArtifact(params) {
         position: params.position ? params.position : {
             r: 0,
             c: 0,
-        }, 
-        randomPosition: {
-            r: 0,
-            c: 0,
-        }
+        },
+        artifactType: artifactTypes.tank,
+        randomPosition: params.randomPosition
     };
 }
 
