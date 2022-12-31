@@ -290,7 +290,7 @@ export function getNewDecreaseDamageTakenArtifact(params) {
         expiryDate: Date.now() + artifactExpiry * 1000,
         type: elementTypes.artifact,
         audio: "damageReset.wav",
-        image: params.image ? params.image : "heart.svg",
+        image: params.image ? params.image : "wrench.svg",
         position: params.position ? params.position : {
             r: 0,
             c: 0,
