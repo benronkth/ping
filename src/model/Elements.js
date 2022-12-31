@@ -98,12 +98,13 @@ export function getNewBullet(params) {
         name: params.name ? params.name : "bullet",
         id: params.id ? params.id : "temp",
         type: elementTypes.bullet,
+        audio: "shoot.wav",
         image: params.image ? params.image : "bulletImage",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 1,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 10,
+        attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 1,
         position: params.position ? params.position : {
             r: 0,
@@ -121,6 +122,7 @@ export function getNewRocketBullet(params) {
         name: params.name ? params.name : "rocketbullet",
         id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
         type: elementTypes.bullet,
+        audio: "pistol.mp3",
         image: params.image ? params.image : "rocketBulletImage",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
@@ -151,6 +153,7 @@ export function getNewRocketArtifact(params) {
             r: 0,
             c: 0,
         },
+        audio: "weaponCollect.wav",
         artifactType: artifactTypes.weapon,
         weapon: getNewRocketBullet()
     };
@@ -171,6 +174,7 @@ export function getNewResetDamageTakenArtifact(params) {
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
         type: elementTypes.artifact,
+        audio: "damageReset.wav",
         image: params.image ? params.image : "heartArtifactImage",
         position: params.position ? params.position : {
             r: 0,

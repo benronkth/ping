@@ -7,7 +7,7 @@ function TankView({ id, name, damageTaken, maxHealth, size, color }) {
         borderRadius: "50%"
 
     }}>
-        <div>{maxHealth - damageTaken}</div>
+        <div>{maxHealth - damageTaken}</div> 
     </div>);
 }
 

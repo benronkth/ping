@@ -32,6 +32,11 @@ export const artifactExpiry = 10;
 
 
 
+export const bulletAudioAtom = atom({
+    key: 'bulletAudioAtom',
+    default: "../assets/audio/shoot.wav",
+});
+
 export const newlyCreatedGamesAtom = atom({
     key: 'newlyCreatedGamesAtom',
     default: [],

@@ -1,7 +1,4 @@
-import gameFinishedAudio from '../assets/audio/applause.wav'
-var gameFinishedAudioPlayer = new Audio(gameFinishedAudio);
-gameFinishedAudioPlayer.volume = 0.1;
-gameFinishedAudioPlayer.play();
+ 
 
 function GameEndView({ winnerPlayers, loserPlayers }) {
 
@@ -9,6 +6,10 @@ function GameEndView({ winnerPlayers, loserPlayers }) {
     function generateConfetti() {
 
         if (winnerPlayers && winnerPlayers.length > 0) {
+            let shootAudio = process.env.PUBLIC_URL + "sounds/applause.wav";
+            var shootAudioPlayer = new Audio(shootAudio);
+            shootAudioPlayer.volume = 0.1;
+            shootAudioPlayer.play();
             return (<div>
                 <div className="confetti-piece"></div>
                 <div className="confetti-piece"></div>

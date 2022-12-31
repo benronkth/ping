@@ -5,25 +5,25 @@ import {
     blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom,
     wallsAtom, targetsAtom, opponentTanksAtom,
     timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations,
-    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom
+    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom
 } from "../model/Game";
 
 import { db, removeArtifact, uploadBullet, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 
-import shootAudio from '../assets/audio/shoot.wav'
-import damageTakenArtifactCollectedAudio from '../assets/audio/damageReset.wav'
-import weaponArtifactCollectedAudio from '../assets/audio/weaponCollect.wav'
+// import shootAudio from '../assets/audio/pistol.mp3'
+// import damageTakenArtifactCollectedAudio from '../assets/audio/damageReset.wav'
+// import weaponArtifactCollectedAudio from '../assets/audio/weaponCollect.wav' 
 
-var shootAudioPlayer = new Audio(shootAudio);
-shootAudioPlayer.volume = 0.1;
+// var shootAudioPlayer = new Audio(shootAudio);
+// shootAudioPlayer.volume = 0.1;
 
-var damageTakenArtifactCollectedAudioPlayer = new Audio(damageTakenArtifactCollectedAudio);
-damageTakenArtifactCollectedAudioPlayer.volume = 0.1;
+// var damageTakenArtifactCollectedAudioPlayer = new Audio(damageTakenArtifactCollectedAudio);
+// damageTakenArtifactCollectedAudioPlayer.volume = 0.1;
 
-var weaponArtifactCollectedAudioPlayer = new Audio(weaponArtifactCollectedAudio);
-weaponArtifactCollectedAudioPlayer.volume = 0.1;
+// var weaponArtifactCollectedAudioPlayer = new Audio(weaponArtifactCollectedAudio);
+// weaponArtifactCollectedAudioPlayer.volume = 0.1;
 
 
 
@@ -46,6 +46,8 @@ function TankPresenter() {
     const [gameSpeed, setGameSpeed] = useRecoilState(gameSpeedAtom);
     const [artifacts, setArtifacts] = useRecoilState(artifactsAtom);
     const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
+    const [bulletAudio, setBulletAudio] = useRecoilState(bulletAudioAtom);
+
 
 
     function getElement(row, column) {
@@ -154,16 +156,21 @@ function TankPresenter() {
                                 bullet: acheivedArtifact.weapon
                             }
                             uploadPlayerWeapon(gameId, playerId, acheivedArtifact);
-                            weaponArtifactCollectedAudioPlayer.play();
+                            // weaponArtifactCollectedAudioPlayer.play();
                             break;
                         case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
                                 damageTaken: Math.floor(updatedTank.damageTaken * acheivedArtifact.damageTaken)
                             }
-                            damageTakenArtifactCollectedAudioPlayer.play();
+                            // damageTakenArtifactCollectedAudioPlayer.play();
                             break;
                     }
+
+                    let shootAudio = process.env.PUBLIC_URL + "sounds/" + acheivedArtifact.audio;
+                    var shootAudioPlayer = new Audio(shootAudio);
+                    shootAudioPlayer.volume = 0.1;
+                    shootAudioPlayer.play();
                     removeArtifact(gameId, acheivedArtifact.id);
 
                 }
@@ -200,8 +207,13 @@ function TankPresenter() {
                 }
             };
             uploadBullet(gameId, bullet);
+            let shootAudio = process.env.PUBLIC_URL + "sounds/" + bullet.audio;
+            var shootAudioPlayer = new Audio(shootAudio);
+            shootAudioPlayer.volume = 0.1;
+            shootAudioPlayer.play();
         }
-        shootAudioPlayer.play();
+
+
 
 
     }
