@@ -40,17 +40,11 @@ function TargetPresenter() {
         });
     }, []);
 
-    function drawTargets(element) {
-        console.log("drawing targets");
-        return <TargetView key={element.id}
-            position={element.position}
-            size={blockSize}
-            name={element.name}
-            id={element.id}
-            color={element.color}
-            damageTaken={element.damageTaken}
-            maxHealth={element.maxHealth}
-        > ({element.r}) </TargetView>;
+    function drawTargets(element) { 
+        return <TargetView   key={element.id}
+            size={blockSize} 
+            target={element}
+        > </TargetView>;
 
     }
 

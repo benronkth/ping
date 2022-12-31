@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadDistructeds, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
+import { getNewBullet } from "../model/Elements";
 
 function BulletPresenter() {
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
@@ -136,7 +137,6 @@ function BulletPresenter() {
                     // Decrease the health  
                     elementOnTheSameLocation = {
                         ...elementOnTheSameLocation,
-                        name: elementOnTheSameLocation.maxHealth - elementOnTheSameLocation.damageTaken - updatedBullet.attack,
                         damageTaken: elementOnTheSameLocation.damageTaken + updatedBullet.attack
                     };
 
@@ -146,7 +146,11 @@ function BulletPresenter() {
                         if (elementOnTheSameLocation.type === elementTypes.bullet) {
                             bulletList[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
                         } else {
-                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
+                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation; 
+                            let shootAudio = process.env.PUBLIC_URL + "sounds/" + elementOnTheSameLocation.hitAudio;
+                            var shootAudioPlayer = new Audio(shootAudio);
+                            shootAudioPlayer.volume = 0.05;
+                            shootAudioPlayer.play();
                         }
                         changedElements[elementOnTheSameLocation.id] = {
                             element: elementOnTheSameLocation,
@@ -170,6 +174,11 @@ function BulletPresenter() {
                             bulletList[elementOnTheSameLocationIndex] = elementOnTheSameLocationIndex;
                         } else {
                             allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
+
+                            let shootAudio = process.env.PUBLIC_URL + "sounds/" + elementOnTheSameLocation.destroyAudio;
+                            var shootAudioPlayer = new Audio(shootAudio);
+                            shootAudioPlayer.volume = 0.05;
+                            shootAudioPlayer.play();
                         }
                         changedElements[elementOnTheSameLocation.id] = {
                             element: elementOnTheSameLocation,
@@ -323,7 +332,8 @@ function BulletPresenter() {
                                 position: {
                                     r: player.locations.tank.r,
                                     c: player.locations.tank.c
-                                }
+                                },
+                                bullet: getNewBullet()
                             })
                         } else {
                             uploadPlayer(gameId, {
@@ -405,13 +415,9 @@ function BulletPresenter() {
     function drawBullets(element) {
         console.log("drawing bullets");
         return <BulletView key={element.id}
-            position={element.position}
-            size={blockSize}
-            name={element.name}
-            id={element.id}
-            orientation={element.orientation}
-            imageClass = {element.image}
-        > ({element.r}) </BulletView>;
+            bullet={element}
+            size={blockSize} 
+        ></BulletView>;
 
     }
 

@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewResetDamageTakenArtifact, getNewRocketArtifact } from "../model/Elements";
+import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -81,9 +81,30 @@ function ArtifactPresenter() {
                         c: randomColumn
                     }
                 }));
+                tempArtifacts.push(getNewAtomRocketArtifact({
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    }
+                }));
 
-                tempArtifacts.push(getNewResetDamageTakenArtifact({
-                    damageTaken: (Math.ceil(Math.random() * 100) / 100),
+                tempArtifacts.push(getNewHRocketArtifact({
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    }
+                }));
+
+                tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                    damageTaken: (Math.ceil(Math.random() * 100)),
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    }
+                }));
+
+                tempArtifacts.push(getNewGainDamageTakenArtifact({
+                    damageTaken: -1 * (Math.ceil(Math.random() * 100)),
                     position: {
                         r: randomRow,
                         c: randomColumn
@@ -93,7 +114,7 @@ function ArtifactPresenter() {
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 uploadArtifact(gameId, tempArtifact);
 
-            }, 10000);
+            }, 1000);
             return () => {
                 clearInterval(ref);
             };

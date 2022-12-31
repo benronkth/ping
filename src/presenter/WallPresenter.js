@@ -26,15 +26,10 @@ function WallPresenter() {
     }, []);
 
 
-    function drawWalls(element) {
-        console.log("drawing walls");
+    function drawWalls(element) { 
         return <WallView key={element.id}
-            position={element.position}
-            size={blockSize}
-            id={element.id}
-            name={element.name}
-            damageTaken={element.damageTaken}
-            maxHealth={element.maxHealth}
+            wall={element}
+            size={blockSize} 
         > ({element.r}) </WallView>;
 
     }

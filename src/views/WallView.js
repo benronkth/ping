@@ -1,14 +1,16 @@
-function WallView({ id, damageTaken, maxHealth, name, position, size }) {
+function WallView({ wall, size }) {
 
-    const opacity = (maxHealth - damageTaken) / maxHealth;
+    const opacity = (wall.maxHealth - wall.damageTaken) / wall.maxHealth; 
+    const image = process.env.PUBLIC_URL + "images/" + wall.image; 
     return (
-        <div key={id} className="wall" style={{
-            top: (position.r * size) + "px",
-            left: (position.c * size) + "px",
+        <div  className="wall" style={{
+            top: (wall.position.r * size) + "px",
+            left: (wall.position.c * size) + "px",
             width: size + "px",
             height: size + "px",
-            opacity: opacity < 0 ? 0 : opacity + 0.3
-        }} >{name}  
+            opacity: opacity < 0 ? 0 : opacity + 0.3,
+            backgroundImage: "url("+image+")"
+        }} >{wall.name}  
         </div>
     );
 }

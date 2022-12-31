@@ -26,7 +26,7 @@ export function getNewWall(params) {
         name: "",
         id: params.id ? params.id : "temp",
         type: elementTypes.wall,
-        image: params.image ? params.image : "wallImage",
+        image: params.image ? params.image : "wall.svg",
         blocked: params.blocked ? params.blocked : true,
         maxHealth: params.maxHealth ? params.maxHealth : 5,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
@@ -34,7 +34,31 @@ export function getNewWall(params) {
         position: params.position ? params.position : {
             r: 0,
             c: 0,
-        }
+        },
+        hitAudio: "click.wav",
+        destroyAudio: "wallDestroy.mp3",
+    };
+}
+
+export function getNewMetalWall(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: "",
+        id: params.id ? params.id : "temp",
+        type: elementTypes.wall,
+        image: params.image ? params.image : "metalWall.svg",
+        blocked: params.blocked ? params.blocked : true,
+        maxHealth: params.maxHealth ? params.maxHealth : 50,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 10,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        hitAudio: "click.wav",
+        destroyAudio: "wallDestroy.mp3",
     };
 }
 
@@ -45,11 +69,11 @@ export function getNewTarget(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name.substring(0, 3) : "target",
+        name: params.name ? params.name : "target",
         id: params.id ? params.id : "temp",
         ownerId: params.ownerId ? params.ownerId : 0,
         type: elementTypes.target,
-        image: params.image ? params.image : "targetImage",
+        image: params.image ? params.image : "target2.svg",
         color: params.color ? params.color : "#123123",
         blocked: true,
         maxHealth: params.maxHealth ? params.maxHealth : 100,
@@ -68,12 +92,12 @@ export function getNewTank(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name.substring(0, 3) : "temp",
+        name: params.name ? params.name : "temp",
         id: params.id ? params.id : "temp",
         ownerId: params.ownerId ? params.ownerId : 0,
         type: elementTypes.tank,
         orientation: params.orientation ? params.orientation : orientations.up,
-        image: params.image ? params.image : "tankImage",
+        image: params.image ? params.image : "tank.svg",
         color: params.color ? params.color : "#123123",
         blocked: true,
         maxHealth: params.maxHealth ? params.maxHealth : 50,
@@ -99,7 +123,7 @@ export function getNewBullet(params) {
         id: params.id ? params.id : "temp",
         type: elementTypes.bullet,
         audio: "shoot.wav",
-        image: params.image ? params.image : "bulletImage",
+        image: params.image ? params.image : "bullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 1,
@@ -119,17 +143,17 @@ export function getNewRocketBullet(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "rocketbullet",
+        name: params.name ? params.name : "2>1",
         id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
         type: elementTypes.bullet,
         audio: "pistol.mp3",
-        image: params.image ? params.image : "rocketBulletImage",
+        image: params.image ? params.image : "rocketBullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
-        maxHealth: params.maxHealth ? params.maxHealth : 3,
+        maxHealth: params.maxHealth ? params.maxHealth : 1,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 5,
-        speed: params.speed ? params.speed : 2,
+        attack: params.attack ? params.attack : 2,
+        speed: params.speed ? params.speed : 1,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -143,19 +167,110 @@ export function getNewRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>3",
+        name: params.name ? params.name : "2>1",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
         type: elementTypes.artifact,
-        image: params.image ? params.image : "rocketArtifactImage",
+        image: params.image ? params.image : "rocketArtifact.svg",
         position: params.position ? params.position : {
             r: 0,
             c: 0,
         },
         audio: "weaponCollect.wav",
-        artifactType: artifactTypes.weapon,
-        weapon: getNewRocketBullet()
+        artifactType: artifactTypes.tank,
+        bullet: getNewRocketBullet()
+    };
+}
+
+
+export function getNewAtomRocketBullet(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "5>1",
+        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
+        type: elementTypes.bullet,
+        audio: "pistol.mp3",
+        image: params.image ? params.image : "atomBullet.svg",
+        orientation: params.orientation ? params.orientation : orientations.up,
+        color: params.color ? params.color : "#123123",
+        maxHealth: params.maxHealth ? params.maxHealth : 3,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 5,
+        speed: params.speed ? params.speed : 1,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        }
+    };
+}
+
+
+export function getNewAtomRocketArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "5>1",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "atomBullet.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        audio: "weaponCollect.wav",
+        artifactType: artifactTypes.tank,
+        bullet: getNewAtomRocketBullet()
+    };
+}
+
+export function getNewHRocketBullet(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "5>2",
+        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
+        type: elementTypes.bullet,
+        audio: "pistol.mp3",
+        image: params.image ? params.image : "hBullet.svg",
+        orientation: params.orientation ? params.orientation : orientations.up,
+        color: params.color ? params.color : "#123123",
+        maxHealth: params.maxHealth ? params.maxHealth : 5,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 5,
+        speed: params.speed ? params.speed : 2,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        }
+    };
+}
+
+
+export function getNewHRocketArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "5>2",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "hBullet.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        audio: "weaponCollect.wav",
+        artifactType: artifactTypes.tank,
+        bullet: getNewHRocketBullet()
     };
 }
 
@@ -164,24 +279,47 @@ export function getNewRocketArtifact(params) {
 
 // ----------------------------------- Tank artifacts ----------------------------------------
 
-export function getNewResetDamageTakenArtifact(params) {
+export function getNewDecreaseDamageTakenArtifact(params) {
     if (!params) {
         params = {};
     }
     return {
-        name: params.damageTaken ?  Math.floor(100 - params.damageTaken*100) + "%" : "+100%",
+        name: params.damageTaken ? "+" + params.damageTaken : "+100",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
         type: elementTypes.artifact,
         audio: "damageReset.wav",
-        image: params.image ? params.image : "heartArtifactImage",
+        image: params.image ? params.image : "heart.svg",
         position: params.position ? params.position : {
             r: 0,
             c: 0,
         },
         artifactType: artifactTypes.tank,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
+    };
+}
+
+
+export function getNewGainDamageTakenArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.damageTaken ? "-" + params.damageTaken : "-100",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        audio: "damageReset.wav",
+        image: params.image ? params.image : "poo.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        artifactType: artifactTypes.tank,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        bullet: getNewBullet(),
     };
 }
 

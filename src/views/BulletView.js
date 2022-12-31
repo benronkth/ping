@@ -1,10 +1,10 @@
 import { orientations } from '../model/Game';
 
 
-function BulletView({ imageClass, id, orientation, position, size }) {
+function BulletView({ bullet, size }) {
 
     let rotation = 0;
-    switch (orientation) {
+    switch (bullet.orientation) {
         case orientations.up:
             rotation = 0;
             break;
@@ -18,14 +18,16 @@ function BulletView({ imageClass, id, orientation, position, size }) {
             rotation = 90;
             break;
     }
+    const image = process.env.PUBLIC_URL + "images/" + bullet.image; 
 
     return (
-        <div key={id} className={"bullet " + imageClass} style={{
-            top: (position.r * size) + "px",
-            left: (position.c * size) + "px",
+        <div className={"bullet"} style={{
+            top: (bullet.position.r * size) + "px",
+            left: (bullet.position.c * size) + "px",
             width: size + "px",
             height: size + "px",
-            rotate: rotation + "deg"
+            rotate: rotation + "deg",
+            backgroundImage: "url(" + image + ")"
         }} >
         </div>);
 }

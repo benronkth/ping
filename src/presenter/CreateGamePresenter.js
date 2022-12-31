@@ -3,7 +3,7 @@ import CreateGameView from "../views/CreateGameView";
 import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameLosersAtom, gameModeAtom, gameWinnersAtom, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, isGameFinishedAtom, orientations, wallRatioAtom } from "../model/Game";
 import { uploadGame } from "../firebase/firebase";
 import { playerIdAtom, playerNameAtom } from "../model/User";
-import { getNewPlayer, getNewTank, getNewTarget, getNewWall } from "../model/Elements";
+import { getNewMetalWall, getNewPlayer, getNewTank, getNewTarget, getNewWall } from "../model/Elements";
 
 function CreateGamePresenter() {
 
@@ -107,7 +107,11 @@ function CreateGamePresenter() {
             let row = "";
             for (let c = 0; c < boardColumnsCount; c++) {
                 if (Math.random() < (wallRatio / 100.0)) {
-                    row += "w"
+                    if (Math.random() < (50 / 100.0)) { 
+                        row += "m"
+                    } else { 
+                        row += "w"
+                    }
                 } else {
                     row += "s"
                 }
@@ -131,6 +135,7 @@ function CreateGamePresenter() {
         const map = {
             elements,
             w: getNewWall(),
+            m: getNewMetalWall(),
             a: getNewTank({
                 name: playerName,
                 ownerId: playerId,

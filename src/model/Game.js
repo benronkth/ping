@@ -16,8 +16,7 @@ export const elementTypes = {
     distructed: "distructed",
     artifact: "artifact",
 }
-export const artifactTypes = {
-    weapon: "weapon",
+export const artifactTypes = { 
     tank: "tank",
 }
 

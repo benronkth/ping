@@ -8,9 +8,10 @@ import {
     isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom
 } from "../model/Game";
 
-import { db, removeArtifact, uploadBullet, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
+import { db, removeArtifact, removeTank, uploadBullet, uploadPlayer, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
+import { getNewBullet } from "../model/Elements";
 
 // import shootAudio from '../assets/audio/pistol.mp3'
 // import damageTakenArtifactCollectedAudio from '../assets/audio/damageReset.wav'
@@ -48,6 +49,7 @@ function TankPresenter() {
     const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
     const [bulletAudio, setBulletAudio] = useRecoilState(bulletAudioAtom);
 
+    const [joinedPlayers, setJoinedPlayers] = useRecoilState(joinedPlayersAtom);
 
 
     function getElement(row, column) {
@@ -150,18 +152,20 @@ function TankPresenter() {
                     console.log("ARTIFACT ACHEIVED!!!!!!!!!!!!!!!!!!! ", acheivedArtifact.id, acheivedArtifact);
 
                     switch (acheivedArtifact.artifactType) {
-                        case artifactTypes.weapon:
-                            updatedTank = {
-                                ...updatedTank,
-                                bullet: acheivedArtifact.weapon
-                            }
-                            uploadPlayerWeapon(gameId, playerId, acheivedArtifact);
-                            // weaponArtifactCollectedAudioPlayer.play();
-                            break;
                         case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
-                                damageTaken: Math.floor(updatedTank.damageTaken * acheivedArtifact.damageTaken)
+                                damageTaken: acheivedArtifact.damageTaken ?
+                                    Math.max(Math.floor(updatedTank.damageTaken - acheivedArtifact.damageTaken), 0)
+                                    : updatedTank.damageTaken,
+                                maxHealth: acheivedArtifact.maxHealth ? Math.floor(updatedTank.maxHealth + acheivedArtifact.maxHealth) : updatedTank.maxHealth,
+                                attack: acheivedArtifact.attack ? Math.floor(updatedTank.attack + acheivedArtifact.attack) : updatedTank.attack,
+                                bullet: acheivedArtifact.bullet ? acheivedArtifact.bullet : updatedTank.bullet,
+                            }
+
+                            console.log("after updateing :", updatedTank);
+                            if (acheivedArtifact.bullet) {
+                                uploadPlayerWeapon(gameId, playerId, acheivedArtifact.bullet);
                             }
                             // damageTakenArtifactCollectedAudioPlayer.play();
                             break;
@@ -183,8 +187,40 @@ function TankPresenter() {
                     },
                 }
             }
+            if (updatedTank.damageTaken >= updatedTank.maxHealth) {
+                removeTank(gameId, updatedTank);
+                for (let i = 0; i < joinedPlayers.length; i++) {
+                    const player = joinedPlayers[i];
+                    if (player.id === playerId) {
+                        const tempDeathCount = player.deathCount + 1;
+                        if (tempDeathCount < player.maxLivesCount) {
+                            uploadPlayer(gameId, {
+                                ...player,
+                                deathCount: tempDeathCount,
+                            });
+                            uploadTank(gameId, {
+                                ...updatedTank,
+                                damageTaken: 0,
+                                position: {
+                                    r: player.locations.tank.r,
+                                    c: player.locations.tank.c
+                                },
+                                bullet: getNewBullet()
+                            })
+                        } else {
+                            uploadPlayer(gameId, {
+                                ...player,
+                                deathCount: tempDeathCount,
+                                isAlive: false
+                            });
+                        }
 
-            uploadTank(gameId, updatedTank);
+                    }
+                }
+            } else {
+                uploadTank(gameId, updatedTank);
+            }
+
 
         }
 
@@ -291,37 +327,10 @@ function TankPresenter() {
     }, []);
 
     function drawTanks(element) {
-        console.log("drawing tanks");
-        let rotation = 0;
-        switch (element.orientation) {
-            case orientations.right:
-                rotation = 90;
-                break;
-            case orientations.down:
-                rotation = 180;
-                break;
-            case orientations.left:
-                rotation = 270;
-                break;
-
-        }
-
-
-        return <div key={element.id} className="tank-holder" style={{
-            left: element.position.c * blockSize,
-            top: element.position.r * blockSize,
-            transform: 'rotate(' + rotation + 'deg)'
-        }}>
-            <TankView
-                size={blockSize}
-                name={element.name}
-                id={element.id}
-                color={element.color}
-                damageTaken={element.damageTaken}
-                maxHealth={element.maxHealth}
-            ></TankView>
-        </div>;
-
+        return <TankView
+            size={blockSize}
+            tank={element}
+        ></TankView>;
 
     }
 
