@@ -321,6 +321,7 @@ export function getNewGainDamageTakenArtifact(params) {
         artifactType: artifactTypes.tank,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         bullet: getNewBullet(),
+        invertInput: false
     };
 }
 
