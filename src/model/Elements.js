@@ -323,6 +323,29 @@ export function getNewGainDamageTakenArtifact(params) {
     };
 }
 
+export function getNewRandomPositionArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.damageTaken ? params.damageTaken : "Random Position",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        audio: "damageReset.wav",
+        image: params.image ? params.image : "hole.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        }, 
+        randomPosition: {
+            r: 0,
+            c: 0,
+        }
+    };
+}
+
 
 
 

@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact } from "../model/Elements";
+import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -72,6 +72,15 @@ function ArtifactPresenter() {
                     randomColumn = Math.floor(Math.random() * boardColumnsCount);
                 }
 
+                let randomPositionRow = Math.floor(Math.random() * boardRowsCount);
+                let randomPositionColumn = Math.floor(Math.random() * boardColumnsCount);
+
+                while (getElement(randomPositionRow, randomPositionColumn)) {
+                    // prevent creating artifact on tanks and targets.
+                    randomPositionRow = Math.floor(Math.random() * boardRowsCount);
+                    randomPositionColumn = Math.floor(Math.random() * boardColumnsCount);
+                }
+
                 let tempArtifacts = []
 
 
@@ -111,10 +120,21 @@ function ArtifactPresenter() {
                     }
                 }));
 
+                tempArtifacts.push(getNewRandomPositionArtifact({ 
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    },
+                    randomPosition: {
+                        r: randomPositionRow,
+                        c: randomPositionColumn
+                    }
+                }));
+
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 uploadArtifact(gameId, tempArtifact);
 
-            }, 5000);
+            }, 3000);
             return () => {
                 clearInterval(ref);
             };
