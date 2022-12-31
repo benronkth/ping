@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, elementTypes, gameIdAtom, getLocations, getRandomColor, isGameCreatedAtom, joinedPlayersAtom, orientations } from "../model/Game";
+import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, elementTypes, gameIdAtom, gameLosersAtom, gameWinnersAtom, getLocations, getRandomColor, isGameCreatedAtom, isGameFinishedAtom, joinedPlayersAtom, orientations } from "../model/Game";
 import JoinGameView from "../views/JoinGameView";
 import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebase";
 import { playerIdAtom, playerNameAtom } from "../model/User";
@@ -18,6 +18,9 @@ function JoinGamePresenter() {
     const [gameId, setGameId] = useRecoilState(gameIdAtom);
     const [playerName, setPlayerName] = useRecoilState(playerNameAtom);
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
+    const [gameWinners, setGameWinners] = useRecoilState(gameWinnersAtom);
+    const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
+    const [isGameFinished, setIsGameFinished] = useRecoilState(isGameFinishedAtom);
 
 
 
@@ -109,7 +112,8 @@ function JoinGamePresenter() {
         uploadTank(gameId, newTank);
 
         setIsGameCreated(true);
-        resizeBlocks();
+        resizeBlocks();  
+
     }
     return (<JoinGameView
         onGameIdChanged={onGameIdChanged}

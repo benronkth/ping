@@ -57,7 +57,7 @@ function ArtifactPresenter() {
 
     useEffect(() => {
 
-        if (isGameStarted) {
+        if (isGameStarted && gameOwnerId === playerId) {
 
             const ref = setInterval(() => {
 
@@ -93,7 +93,7 @@ function ArtifactPresenter() {
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 uploadArtifact(gameId, tempArtifact);
 
-            }, 1000);
+            }, 10000);
             return () => {
                 clearInterval(ref);
             };
@@ -120,7 +120,7 @@ function ArtifactPresenter() {
                     }
 
                 }
-                console.log("fetched artifact", tempArtifacts);
+                // console.log("fetched artifact", tempArtifacts);
                 setArtifacts(tempArtifacts);
             } else {
                 setArtifacts([]);

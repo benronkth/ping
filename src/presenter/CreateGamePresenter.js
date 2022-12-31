@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import CreateGameView from "../views/CreateGameView";
-import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameModeAtom, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, orientations, wallRatioAtom } from "../model/Game";
+import { aiCountAtom, blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, createGame, elementTypes, gameIdAtom, gameLosersAtom, gameModeAtom, gameWinnersAtom, getLocations, getRandomColor, isAiEnabledAtom, isGameCreatedAtom, isGameFinishedAtom, orientations, wallRatioAtom } from "../model/Game";
 import { uploadGame } from "../firebase/firebase";
 import { playerIdAtom, playerNameAtom } from "../model/User";
 import { getNewPlayer, getNewTank, getNewTarget, getNewWall } from "../model/Elements";
@@ -20,6 +20,10 @@ function CreateGamePresenter() {
     const [blockSize, setBlockSize] = useRecoilState(blockSizeAtom);
     const [boardMarginLeft, setBoardMarginLeft] = useRecoilState(boardMarginLeftAtom);
     const [boardMarginTop, setBoardMarginTop] = useRecoilState(boardMarginTopAtom);
+    const [gameWinners, setGameWinners] = useRecoilState(gameWinnersAtom);
+    const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
+    const [isGameFinished, setIsGameFinished] = useRecoilState(isGameFinishedAtom);
+
 
 
 
@@ -179,7 +183,8 @@ function CreateGamePresenter() {
         uploadGame(generatedGameId, player, game.boardSize, tempWalls, tempTanks, tempTargets, map);
         setGameId(generatedGameId);
         setIsGameCreated(true);
-        resizeBlocks();
+        setIsGameFinished(false);
+        resizeBlocks(); 
     }
 
 

@@ -61,6 +61,294 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
+/* Confetti animation
+Credit: CodePen Home css confetti Andy 
+source: https: //codepen.io/andyobrien/pen/WYrxMe*/
+
+.confetti {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 16px;
+  background: #ffd300;
+  top: 0;
+  opacity: 0;
+}
+
+.confetti-piece:nth-child(1) {
+  left: 7%;
+  transform: rotate(-13deg);
+  -webkit-animation: makeItRain 100ms infinite ease-out;
+  animation: makeItRain 100ms infinite ease-out;
+  -webkit-animation-delay: 344ms;
+  animation-delay: 344ms;
+  -webkit-animation-duration: 875ms;
+  animation-duration: 875ms;
+}
+
+.confetti-piece:nth-child(2) {
+  left: 14%;
+  transform: rotate(70deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 251ms;
+  animation-delay: 251ms;
+  -webkit-animation-duration: 1085ms;
+  animation-duration: 1085ms;
+}
+
+.confetti-piece:nth-child(3) {
+  left: 21%;
+  transform: rotate(-32deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 366ms;
+  animation-delay: 366ms;
+  -webkit-animation-duration: 754ms;
+  animation-duration: 754ms;
+}
+
+.confetti-piece:nth-child(4) {
+  left: 28%;
+  transform: rotate(21deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 82ms;
+  animation-delay: 82ms;
+  -webkit-animation-duration: 1007ms;
+  animation-duration: 1007ms;
+}
+
+.confetti-piece:nth-child(5) {
+  left: 35%;
+  transform: rotate(-29deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 211ms;
+  animation-delay: 211ms;
+  -webkit-animation-duration: 780ms;
+  animation-duration: 780ms;
+}
+
+.confetti-piece:nth-child(6) {
+  left: 42%;
+  transform: rotate(-65deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 198ms;
+  animation-delay: 198ms;
+  -webkit-animation-duration: 957ms;
+  animation-duration: 957ms;
+}
+
+.confetti-piece:nth-child(7) {
+  left: 49%;
+  transform: rotate(-2deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 146ms;
+  animation-delay: 146ms;
+  -webkit-animation-duration: 1072ms;
+  animation-duration: 1072ms;
+}
+
+.confetti-piece:nth-child(8) {
+  left: 56%;
+  transform: rotate(-63deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 177ms;
+  animation-delay: 177ms;
+  -webkit-animation-duration: 879ms;
+  animation-duration: 879ms;
+}
+
+.confetti-piece:nth-child(9) {
+  left: 63%;
+  transform: rotate(49deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 248ms;
+  animation-delay: 248ms;
+  -webkit-animation-duration: 1142ms;
+  animation-duration: 1142ms;
+}
+
+.confetti-piece:nth-child(10) {
+  left: 70%;
+  transform: rotate(62deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 73ms;
+  animation-delay: 73ms;
+  -webkit-animation-duration: 990ms;
+  animation-duration: 990ms;
+}
+
+.confetti-piece:nth-child(11) {
+  left: 77%;
+  transform: rotate(42deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 64ms;
+  animation-delay: 64ms;
+  -webkit-animation-duration: 1124ms;
+  animation-duration: 1124ms;
+}
+
+.confetti-piece:nth-child(12) {
+  left: 84%;
+  transform: rotate(23deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 191ms;
+  animation-delay: 191ms;
+  -webkit-animation-duration: 833ms;
+  animation-duration: 833ms;
+}
+
+.confetti-piece:nth-child(13) {
+  left: 91%;
+  transform: rotate(-12deg);
+  -webkit-animation: makeItRain 1000ms infinite ease-out;
+  animation: makeItRain 1000ms infinite ease-out;
+  -webkit-animation-delay: 134ms;
+  animation-delay: 134ms;
+  -webkit-animation-duration: 1122ms;
+  animation-duration: 1122ms;
+}
+
+.confetti-piece:nth-child(odd) {
+  background: #17d3ff;
+}
+
+.confetti-piece:nth-child(even) {
+  z-index: 1;
+}
+
+.confetti-piece:nth-child(4n) {
+  width: 5px;
+  height: 12px;
+  -webkit-animation-duration: 2000ms;
+  animation-duration: 2000ms;
+}
+
+.confetti-piece:nth-child(3n) {
+  width: 3px;
+  height: 10px;
+  -webkit-animation-duration: 2500ms;
+  animation-duration: 2500ms;
+  -webkit-animation-delay: 1000ms;
+  animation-delay: 1000ms;
+}
+
+.confetti-piece:nth-child(4n-7) {
+  background: #ff4e91;
+}
+
+@-webkit-keyframes makeItRain {
+  from {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(600px);
+  }
+}
+
+@keyframes makeItRain {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(600px);
+  }
+}
+
+
+/* Title text with masked background. 
+Credit: https: //codepen.io/Jintos */
+
+/* Clip text element */
+.clip-text {
+  /* font-size: 6em; */
+  font-weight: bold;
+  line-height: 1;
+  position: relative;
+  display: inline-block;
+  /* margin: .25em;
+  padding: .5em .75em; */
+  text-align: center;
+  /* Color fallback */
+  color: #fff;
+  -webkit-background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+}
+
+.clip-text:before,
+.clip-text:after {
+  position: absolute;
+  content: '';
+}
+
+/* Background */
+.clip-text:before {
+  z-index: -2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* background-image: inherit; */
+}
+
+/* Text Background (black zone) */
+.clip-text:after {
+  position: absolute;
+  z-index: -1;
+  top: .125em;
+  right: .125em;
+  bottom: .125em;
+  left: .125em;
+  background-color: #000;
+}
+
+/* Change the background position to display letter when the black zone isn't here */
+.clip-text--no-textzone:before {
+  background-position: -100.75em 0;
+}
+
+.clip-text--no-textzone:after {
+  content: none;
+}
+
+/* Use Background-size cover for photo background and no-repeat background */
+.clip-text--cover,
+.clip-text--cover:before {
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
 
 /* ------------------- exp animation ------------------------- */
 
@@ -137,6 +425,7 @@ body {
   background-color: #91f321;
   box-shadow: 0px 10px 10px 1px rgba(97, 160, 98, 0.226);
   height: 50px;
+  z-index: 3;
 }
 
 .footer {
@@ -167,7 +456,7 @@ body {
 
 .board-holder {
   /* position: relative; */
-  background-color: #2521f3ae;
+  /* background-color: #2521f3ae; */
 
 }
 
@@ -224,6 +513,13 @@ body {
   align-items: center;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .artifact-flag {
   display: flex;
   justify-content: center;
@@ -242,12 +538,41 @@ body {
   position: absolute;
   background-repeat: no-repeat;
   background-size: contain;
-  z-index: 2; 
+  z-index: 2;
   /* background-color: white; */
   font-size: 0.5rem;
   margin-left: -50px;
 }
 
+.winners-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  padding: 30px;
+  margin: 30px;
+  /* background-color: wheat; */
+  border-radius: 10px;
+  height: 400px;
+
+}
+
+.circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  align-items: center;
+  padding: 30px;
+  margin: 30px;
+  background-color: rgb(0, 221, 255);
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0.5;
+  /* border: 20px dotted aqua;  */
+  box-shadow: 0px 0px 10px #e5ff00;
+}
+  
 
 .tank-holder {
   position: absolute;

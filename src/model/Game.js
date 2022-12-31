@@ -28,7 +28,7 @@ export const orientations = {
     right: "right",
 }
 
-export const artifactExpiry = 5;
+export const artifactExpiry = 10;
 
 
 
@@ -162,6 +162,18 @@ export const isGameCreatedAtom = atom({
 export const isGameStartedAtom = atom({
     key: 'isGameStartedAtom',
     default: false,
+});
+export const isGameFinishedAtom = atom({
+    key: 'isGameFinishedAtom',
+    default: false,
+});
+export const gameWinnersAtom = atom({
+    key: 'gameWinnersAtom',
+    default: [],
+});
+export const gameLosersAtom = atom({
+    key: 'gameLosersAtom',
+    default: [],
 });
 export const joinedPlayersAtom = atom({
     key: 'joinedPlayersAtom',

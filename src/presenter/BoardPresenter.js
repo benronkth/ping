@@ -4,11 +4,14 @@ import WallPresenter from "./WallPresenter";
 import TargetPresenter from "./TargetPresenter";
 import BulletPresenter from "./BulletPresenter";
 import DistructedPresenter from "./DistructedPresenter";
-import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom } from "../model/Game";
+import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom, isGameFinishedAtom } from "../model/Game";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { Animation, pushBalls } from "../animations/animations";
 import ArtifactPresenter from "./ArtifactPresenter";
+import GameEndPresenter from "./GameEndPresenter";
+import { onValue, ref } from "firebase/database";
+import { db } from "../firebase/firebase";
 
 function BoardPresenter() {
 
@@ -18,6 +21,9 @@ function BoardPresenter() {
     const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
     const [boardMarginLeft, setBoardMarginLeft] = useRecoilState(boardMarginLeftAtom);
     const [boardMarginTop, setBoardMarginTop] = useRecoilState(boardMarginTopAtom);
+    const [isGameFinished, setIsGameFinished] = useRecoilState(isGameFinishedAtom);
+    // const [gameWinners, setGameWinners] = useRecoilState(gameWinnersAtom);
+    // const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
 
 
     function handleScreenResize(event) {
@@ -46,20 +52,26 @@ function BoardPresenter() {
     }, [])
 
 
-    return (
-        <div className="board-holder" style={{
-            marginLeft: boardMarginLeft + "px",
-            marginTop: boardMarginTop + "px",
-        }}>
 
-            <div id="board" className="board">
-                <WallPresenter></WallPresenter>
-                <TargetPresenter></TargetPresenter>
-                <TankPresenter></TankPresenter>
-                <BulletPresenter></BulletPresenter>
-                <ArtifactPresenter></ArtifactPresenter>
-                <DistructedPresenter></DistructedPresenter>
-            </div>
+
+    return (
+        <div>
+            {isGameFinished ? <GameEndPresenter></GameEndPresenter> :
+                <div className="board-holder" style={{
+                    marginLeft: boardMarginLeft + "px",
+                    marginTop: boardMarginTop + "px",
+                }}>
+                    <div id="board" className="board">
+                        <WallPresenter></WallPresenter>
+                        <TargetPresenter></TargetPresenter>
+                        <TankPresenter></TankPresenter>
+                        <BulletPresenter></BulletPresenter>
+                        <ArtifactPresenter></ArtifactPresenter>
+                        <DistructedPresenter></DistructedPresenter>
+                    </div>
+                </div>
+            }
+
         </div>);
 }
 

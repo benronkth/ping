@@ -92,6 +92,12 @@ export function uploadIsGameStarted(gameId, isGameStarted) {
     });
 }
 
+export function uploadIsGameFinished(gameId, isGameFinished) {
+    update(ref(db, 'games/' + gameId + "/isGameFinished/"), {
+        ...isGameFinished,
+    });
+}
+
 
 export function removeGame(gameId) {
     remove(ref(db, 'games/' + gameId));
@@ -115,7 +121,7 @@ export function uploadArtifact(gameId, artifact) {
 }
 export function removeArtifact(gameId, artifactId) {
     // console.log("removing Artifact: , ", artifactId)
-    remove(ref(db, 'games/' + gameId + "/artifact/" + artifactId + "/")); 
+    remove(ref(db, 'games/' + gameId + "/artifacts/" + artifactId + "/")); 
 }
 
 
@@ -141,6 +147,7 @@ export function uploadGame(gameId, player, boardSize, walls, tanks, targets, map
         gameId,
         gameOwnerId: player.id,
         isGameStarted: false,
+        isGameFinished: false,
         creationDate: Date.now(),
         boardSize,
         tanks: tempTanks,

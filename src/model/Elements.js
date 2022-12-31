@@ -103,7 +103,7 @@ export function getNewBullet(params) {
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 1,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 1,
+        attack: params.attack ? params.attack : 10,
         speed: params.speed ? params.speed : 1,
         position: params.position ? params.position : {
             r: 0,
@@ -166,7 +166,7 @@ export function getNewResetDamageTakenArtifact(params) {
         params = {};
     }
     return {
-        name: params.damageTaken ? "+"+ Math.floor(100 - params.damageTaken*100) + "%" : "+100%",
+        name: params.damageTaken ?  Math.floor(100 - params.damageTaken*100) + "%" : "+100%",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,

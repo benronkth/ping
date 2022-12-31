@@ -5,12 +5,29 @@ import {
     blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom,
     wallsAtom, targetsAtom, opponentTanksAtom,
     timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations,
-    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom
+    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom
 } from "../model/Game";
 
 import { db, removeArtifact, uploadBullet, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
+
+import shootAudio from '../assets/audio/shoot.wav'
+import damageTakenArtifactCollectedAudio from '../assets/audio/damageReset.wav'
+import weaponArtifactCollectedAudio from '../assets/audio/weaponCollect.wav'
+
+var shootAudioPlayer = new Audio(shootAudio);
+shootAudioPlayer.volume = 0.1;
+
+var damageTakenArtifactCollectedAudioPlayer = new Audio(damageTakenArtifactCollectedAudio);
+damageTakenArtifactCollectedAudioPlayer.volume = 0.1;
+
+var weaponArtifactCollectedAudioPlayer = new Audio(weaponArtifactCollectedAudio);
+weaponArtifactCollectedAudioPlayer.volume = 0.1;
+
+
+
+
 
 function TankPresenter() {
 
@@ -28,6 +45,7 @@ function TankPresenter() {
     const [isGameStarted, setIsGameStarted] = useRecoilState(isGameStartedAtom);
     const [gameSpeed, setGameSpeed] = useRecoilState(gameSpeedAtom);
     const [artifacts, setArtifacts] = useRecoilState(artifactsAtom);
+    const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
 
 
     function getElement(row, column) {
@@ -136,12 +154,14 @@ function TankPresenter() {
                                 bullet: acheivedArtifact.weapon
                             }
                             uploadPlayerWeapon(gameId, playerId, acheivedArtifact);
+                            weaponArtifactCollectedAudioPlayer.play();
                             break;
                         case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
                                 damageTaken: Math.floor(updatedTank.damageTaken * acheivedArtifact.damageTaken)
                             }
+                            damageTakenArtifactCollectedAudioPlayer.play();
                             break;
                     }
                     removeArtifact(gameId, acheivedArtifact.id);
@@ -181,6 +201,8 @@ function TankPresenter() {
             };
             uploadBullet(gameId, bullet);
         }
+        shootAudioPlayer.play();
+
 
     }
 
@@ -188,15 +210,12 @@ function TankPresenter() {
 
         function handleKeydown(event) {
 
-            if (!isGameStarted) {
+            if (!isGameStarted || gameLosers.filter(p => p.id === playerId).length > 0) {
                 return;
             }
             // Update the position based on the arrow keys
 
 
-
-
-            console.log("timeBetweenActions is ", timeBetweenActions);
             if (timeBetweenActions % gameSpeed === 0) {
                 if (event.key === ' ') {
                     shootBullet();
