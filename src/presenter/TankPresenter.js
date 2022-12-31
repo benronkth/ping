@@ -97,12 +97,32 @@ function TankPresenter() {
 
 
         for (let i = 0; i < tanks.length; i++) {
+            let tempMovingOrientation = movingOrientation;
             const tank = tanks[i];
             let tankFuturePosR = 0;
             let tankFuturePosC = 0;
             let tankOrientation = orientations.up;
 
-            switch (movingOrientation) {
+            if (tank.invertInput) {
+                switch (movingOrientation) {
+                    case orientations.up:
+                        tempMovingOrientation = orientations.down;
+                        break;
+
+                    case orientations.down:
+                        tempMovingOrientation = orientations.up;
+                        break;
+
+                    case orientations.left:
+                        tempMovingOrientation = orientations.right;
+                        break;
+                    case orientations.right:
+                        tempMovingOrientation = orientations.left;
+                        break;
+                }
+            }
+
+            switch (tempMovingOrientation) {
                 case orientations.up:
                     tankFuturePosR = tank.orientation === orientations.up ? tank.position.r - 1 : tank.position.r;
                     tankFuturePosC = tank.position.c;
@@ -167,13 +187,14 @@ function TankPresenter() {
                         case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
-                                position: acheivedArtifact.randomPosition ? acheivedArtifact.randomPosition : updatedTank.position, 
+                                position: acheivedArtifact.randomPosition ? acheivedArtifact.randomPosition : updatedTank.position,
                                 damageTaken: acheivedArtifact.damageTaken ?
                                     Math.max(Math.floor(updatedTank.damageTaken - acheivedArtifact.damageTaken), 0)
                                     : updatedTank.damageTaken,
                                 maxHealth: acheivedArtifact.maxHealth ? Math.floor(updatedTank.maxHealth + acheivedArtifact.maxHealth) : updatedTank.maxHealth,
                                 attack: acheivedArtifact.attack ? Math.floor(updatedTank.attack + acheivedArtifact.attack) : updatedTank.attack,
                                 bullet: acheivedArtifact.bullet ? acheivedArtifact.bullet : updatedTank.bullet,
+                                invertInput: acheivedArtifact.invertInput ? acheivedArtifact.invertInput : updatedTank.invertInput,
                             }
 
                             console.log("after updateing :", updatedTank);

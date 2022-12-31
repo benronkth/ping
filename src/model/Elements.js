@@ -109,7 +109,8 @@ export function getNewTank(params) {
         },
         bullet: params.bullet ? params.bullet : getNewBullet({
             color: params.color ? params.color : "#123123"
-        })
+        }),
+        invertInput: false
     };
 }
 
@@ -341,6 +342,28 @@ export function getNewRandomPositionArtifact(params) {
         },
         artifactType: artifactTypes.tank,
         randomPosition: params.randomPosition
+    };
+}
+
+
+export function getNewInvertInputArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        artifactType: artifactTypes.tank,
+        audio: "damageReset.wav",
+        image: params.image ? params.image : "invert.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        invertInput: true,
     };
 }
 

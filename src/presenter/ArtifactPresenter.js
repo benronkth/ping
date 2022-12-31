@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact } from "../model/Elements";
+import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -84,51 +84,58 @@ function ArtifactPresenter() {
                 let tempArtifacts = []
 
 
-                tempArtifacts.push(getNewRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewAtomRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewRocketArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
+                // tempArtifacts.push(getNewAtomRocketArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewHRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewHRocketArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
-                    damageTaken: (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                //     damageTaken: (Math.ceil(Math.random() * 100)),
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewGainDamageTakenArtifact({
-                    damageTaken: -1 * (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewGainDamageTakenArtifact({
+                //     damageTaken: -1 * (Math.ceil(Math.random() * 100)),
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewRandomPositionArtifact({
+                // tempArtifacts.push(getNewRandomPositionArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     },
+                //     randomPosition: {
+                //         r: randomPositionRow,
+                //         c: randomPositionColumn
+                //     }
+                // }));
+
+                tempArtifacts.push(getNewInvertInputArtifact({
                     position: {
                         r: randomRow,
                         c: randomColumn
-                    },
-                    randomPosition: {
-                        r: randomPositionRow,
-                        c: randomPositionColumn
-                    }
+                    }, 
                 }));
 
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
