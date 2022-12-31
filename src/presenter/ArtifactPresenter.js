@@ -114,7 +114,7 @@ function ArtifactPresenter() {
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 uploadArtifact(gameId, tempArtifact);
 
-            }, 1000);
+            }, 5000);
             return () => {
                 clearInterval(ref);
             };
