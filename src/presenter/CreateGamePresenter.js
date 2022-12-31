@@ -123,7 +123,7 @@ function CreateGamePresenter() {
         const locations = getLocations(0, boardRowsCount, boardColumnsCount);
         console.log(locations); 
 
-
+ 
         const map = {
             elements,
             w: getNewWall(),

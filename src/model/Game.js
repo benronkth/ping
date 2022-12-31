@@ -14,6 +14,11 @@ export const elementTypes = {
     tank: "tank",
     bullet: "bullet",
     distructed: "distructed",
+    artifact: "artifact",
+}
+export const artifactTypes = {
+    weapon: "weapon", 
+    health: "health"
 }
 
 export const orientations = {
@@ -23,6 +28,7 @@ export const orientations = {
     right: "right",
 }
 
+export const artifactExpiry = 5;
 
 
 
@@ -31,13 +37,18 @@ export const newlyCreatedGamesAtom = atom({
     default: [],
 });
 
-export const canPerformActionAtom = atom({
-    key: 'canPerformActionAtom',
-    default: true,
+export const acheivedArtifactsAtom = atom({
+    key: 'acheivedArtifactsAtom',
+    default: [],
 });
+
 export const timeBetweenActionsAtom = atom({
     key: 'timeBetweenActionsAtom',
-    default: 10,
+    default: 0,
+});
+export const gameSpeedAtom = atom({
+    key: 'gameSpeedAtom',
+    default: 3,
 });
 
 export const boardRowsCountAtom = atom({
@@ -64,6 +75,11 @@ export const blockSizeAtom = atom({
     default: 48,
 });
 
+
+export const artifactsAtom = atom({
+    key: 'artifactsAtom',
+    default: [],
+});
 
 export const wallsAtom = atom({
     key: 'wallsAtom',
@@ -138,7 +154,7 @@ export const wallRatioAtom = atom({
 export const gameIdAtom = atom({
     key: 'gameIdAtom',
     default: 0,
-}); 
+});
 export const isGameCreatedAtom = atom({
     key: 'isGameCreatedAtom',
     default: false,

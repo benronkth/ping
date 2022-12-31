@@ -1,35 +1,31 @@
-import bulletDownImage from '../assets/image/bulletDown.svg';
-import bulletUpImage from '../assets/image/bulletUp.svg';
-import bulletLeftImage from '../assets/image/bulletLeft.svg';
-import bulletRightImage from '../assets/image/bulletRight.svg';
 import { orientations } from '../model/Game';
 
 
-function BulletView({ id, orientation, position, size }) {
+function BulletView({ imageClass, id, orientation, position, size }) {
 
-    let bulletImage = bulletUpImage;
+    let rotation = 0;
     switch (orientation) {
         case orientations.up:
-            bulletImage = bulletUpImage;
+            rotation = 0;
             break;
         case orientations.down:
-            bulletImage = bulletDownImage;
+            rotation = 180;
             break;
         case orientations.left:
-            bulletImage = bulletLeftImage;
+            rotation = 270;
             break;
         case orientations.right:
-            bulletImage = bulletRightImage;
-            break; 
+            rotation = 90;
+            break;
     }
 
     return (
-        <div key={id} className="bullet" style={{
+        <div key={id} className={"bullet " + imageClass} style={{
             top: (position.r * size) + "px",
             left: (position.c * size) + "px",
             width: size + "px",
             height: size + "px",
-            backgroundImage: `url(${bulletImage})`,
+            rotate: rotation + "deg"
         }} >
         </div>);
 }

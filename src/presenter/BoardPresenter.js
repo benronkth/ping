@@ -8,6 +8,7 @@ import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginT
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import { Animation, pushBalls } from "../animations/animations";
+import ArtifactPresenter from "./ArtifactPresenter";
 
 function BoardPresenter() {
 
@@ -43,19 +44,20 @@ function BoardPresenter() {
         }
 
     }, [])
- 
+
 
     return (
         <div className="board-holder" style={{
             marginLeft: boardMarginLeft + "px",
             marginTop: boardMarginTop + "px",
         }}>
- 
+
             <div id="board" className="board">
                 <WallPresenter></WallPresenter>
                 <TargetPresenter></TargetPresenter>
                 <TankPresenter></TankPresenter>
                 <BulletPresenter></BulletPresenter>
+                <ArtifactPresenter></ArtifactPresenter>
                 <DistructedPresenter></DistructedPresenter>
             </div>
         </div>);

@@ -1,9 +1,14 @@
 import { useEffect } from "react";
 import TankView from "../views/TankView";
 import { useRecoilState } from "recoil";
-import { blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom, wallsAtom, targetsAtom, opponentTanksAtom, canPerformActionAtom, timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations, isGameStartedAtom, getInfrontPostion } from "../model/Game";
+import {
+    blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom,
+    wallsAtom, targetsAtom, opponentTanksAtom,
+    timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations,
+    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom
+} from "../model/Game";
 
-import { db, uploadBullet, uploadTank, uploadTanks, writeTanks } from "../firebase/firebase";
+import { db, removeArtifact, uploadBullet, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 
@@ -18,15 +23,21 @@ function TankPresenter() {
     const [walls, setWalls] = useRecoilState(wallsAtom);
     const [boardRowsCount, setBoardRowsCount] = useRecoilState(boardRowsCountAtom);
     const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
-    const [canPerformAction, setCanPerformAction] = useRecoilState(canPerformActionAtom);
     const [timeBetweenActions, setTimeBetweenActions] = useRecoilState(timeBetweenActionsAtom);
     const [opponentTargets, setOpponentTargets] = useRecoilState(opponentTargetsAtom);
     const [isGameStarted, setIsGameStarted] = useRecoilState(isGameStartedAtom);
-
+    const [gameSpeed, setGameSpeed] = useRecoilState(gameSpeedAtom);
+    const [artifacts, setArtifacts] = useRecoilState(artifactsAtom);
 
 
     function getElement(row, column) {
 
+        for (let i = 0; i < artifacts.length; i++) {
+            const artifact = artifacts[i];
+            if (artifact.position.r === row && artifact.position.c === column) {
+                return artifact
+            }
+        }
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
             if (tank.position.r === row && tank.position.c === column) {
@@ -100,12 +111,46 @@ function TankPresenter() {
                 ...tank,
                 orientation: tankOrientation,
             };
+
+
+
+
+
+
+
+
+
+            // Tank movement 
             if (elementInFrontOfTank && elementInFrontOfTank.blocked || tankFuturePosR < 0 || tankFuturePosR >= boardRowsCount || tankFuturePosC < 0 || tankFuturePosC >= boardColumnsCount) {
                 console.log("blocked");
             } else {
+                // artifacts
+                if (elementInFrontOfTank && elementInFrontOfTank.type === elementTypes.artifact) {
+                    const acheivedArtifact = elementInFrontOfTank;
+                    console.log("ARTIFACT ACHEIVED!!!!!!!!!!!!!!!!!!! ", acheivedArtifact.id, acheivedArtifact);
+
+                    switch (acheivedArtifact.artifactType) {
+                        case artifactTypes.weapon:
+                            updatedTank = {
+                                ...updatedTank,
+                                bullet: acheivedArtifact.weapon
+                            }
+                            uploadPlayerWeapon(gameId, playerId, acheivedArtifact);
+                            break;
+                        case artifactTypes.health:
+                            updatedTank = {
+                                ...updatedTank,
+                                damageTaken: Math.floor(updatedTank.damageTaken * acheivedArtifact.damageTaken)
+                            }
+                            break;
+                    }
+                    removeArtifact(gameId, acheivedArtifact.id);
+
+                }
+
                 console.log("future: ", tankFuturePosR, "-", tankFuturePosC)
                 updatedTank = {
-                    ...tank, position: {
+                    ...updatedTank, position: {
                         r: tankFuturePosR,
                         c: tankFuturePosC
                     },
@@ -123,7 +168,6 @@ function TankPresenter() {
 
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
-            const tankPos = tank.position;
             const infrontPosition = getInfrontPostion(tank);
             const bullet = {
                 ...tank.bullet,
@@ -144,43 +188,48 @@ function TankPresenter() {
 
         function handleKeydown(event) {
 
-
             if (!isGameStarted) {
                 return;
             }
-            // Update the position based on the arrow keys 
+            // Update the position based on the arrow keys
 
-            // if (!canPerformAction) {
-            //     setTimeout(() => {
-            //         setCanPerformAction(true);
-            //     }, timeBetweenActions);
-            //     return;
-            // }
 
-            // setCanPerformAction(false);
 
-            if (event.key === ' ') {
-                shootBullet();
 
-            } else if (event.key === 'ArrowUp') {
-                moveTank(orientations.up);
-            } else if (event.key === 'ArrowDown') {
-                moveTank(orientations.down);
-            } else if (event.key === 'ArrowLeft') {
-                moveTank(orientations.left);
-            } else if (event.key === 'ArrowRight') {
-                moveTank(orientations.right);
+            console.log("timeBetweenActions is ", timeBetweenActions);
+            if (timeBetweenActions % gameSpeed === 0) {
+                if (event.key === ' ') {
+                    shootBullet();
+                } else if (event.key === 'ArrowUp') {
+                    moveTank(orientations.up);
+                } else if (event.key === 'ArrowDown') {
+                    moveTank(orientations.down);
+                } else if (event.key === 'ArrowLeft') {
+                    moveTank(orientations.left);
+                } else if (event.key === 'ArrowRight') {
+                    moveTank(orientations.right);
+                }
             }
+            setTimeBetweenActions((prevValue) => {
+                return prevValue + 1;
+            });
+
+
         }
 
+        function handleKeyup(event) {
+            setTimeBetweenActions(0);
+        }
 
+        window.addEventListener('keyup', handleKeyup);
         window.addEventListener('keydown', handleKeydown);
 
         // Remove the event listener when the component unmounts
         return () => {
+            window.removeEventListener('keyup', handleKeyup);
             window.removeEventListener('keydown', handleKeydown);
         };
-    }, [tanks, walls, canPerformAction, isGameStarted]);
+    }, [timeBetweenActions, tanks, opponentTanks, targets, opponentTargets, walls, isGameStarted]);
 
 
 

@@ -17,6 +17,7 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getDatabase(app);
 
+
 export function uploadTank(gameId, tank) {
     console.log("uploading tank: , ", tank)
 
@@ -64,7 +65,6 @@ export function removeWall(gameId, wall) {
 }
 
 export function uploadPlayer(gameId, player) {
-
     console.log(player);
     update(ref(db, 'games/' + gameId + "/players/" + player.id + "/"), {
         ...player,
@@ -75,6 +75,16 @@ export function removePlayer(gameId, playerId) {
     remove(ref(db, 'games/' + gameId + "/players/" + playerId + "/"));
 }
 
+export function uploadPlayerWeapon(gameId, playerId, bullet) { 
+    update(ref(db, 'games/' + gameId + "/players/" + playerId + "/weapon/" + bullet.id+"/"), {
+        ...bullet,
+    });
+}
+
+export function removePlayerWeapon(gameId, playerId, bulletId) {
+    remove(ref(db, 'games/' + gameId + "/players/" + playerId + "/weapon/" + bulletId + "/"));
+}
+
 
 export function uploadIsGameStarted(gameId, isGameStarted) {
     update(ref(db, 'games/' + gameId + "/isGameStarted/"), {
@@ -83,10 +93,29 @@ export function uploadIsGameStarted(gameId, isGameStarted) {
 }
 
 
-
-
 export function removeGame(gameId) {
     remove(ref(db, 'games/' + gameId));
+}
+
+
+
+export function uploadDistructeds(gameId, distructeds) {
+    set(ref(db, 'games/' + gameId + "/distructeds/"), {
+        ...distructeds
+    });
+}
+
+
+export function uploadArtifact(gameId, artifact) {
+    // console.log("uploading Artifact: , ", artifact)
+
+    update(ref(db, 'games/' + gameId + "/artifacts/" + artifact.id + "/"), {
+        ...artifact,
+    });
+}
+export function removeArtifact(gameId, artifactId) {
+    // console.log("removing Artifact: , ", artifactId)
+    remove(ref(db, 'games/' + gameId + "/artifact/" + artifactId + "/")); 
 }
 
 

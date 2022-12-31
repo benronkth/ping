@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { blockSizeAtom, bulletsAtom, distructedsAtom, tanksAtom, targetsAtom, wallsAtom, boardColumnsCountAtom, boardRowsCountAtom, opponentTanksAtom, gameIdAtom, opponentTargetsAtom, orientations, elementTypes, joinedPlayersAtom, gameOwnerIdAtom, getInfrontPostion } from "../model/Game";
 import BulletView from "../views/BulletView";
 import { useEffect } from "react";
-import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
+import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadDistructeds, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 
@@ -17,7 +17,6 @@ function BulletPresenter() {
     const [walls, setWalls] = useRecoilState(wallsAtom);
     const [tanks, setTanks] = useRecoilState(tanksAtom);
     const [targets, setTargets] = useRecoilState(targetsAtom);
-    const [distructeds, setDistructeds] = useRecoilState(distructedsAtom);
     const [opponentTanks, setOpponentTanks] = useRecoilState(opponentTanksAtom);
     // const [opponentBullets, setOpponentBullets] = useRecoilState(opponentBulletsAtom);
     const [opponentTargets, setOpponentTargets] = useRecoilState(opponentTargetsAtom);
@@ -26,46 +25,74 @@ function BulletPresenter() {
 
 
 
-    function getElements(row, column) {
+    function getElements(row, column, allElements, bulletList) {
 
         let elements = [];
-        for (let i = 0; i < bullets.length; i++) {
-            const bullet = bullets[i];
-            if (bullet.position.r === row && bullet.position.c === column) {
-                elements.push(bullet);
+
+        // let foundInallElements = false;
+
+        if (allElements) {
+            for (let i = 0; i < allElements.length; i++) {
+                const element = allElements[i];
+                if (element.position.r === row && element.position.c === column) {
+                    elements.push({ index: i, value: element });
+                    // foundInChangedItems = true;
+                }
             }
         }
 
-        for (let i = 0; i < tanks.length; i++) {
-            const tank = tanks[i];
-            if (tank.position.r === row && tank.position.c === column) {
-                elements.push(tank);
+        if (bulletList) {
+            for (let i = 0; i < bulletList.length; i++) {
+                const element = bulletList[i];
+                if (element.position) {
+                    if (element.position.r === row && element.position.c === column) {
+                        elements.push({ index: i, value: element });
+                        // foundInChangedItems = true;
+                    }
+                }
             }
         }
-        for (let i = 0; i < opponentTanks.length; i++) {
-            const opponentTank = opponentTanks[i];
-            if (opponentTank.position.r === row && opponentTank.position.c === column) {
-                elements.push(opponentTank);
-            }
-        }
-        for (let i = 0; i < targets.length; i++) {
-            const target = targets[i];
-            if (target.position.r === row && target.position.c === column) {
-                elements.push(target);
-            }
-        }
-        for (let i = 0; i < opponentTargets.length; i++) {
-            const opponentTarget = opponentTargets[i];
-            if (opponentTarget.position.r === row && opponentTarget.position.c === column) {
-                elements.push(opponentTarget);
-            }
-        }
-        for (let i = 0; i < walls.length; i++) {
-            const wall = walls[i];
-            if (wall.position.r === row && wall.position.c === column) {
-                elements.push(wall);
-            }
-        }
+
+
+        // if (!foundInChangedItems) {
+        //     for (let i = 0; i < tanks.length; i++) {
+        //         const tank = tanks[i];
+        //         if (tank.position.r === row && tank.position.c === column) {
+        //             elements.push(tank);
+        //         }
+        //     }
+        //     for (let i = 0; i < opponentTanks.length; i++) {
+        //         const opponentTank = opponentTanks[i];
+        //         if (opponentTank.position.r === row && opponentTank.position.c === column) {
+        //             elements.push(opponentTank);
+        //         }
+        //     }
+        //     for (let i = 0; i < targets.length; i++) {
+        //         const target = targets[i];
+        //         if (target.position.r === row && target.position.c === column) {
+        //             elements.push(target);
+        //         }
+        //     }
+        //     for (let i = 0; i < opponentTargets.length; i++) {
+        //         const opponentTarget = opponentTargets[i];
+        //         if (opponentTarget.position.r === row && opponentTarget.position.c === column) {
+        //             elements.push(opponentTarget);
+        //         }
+        //     }
+        //     for (let i = 0; i < walls.length; i++) {
+        //         const wall = walls[i];
+        //         if (wall.position.r === row && wall.position.c === column) {
+        //             elements.push(wall);
+        //         }
+        //     }
+
+        // for (let i = 0; i < bullets.length; i++) {
+        //     const bullet = bullets[i];
+        //     if (bullet.position.r === row && bullet.position.c === column) {
+        //         elements.push(bullet);
+        //     }
+        // }
+        // }
 
         return elements;
 
@@ -76,39 +103,35 @@ function BulletPresenter() {
     function moveBullet() {
 
         let distructedList = [];
-        let removedElements = [];
         let updatedElements = [];
         let bulletList = [...bullets];
+        let allElements = [...walls, ...opponentTargets, ...targets, ...opponentTanks, ...tanks,] //make dictionary id:element
 
-        function findBulletIndex(bullet) {
-            for (let i = 0; i < bulletList.length; i++) {
-                const element = bulletList[i];
-                if (element.id === bullet.id) {
-                    return i;
-                }
 
-            }
-        }
+        let changedElements = {
+            // id: { element:, status: } 
+        };
+
+
 
         for (let i = 0; i < bulletList.length; i++) {
-            const bullet = bullets[i];
-            console.log(bullet.speed);
-
-
-            let updatedBullet = { ...bullet };
+            let updatedBullet = bulletList[i];
+            console.log(updatedBullet.speed);
 
             for (let s = 0; s < updatedBullet.speed; s++) {
-                console.log("running", s)
-                console.log("updated to ", updatedBullet)
+                // console.log("running", s)
+                // console.log("updated to ", updatedBullet)
 
 
-                const theElementsOnTheSameLocation = getElements(updatedBullet.position.r, updatedBullet.position.c);
-                console.log("elements on the same loc: ", theElementsOnTheSameLocation);
+                const theElementsOnTheSameLocation = getElements(updatedBullet.position.r, updatedBullet.position.c, allElements, bulletList);
+                // console.log("elements on the same loc: ", theElementsOnTheSameLocation);
 
                 for (let e = 0; e < theElementsOnTheSameLocation.length; e++) {
 
-                    let elementOnTheSameLocation = theElementsOnTheSameLocation[e];
-                    if (elementOnTheSameLocation.ownerId === updatedBullet.ownerId) { continue; }
+                    let elementOnTheSameLocation = theElementsOnTheSameLocation[e].value;
+                    let elementOnTheSameLocationIndex = theElementsOnTheSameLocation[e].index;
+                    if (elementOnTheSameLocation.ownerId === updatedBullet.ownerId) { continue; } //what about target? shouldn't bullet move pass target? 
+                    if (elementOnTheSameLocation.damageTaken > elementOnTheSameLocation.maxHealth - 1) { continue; }; //element is already dead
 
                     // Decrease the health  
                     elementOnTheSameLocation = {
@@ -119,12 +142,15 @@ function BulletPresenter() {
 
                     if (elementOnTheSameLocation.damageTaken < elementOnTheSameLocation.maxHealth) {
                         // Element is still alive. replace it with the updated one.
-                        // updateElement(elementOnTheSameLocation);
-                        if (elementOnTheSameLocation.type === elementTypes.bullet) {
-                            bulletList[findBulletIndex(elementOnTheSameLocation)] = elementOnTheSameLocation;
 
+                        if (elementOnTheSameLocation.type === elementTypes.bullet) {
+                            bulletList[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
                         } else {
-                            updatedElements.push(elementOnTheSameLocation);
+                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
+                        }
+                        changedElements[elementOnTheSameLocation.id] = {
+                            element: elementOnTheSameLocation,
+                            status: "alive"
                         }
                     } else {
                         // Element is dead. destroy the element (replace it with destructed element)
@@ -139,33 +165,24 @@ function BulletPresenter() {
                             }
                         }
                         distructedList.push(distructedElement);
-                        // remove the element
-                        // removeElement(elementOnTheSameLocation);
-                        removedElements.push(elementOnTheSameLocation);
+
+                        if (elementOnTheSameLocation.type === elementTypes.bullet) {
+                            bulletList[elementOnTheSameLocationIndex] = elementOnTheSameLocationIndex;
+                        } else {
+                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
+                        }
+                        changedElements[elementOnTheSameLocation.id] = {
+                            element: elementOnTheSameLocation,
+                            status: "dead"
+                        }
                     }
+
+                    // ----------------- current bullet --------------------------------------
 
                     updatedBullet = {
                         ...updatedBullet,
                         damageTaken: updatedBullet.damageTaken + elementOnTheSameLocation.attack,
                     }
-
-                    // remove dead bullets
-                    if (updatedBullet.damageTaken > updatedBullet.maxHealth - 1) {
-                        break; //get out of the speed loop
-                    }
-
-
-                }
-
-
-                // remove dead bullets
-                if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
-                    // if (s === updatedBullet.speed - 1) {
-                    //     updatedElements.push(updatedBullet);
-                    // }
-                } else { // bullet is dead. destroy the bullet (replace it with destructed bullet)
-
-                    console.log("damage taken else")
                     const distructedElement = {
                         name: "Boom",
                         type: elementTypes.distructed,
@@ -177,8 +194,43 @@ function BulletPresenter() {
                         }
                     }
                     distructedList.push(distructedElement);
-                    // removeElement(updatedBullet);
-                    removedElements.push(updatedBullet);
+
+                    // remove dead bullets
+                    if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
+                        bulletList[i] = updatedBullet;
+                        changedElements[updatedBullet.id] = {
+                            element: updatedBullet,
+                            status: "alive"
+                        }
+                    } else {
+                        changedElements[updatedBullet.id] = {
+                            element: updatedBullet,
+                            status: "dead"
+                        }
+                        break; //get out of the all found elments loop
+                    }
+
+
+                }
+
+
+                // remove dead bullets
+                if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
+                    // bullet is still alive
+                    changedElements[updatedBullet.id] = {
+                        element: updatedBullet,
+                        status: "alive"
+                    }
+
+                } else { // bullet is dead. destroy the bullet (replace it with destructed bullet)
+
+                    console.log("damage taken else")
+
+                    bulletList[i] = updatedBullet;
+                    changedElements[updatedBullet.id] = {
+                        element: updatedBullet,
+                        status: "dead"
+                    }
                     break; //get out of the speed loop
                 }
 
@@ -189,9 +241,12 @@ function BulletPresenter() {
 
                 if (infrontPosition.r > boardRowsCount - 1 || infrontPosition.r < 0 || infrontPosition.c > boardColumnsCount - 1 || infrontPosition.c < 0) {
                     // infront position is a out of the board. 
-                    // removeElement(bullet);
-                    removedElements.push(updatedBullet);
-                    continue;
+                    // removedElements.push(updatedBullet);
+                    changedElements[updatedBullet.id] = {
+                        element: updatedBullet,
+                        status: "dead"
+                    }
+                    break; //get out of the speed loop
                 }
 
                 updatedBullet = {
@@ -202,207 +257,23 @@ function BulletPresenter() {
                 };
 
                 bulletList[i] = updatedBullet;
-
-                if (s === updatedBullet.speed - 1) {
-                    updatedElements.push(updatedBullet);
+                changedElements[updatedBullet.id] = {
+                    element: updatedBullet,
+                    status: "alive"
                 }
-
-
-
-                // const elementInFrontOfBullet = getElement(infrontPosition.r, infrontPosition.c);
-
-
-                // if (!elementInFrontOfBullet) {
-                //     // Element infront is undifined => space
-                //     // We check if the element after the space is an enemy bullet 
-                //     updatedBullet = {
-                //         ...updatedBullet, position: {
-                //             r: infrontPosition.r,
-                //             c: infrontPosition.c
-                //         }
-                //     };
-                //     const twoStepInfrontPosition = getInfrontPostion(updatedBullet);
-                //     const elementTwoStepInFrontOfBullet = getElement(twoStepInfrontPosition.r, twoStepInfrontPosition.c);
-                //     if (elementTwoStepInFrontOfBullet
-                //         && elementTwoStepInFrontOfBullet.type === elementTypes.bullet
-                //         && elementTwoStepInFrontOfBullet.orientation !== updatedBullet.orientation) {
-                //         // this is the enemy bullet. Decrease both bullets health.
-
-                //         let updatedEnemyBullet = {
-                //             ...elementTwoStepInFrontOfBullet,
-                //             name: elementTwoStepInFrontOfBullet.maxHealth - elementTwoStepInFrontOfBullet.damageTaken - updatedBullet.attack,
-                //             damageTaken: elementTwoStepInFrontOfBullet.damageTaken + updatedBullet.attack
-                //         };
-
-                //         if (updatedEnemyBullet.damageTaken < updatedEnemyBullet.maxHealth) {
-                //             // Bullet is still alive. replace it with the updated one.
-                //             // updateElement(updatedEnemyBullet);
-                //             updatedElements.push(updatedEnemyBullet);
-                //         } else {
-                // Bullet is dead. destroy the element (replace it with destructed element)
-                //     const distructedElement = {
-                //         name: "Boom",
-                //         type: elementTypes.distructed,
-                //         id: "d" + Math.ceil(Math.random() * 1000),
-                //         blocked: false,
-                //         position: {
-                //             r: twoStepInfrontPosition.r,
-                //             c: twoStepInfrontPosition.c
-                //         }
-                //     }
-                //     distructedList.push(distructedElement);
-                //     // remove the element
-                //     // removeElement(updatedEnemyBullet);
-                //     removedElements.push(updatedEnemyBullet);
-                // }
-
-                // updatedBullet = {
-                //     ...updatedBullet,
-                //     name: updatedBullet.maxHealth - updatedBullet.damageTaken - updatedEnemyBullet.attack,
-                //     damageTaken: updatedBullet.damageTaken + updatedEnemyBullet.attack,
-                // }
-
-                // console.log("updated bullet is: ", updatedBullet);
-
-
-                // // remove dead bullets
-                // if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
-                //     // uploadBullet(gameId, updatedBullet);
-                //     // updateElement(updatedBullet);
-                //     if (s === updatedBullet.speed - 1) {
-                //         updatedElements.push(updatedBullet);
-                //     }
-                //         } else { // Element is dead. destroy the element (replace it with destructed element)
-                //             const distructedElement = {
-                //                 name: "Boom",
-                //                 type: elementTypes.distructed,
-                //                 id: "d" + Math.ceil(Math.random() * 1000),
-                //                 blocked: false,
-                //                 position: {
-                //                     r: infrontPosition.r,
-                //                     c: infrontPosition.c
-                //                 }
-                //             }
-                //             distructedList.push(distructedElement);
-                //             // removeElement(updatedBullet);
-                //             removedElements.push(updatedBullet);
-                //             break; //get out of the speed loop
-                //         }
-
-                //         continue;
-
-                //     }
-                // }
-
-
-                // if (!elementInFrontOfBullet  // Element infront is undifined => space
-                //     || (elementInFrontOfBullet // Element infront is defined but it is a friendly bullet 
-                //         && (elementInFrontOfBullet.type === elementTypes.bullet)
-                //         && (elementInFrontOfBullet.orientation === updatedBullet.orientation))) {
-                //     // Element infront is undifined => space
-                //     updatedBullet = {
-                //         ...updatedBullet, position: {
-                //             r: infrontPosition.r,
-                //             c: infrontPosition.c
-                //         }
-                //     };
-                //     if (s === updatedBullet.speed - 1) {
-                //         updatedElements.push(updatedBullet);
-                //     }
-                //     // uploadBullet(gameId, updatedBullet);
-
-                // } else {
-                //     // Element infront is defined 
-                //     // Decrease the health  
-                //     let updatedElementInFrontOfBullet = {
-                //         ...elementInFrontOfBullet,
-                //         name: elementInFrontOfBullet.maxHealth - elementInFrontOfBullet.damageTaken - updatedBullet.attack,
-                //         damageTaken: elementInFrontOfBullet.damageTaken + bullet.attack
-                //     };
-
-                //     if (updatedElementInFrontOfBullet.damageTaken < updatedElementInFrontOfBullet.maxHealth) {
-                //         // Element is still alive. replace it with the updated one.
-                //         // updateElement(updatedElementInFrontOfBullet);
-                //         updatedElements.push(updatedElementInFrontOfBullet);
-                //     } else {
-                //         // Element is dead. destroy the element (replace it with destructed element)
-                //         const distructedElement = {
-                //             name: "Boom",
-                //             type: elementTypes.distructed,
-                //             id: "d" + Math.ceil(Math.random() * 1000),
-                //             blocked: false,
-                //             position: {
-                //             r: infrontPosition.r,
-                //             c: infrontPosition.c
-                //         }
-                //     }
-                //     distructedList.push(distructedElement);
-                //     // remove the element
-                //     // removeElement(updatedElementInFrontOfBullet);
-                //     removedElements.push(updatedElementInFrontOfBullet);
-                // }
-
-                // updatedBullet = {
-                //     ...updatedBullet,
-                //     name: updatedBullet.maxHealth - updatedBullet.damageTaken - elementInFrontOfBullet.attack,
-                //     damageTaken: updatedBullet.damageTaken + elementInFrontOfBullet.attack,
-                //     position: {
-                //         r: infrontPosition.r,
-                //         c: infrontPosition.c
-                //     }
-                // }
-
-                // console.log("updated bullet is: ", updatedBullet);
-
-
-                // // remove dead bullets
-                // if (updatedBullet.damageTaken < updatedBullet.maxHealth) {
-                //     // uploadBullet(gameId, updatedBullet);
-                //     // updateElement(updatedBullet);
-                //     if (s === updatedBullet.speed - 1) {
-                //         updatedElements.push(updatedBullet);
-                //     }
-                // } else { // Element is dead. destroy the element (replace it with destructed element)
-                //     const distructedElement = {
-                //             name: "Boom",
-                //             type: elementTypes.distructed,
-                //             id: "d" + Math.ceil(Math.random() * 1000),
-                //             blocked: false,
-                //             position: {
-                //                 r: infrontPosition.r,
-                //                 c: infrontPosition.c
-                //             }
-                //         }
-                //         distructedList.push(distructedElement);
-                //         // removeElement(updatedBullet);
-                //         removedElements.push(updatedBullet);
-                //         break; //get out of the speed loop
-                //     }
-
-
-                // }
 
             }
         }
 
-        // console.log("removed elements: ", removedElements);
-        // console.log("updated elements: ", updatedElements);
+        const changedElementValues = Object.values(changedElements);
+        for (let i = 0; i < changedElementValues.length; i++) {
+            const element = changedElementValues[i];
+            if (element.status === "alive") {
+                updateElement(element.element);
+            } else {
+                removeElement(element.element);
+            }
 
-        // const updatedBullets = updatedElements.filter((e) => e.type === elementTypes.bullet);
-
-        // for (let i = 0; i < updatedBullets.length; i++) {
-        //     for (let j = 0; j < updatedBullets.length; j++) {
-        //         const bullet1 = updatedBullets[i];
-        //         const bullet2 = updatedBullets[j]; 
-        //         if (bullet1.position.r === bullet2.position.r && bullet1.position.c === bullet2.position.c) {
-
-        //         }
-        //     }
-        // }
-
-        for (let i = 0; i < removedElements.length; i++) {
-            // const element = removedElements[i];
-            removeElement(removedElements[i]);
         }
 
 
@@ -412,7 +283,7 @@ function BulletPresenter() {
         }
 
 
-        setDistructeds(distructedList);
+        uploadDistructeds(gameId, distructedList);
     }
 
     function removeElement(oldElement) {
@@ -486,6 +357,7 @@ function BulletPresenter() {
     }
 
 
+
     useEffect(() => {
         var refreshIntervalId = null;
 
@@ -494,7 +366,7 @@ function BulletPresenter() {
                 refreshIntervalId = setTimeout(() => {
                     console.log("ticking...");
                     moveBullet();
-                }, 500);
+                }, 50);
             }
         }
         return () => {
@@ -538,6 +410,7 @@ function BulletPresenter() {
             name={element.name}
             id={element.id}
             orientation={element.orientation}
+            imageClass = {element.image}
         > ({element.r}) </BulletView>;
 
     }

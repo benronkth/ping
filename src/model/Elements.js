@@ -1,4 +1,4 @@
-import { elementTypes, getLocations, orientations } from "./Game";
+import { artifactExpiry, artifactTypes, elementTypes, getLocations, orientations } from "./Game";
 
 
 export function getNewPlayer(params) {
@@ -12,7 +12,8 @@ export function getNewPlayer(params) {
         maxLivesCount: params.maxLivesCount ? params.maxLivesCount : 5,
         deathCount: 0,
         locations: params.locations,
-        color: params.color ? params.color : "#123123"
+        color: params.color ? params.color : "#123123",
+        acheivedArtifacts: params.acheivedArtifacts ? params.acheivedArtifacts : [],
     };
 }
 
@@ -27,7 +28,7 @@ export function getNewWall(params) {
         type: elementTypes.wall,
         image: params.image ? params.image : "wallImage",
         blocked: params.blocked ? params.blocked : true,
-        maxHealth: params.maxHealth ? params.maxHealth : 50,
+        maxHealth: params.maxHealth ? params.maxHealth : 5,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         position: params.position ? params.position : {
@@ -36,6 +37,31 @@ export function getNewWall(params) {
         }
     };
 }
+
+
+
+export function getNewTarget(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name.substring(0, 3) : "target",
+        id: params.id ? params.id : "temp",
+        ownerId: params.ownerId ? params.ownerId : 0,
+        type: elementTypes.target,
+        image: params.image ? params.image : "targetImage",
+        color: params.color ? params.color : "#123123",
+        blocked: true,
+        maxHealth: params.maxHealth ? params.maxHealth : 100,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 1,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        }
+    };
+}
+
 
 export function getNewTank(params) {
     if (!params) {
@@ -52,7 +78,7 @@ export function getNewTank(params) {
         blocked: true,
         maxHealth: params.maxHealth ? params.maxHealth : 50,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 1,
+        attack: params.attack ? params.attack : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -77,7 +103,7 @@ export function getNewBullet(params) {
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 1,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 8,
+        attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 1,
         position: params.position ? params.position : {
             r: 0,
@@ -85,26 +111,80 @@ export function getNewBullet(params) {
         }
     };
 }
+// ----------------------------------- weapon artifacts ----------------------------------------
 
-
-export function getNewTarget(params) {
+export function getNewRocketBullet(params) {
     if (!params) {
         params = {};
     }
     return {
-        name: params.name ? params.name.substring(0, 3) : "target",
-        id: params.id ? params.id : "temp",
-        ownerId: params.ownerId ? params.ownerId : 0,
-        type: elementTypes.target,
-        image: params.image ? params.image : "targetImage",
+        name: params.name ? params.name : "rocketbullet",
+        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
+        type: elementTypes.bullet,
+        image: params.image ? params.image : "rocketBulletImage",
+        orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
-        blocked: true,
-        maxHealth: params.maxHealth ? params.maxHealth : 150,
+        maxHealth: params.maxHealth ? params.maxHealth : 3,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 1,
+        attack: params.attack ? params.attack : 5,
+        speed: params.speed ? params.speed : 2,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
         }
     };
 }
+
+
+export function getNewRocketArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "Rocket Artifact",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "rocketArtifactImage",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        artifactType: artifactTypes.weapon,
+        weapon: getNewRocketBullet()
+    };
+}
+
+
+
+
+// ----------------------------------- health artifacts ----------------------------------------
+
+export function getNewHeartArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "Heart Artifact",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "heartArtifactImage",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        artifactType: artifactTypes.health,
+        damageTaken: 0, 
+    };
+}
+
+
+
+
+
+
+
+

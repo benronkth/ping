@@ -61,6 +61,7 @@ input:checked+.slider:before {
   border-radius: 50%;
 }
 
+
 /* ------------------- exp animation ------------------------- */
 
 .pointer {
@@ -154,7 +155,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 20px; 
+  padding-left: 20px;
 }
 
 .game-control {
@@ -193,6 +194,56 @@ body {
   z-index: 2;
 
 }
+
+
+.artifact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-size: contain;
+  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #1e9600, #fff200); */
+  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to right, #1e9600, #fff200); */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  z-index: 2;
+  animation: zoomOut;
+  /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 5s;
+  animation-delay: 5s;
+  /* don't forget to set a duration! */
+  scale: 0.8;
+
+}
+
+.flex-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.artifact-flag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  margin-left: 2px;
+}
+
+.artifact-flag-content {
+  height: 1em;
+  width: 1em;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 2;
+  background-color: white;
+}
+
 
 .tank-holder {
   position: absolute;
@@ -234,10 +285,29 @@ body {
 
 .bullet {
   position: absolute;
-  z-index: 2;
-  background-image: url("./assets/image/bulletUp.svg");
+  z-index: 1;
   background-size: contain;
   transition: all 0.05s;
+}
+
+.bulletImage {
+  background-image: url("./assets/image/bullet.svg");
+}
+
+.atomBulletImage {
+  background-image: url("./assets/image/atomBullet.svg");
+}
+
+.rocketBulletImage {
+  background-image: url("./assets/image/rocketBullet.svg");
+}
+
+.rocketArtifactImage {
+  background-image: url("./assets/image/rocketArtifact.svg");
+}
+
+.heartArtifactImage {
+  background-image: url("./assets/image/heart.svg");
 }
 
 .distructed {
@@ -316,10 +386,12 @@ select {
 }
 
 .square {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   margin: 0.2em;
-  padding: 0.8em 2.2em; 
+  padding: 0.6em 2.2em;
   background: #FFFFFF;
   border: none;
   border-radius: 0.4em;
@@ -329,6 +401,10 @@ select {
   font-weight: 500;
   letter-spacing: 0.04em;
   perspective: 500px;
+}
+
+.square>div {
+  margin: 2px;
 }
 
 .over {
@@ -373,7 +449,7 @@ button:hover:after {
   animation: translateWobble 2.2s ease forwards;
 }
 
-.board-canvas{
+.board-canvas {
   width: 100%;
   height: 100%;
   background-color: aqua;
