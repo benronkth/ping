@@ -137,7 +137,7 @@ function TankPresenter() {
                             }
                             uploadPlayerWeapon(gameId, playerId, acheivedArtifact);
                             break;
-                        case artifactTypes.health:
+                        case artifactTypes.tank:
                             updatedTank = {
                                 ...updatedTank,
                                 damageTaken: Math.floor(updatedTank.damageTaken * acheivedArtifact.damageTaken)

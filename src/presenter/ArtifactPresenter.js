@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewHeartArtifact, getNewRocketArtifact } from "../model/Elements";
+import { getNewResetDamageTakenArtifact, getNewRocketArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -82,7 +82,8 @@ function ArtifactPresenter() {
                     }
                 }));
 
-                tempArtifacts.push(getNewHeartArtifact({
+                tempArtifacts.push(getNewResetDamageTakenArtifact({
+                    damageTaken: (Math.ceil(Math.random() * 100) / 100),
                     position: {
                         r: randomRow,
                         c: randomColumn

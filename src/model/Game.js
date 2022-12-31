@@ -17,8 +17,8 @@ export const elementTypes = {
     artifact: "artifact",
 }
 export const artifactTypes = {
-    weapon: "weapon", 
-    health: "health"
+    weapon: "weapon",
+    tank: "tank",
 }
 
 export const orientations = {

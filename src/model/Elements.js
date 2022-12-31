@@ -141,7 +141,7 @@ export function getNewRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "Rocket Artifact",
+        name: params.name ? params.name : "5>3",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -159,14 +159,14 @@ export function getNewRocketArtifact(params) {
 
 
 
-// ----------------------------------- health artifacts ----------------------------------------
+// ----------------------------------- Tank artifacts ----------------------------------------
 
-export function getNewHeartArtifact(params) {
+export function getNewResetDamageTakenArtifact(params) {
     if (!params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "Heart Artifact",
+        name: params.damageTaken ? "+"+ Math.floor(100 - params.damageTaken*100) + "%" : "+100%",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -176,11 +176,10 @@ export function getNewHeartArtifact(params) {
             r: 0,
             c: 0,
         },
-        artifactType: artifactTypes.health,
-        damageTaken: 0, 
+        artifactType: artifactTypes.tank,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
     };
 }
-
 
 
 
