@@ -107,9 +107,9 @@ function CreateGamePresenter() {
             let row = "";
             for (let c = 0; c < boardColumnsCount; c++) {
                 if (Math.random() < (wallRatio / 100.0)) {
-                    if (Math.random() < (50 / 100.0)) { 
+                    if (Math.random() < (50 / 100.0)) {
                         row += "m"
-                    } else { 
+                    } else {
                         row += "w"
                     }
                 } else {
@@ -129,9 +129,9 @@ function CreateGamePresenter() {
         elements[boardRowsCount - 1] = "s" + lastRow.substring(2, lastRow.length - 1) + "s";
 
         const locations = getLocations(0, boardRowsCount, boardColumnsCount);
-        console.log(locations); 
+        console.log(locations);
 
- 
+
         const map = {
             elements,
             w: getNewWall(),
@@ -159,7 +159,7 @@ function CreateGamePresenter() {
         console.log(map);
         const game = createGame(map);
         let tempWalls = [];
-        let tempTanks = [];
+        let tempTanks = []; 
         let tempTargets = [];
         let tempBullets = [];
 
@@ -176,20 +176,20 @@ function CreateGamePresenter() {
                     tempBullets.push(element);
                     break;
                 case elementTypes.tank:
-                    tempTanks.push(element);
-
+                    tempTanks.push(element);  
                     break;
             }
         }
         setBoardRowsCount(game.boardSize.rows);
         setBoardColumnsCount(game.boardSize.columns);
-        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations });
+        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations,});
+        console.log("generated plaeyer is: ", player)
         const generatedGameId = Math.ceil(Math.random() * 10000);
         uploadGame(generatedGameId, player, game.boardSize, tempWalls, tempTanks, tempTargets, map);
         setGameId(generatedGameId);
         setIsGameCreated(true);
         setIsGameFinished(false);
-        resizeBlocks(); 
+        resizeBlocks();
     }
 
 

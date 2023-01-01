@@ -1,7 +1,7 @@
 import { orientations } from "../model/Game";
 
 function TankView({ tank, size }) {
-    console.log("drawing tanks");
+    // console.log("drawing tanks");
     let rotation = 0;
     switch (tank.orientation) {
         case orientations.right:

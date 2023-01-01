@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { db, removeBullet, removeTank, removeTarget, removeWall, uploadBullet, uploadDistructeds, uploadPlayer, uploadTank, uploadTarget, uploadWall } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
-import { getNewBullet } from "../model/Elements";
+import { getNewTank, getNewWeapon } from "../model/Elements";
 
 function BulletPresenter() {
     const [playerId, setPlayerId] = useRecoilState(playerIdAtom);
@@ -146,7 +146,7 @@ function BulletPresenter() {
                         if (elementOnTheSameLocation.type === elementTypes.bullet) {
                             bulletList[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
                         } else {
-                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation; 
+                            allElements[elementOnTheSameLocationIndex] = elementOnTheSameLocation;
                             let shootAudio = process.env.PUBLIC_URL + "sounds/" + elementOnTheSameLocation.hitAudio;
                             var shootAudioPlayer = new Audio(shootAudio);
                             shootAudioPlayer.volume = 0.05;
@@ -321,20 +321,21 @@ function BulletPresenter() {
                     const player = joinedPlayers[i];
                     if (player.id === oldElement.ownerId) {
                         const tempDeathCount = player.deathCount + 1;
-                        if (tempDeathCount < player.maxLivesCount) {
-                            uploadPlayer(gameId, {
-                                ...player,
-                                deathCount: tempDeathCount,
-                            });
-                            uploadTank(gameId, {
-                                ...oldElement,
-                                damageTaken: 0,
+                        if (tempDeathCount < player.maxLivesCount) { 
+                            uploadTank(gameId, getNewTank({
+                                name: oldElement.name, 
+                                ownerId: oldElement.ownerId,
+                                color: oldElement.color,
                                 position: {
                                     r: player.locations.tank.r,
                                     c: player.locations.tank.c
                                 },
-                                bullet: getNewBullet()
-                            })
+                            })); 
+                            const updatedPlayer = {
+                                ...player,
+                                deathCount: tempDeathCount,
+                            };
+                            uploadPlayer(gameId, updatedPlayer); 
                         } else {
                             uploadPlayer(gameId, {
                                 ...player,
@@ -413,10 +414,10 @@ function BulletPresenter() {
     }, []);
 
     function drawBullets(element) {
-        console.log("drawing bullets");
+        // console.log("drawing bullets");
         return <BulletView key={element.id}
             bullet={element}
-            size={blockSize} 
+            size={blockSize}
         ></BulletView>;
 
     }

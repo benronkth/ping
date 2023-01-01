@@ -5,27 +5,15 @@ import {
     blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom,
     wallsAtom, targetsAtom, opponentTanksAtom,
     timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations,
-    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom, bulletsAtom
+    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletsAtom
 } from "../model/Game";
 
-import { db, removeArtifact, removeBullet, removeTank, uploadBullet, uploadDistructeds, uploadPlayer, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
+import { db, removeArtifact, removeBullet, removeTank, uploadBullet, uploadDistructeds, uploadPlayer, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
-import { getNewBullet } from "../model/Elements";
+import { getNewTank, getNewWeapon } from "../model/Elements";
 
-// import shootAudio from '../assets/audio/pistol.mp3'
-// import damageTakenArtifactCollectedAudio from '../assets/audio/damageReset.wav'
-// import weaponArtifactCollectedAudio from '../assets/audio/weaponCollect.wav' 
-
-// var shootAudioPlayer = new Audio(shootAudio);
-// shootAudioPlayer.volume = 0.1;
-
-// var damageTakenArtifactCollectedAudioPlayer = new Audio(damageTakenArtifactCollectedAudio);
-// damageTakenArtifactCollectedAudioPlayer.volume = 0.1;
-
-// var weaponArtifactCollectedAudioPlayer = new Audio(weaponArtifactCollectedAudio);
-// weaponArtifactCollectedAudioPlayer.volume = 0.1;
-
+ 
 
 
 
@@ -47,7 +35,6 @@ function TankPresenter() {
     const [gameSpeed, setGameSpeed] = useRecoilState(gameSpeedAtom);
     const [artifacts, setArtifacts] = useRecoilState(artifactsAtom);
     const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
-    const [bulletAudio, setBulletAudio] = useRecoilState(bulletAudioAtom);
     const [bullets, setBullets] = useRecoilState(bulletsAtom);
 
     const [joinedPlayers, setJoinedPlayers] = useRecoilState(joinedPlayersAtom);
@@ -227,15 +214,10 @@ function TankPresenter() {
                                     : updatedTank.damageTaken,
                                 maxHealth: acheivedArtifact.maxHealth ? Math.floor(updatedTank.maxHealth + acheivedArtifact.maxHealth) : updatedTank.maxHealth,
                                 attack: acheivedArtifact.attack ? Math.floor(updatedTank.attack + acheivedArtifact.attack) : updatedTank.attack,
-                                bullet: acheivedArtifact.bullet ? acheivedArtifact.bullet : updatedTank.bullet,
+                                weapon: acheivedArtifact.weapon ? { ...acheivedArtifact.weapon, ownerTankId: updatedTank.id } : updatedTank.weapon,
                                 invertInput: acheivedArtifact.invertInput !== undefined ? acheivedArtifact.invertInput : updatedTank.invertInput,
                             }
-
-                            console.log("after updateing :", updatedTank);
-                            if (acheivedArtifact.bullet) {
-                                uploadPlayerWeapon(gameId, playerId, acheivedArtifact.bullet);
-                            }
-                            // damageTakenArtifactCollectedAudioPlayer.play();
+  
                             break;
                         case artifactTypes.world:
 
@@ -245,19 +227,23 @@ function TankPresenter() {
                                     let randomOpponentTank = opponentTanks[Math.floor(Math.random() * opponentTanks.length)];
                                     const randomOpponentTankOwnerId = randomOpponentTank.ownerId;
                                     const randomOpponentTankName = randomOpponentTank.name;
+
+
                                     removeTank(gameId, randomOpponentTank);
+                                    removeTank(gameId, updatedTank);
                                     randomOpponentTank = {
                                         ...randomOpponentTank,
                                         ownerId: playerId,
-                                        name: updatedTank.name
+                                        name: updatedTank.name,
                                     }
-                                    uploadTank(gameId, randomOpponentTank);
 
+                                    uploadTank(gameId, randomOpponentTank);
                                     updatedTank = {
                                         ...updatedTank,
                                         ownerId: randomOpponentTankOwnerId,
-                                        name: randomOpponentTankName
+                                        name: randomOpponentTankName,
                                     }
+
                                 }
                             }
 
@@ -284,15 +270,16 @@ function TankPresenter() {
                                 ...player,
                                 deathCount: tempDeathCount,
                             });
-                            uploadTank(gameId, {
-                                ...updatedTank,
-                                damageTaken: 0,
+                            uploadTank(gameId, getNewTank({
+                                name: updatedTank.name, 
+                                ownerId: updatedTank.ownerId,
+                                color: updatedTank.color,
                                 position: {
                                     r: player.locations.tank.r,
                                     c: player.locations.tank.c
                                 },
-                                bullet: getNewBullet()
-                            })
+                            }));
+
                         } else {
                             uploadPlayer(gameId, {
                                 ...player,
@@ -320,10 +307,11 @@ function TankPresenter() {
             const tank = tanks[i];
             // const infrontPosition = getInfrontPostion(tank);
             const bullet = {
-                ...tank.bullet,
-                id: "b" + Math.ceil(Math.random() * 1000),
+                ...tank.weapon,
+                id: Math.ceil(Math.random() * 10000),
                 ownerId: playerId,
                 orientation: tank.orientation,
+                type: elementTypes.bullet,
                 position: {
                     // r: infrontPosition.r,
                     // c: infrontPosition.c,
@@ -416,7 +404,7 @@ function TankPresenter() {
     }, []);
 
     function drawTanks(element) {
-        return <TankView
+        return <TankView key={element.id}
             size={blockSize}
             tank={element}
         ></TankView>;

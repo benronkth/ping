@@ -12,6 +12,7 @@ export const elementTypes = {
     wall: "wall",
     target: "target",
     tank: "tank",
+    weapon: "weapon",
     bullet: "bullet",
     distructed: "distructed",
     artifact: "artifact",
@@ -30,12 +31,7 @@ export const orientations = {
 
 export const artifactExpiry = 10;
 
-
-
-export const bulletAudioAtom = atom({
-    key: 'bulletAudioAtom',
-    default: "../assets/audio/shoot.wav",
-});
+ 
 
 export const newlyCreatedGamesAtom = atom({
     key: 'newlyCreatedGamesAtom',
@@ -120,11 +116,7 @@ export const bulletsAtom = atom({
     key: 'bulletsAtom',
     default: [],
 });
-
-// export const opponentBulletsAtom = atom({
-//     key: 'opponentBulletsAtom',
-//     default: [],
-// });
+ 
 
 
 
@@ -153,7 +145,7 @@ export const aiCountAtom = atom({
 
 export const wallRatioAtom = atom({
     key: 'wallRatioAtom',
-    default: 50,
+    default: 0,
 });
 
 export const gameIdAtom = atom({

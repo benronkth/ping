@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
-import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
-import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact, getNewWalBulletArtifact, getNewMetalWallBulletArtifact, getNewExpoBulletArtifact, getNewSwapTankArtifact } from "../model/Elements";
+import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
+import { db, removeArtifact, uploadArtifact } from "../firebase/firebase"; 
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
+import { getNewAtomRocketArtifact, getNewDecreaseDamageTakenArtifact, getNewExpoWeaponArtifact, getNewGainDamageTakenArtifact, getNewHRocketArtifact, getNewInvertInputArtifact, getNewMetalWallWeaponArtifact, getNewRandomPositionArtifact, getNewRocketArtifact, getNewSwapTankArtifact, getNewWallWeaponArtifact } from "../model/Elements";
 
 function ArtifactPresenter() {
 
@@ -13,7 +13,6 @@ function ArtifactPresenter() {
     const [gameId, setGameId] = useRecoilState(gameIdAtom);
     const [gameOwnerId, setGameOwnerId] = useRecoilState(gameOwnerIdAtom);
     const [isGameStarted, setIsGameStarted] = useRecoilState(isGameStartedAtom);
-    const [bullets, setBullets] = useRecoilState(bulletsAtom);
     const [boardRowsCount, setBoardRowsCount] = useRecoilState(boardRowsCountAtom);
     const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
     const [blockSize, setBlockSize] = useRecoilState(blockSizeAtom);
@@ -114,7 +113,7 @@ function ArtifactPresenter() {
                 }
 
                 if (rate > 1 - 0.5) {
-                    tempArtifacts.push(getNewExpoBulletArtifact({
+                    tempArtifacts.push(getNewExpoWeaponArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
@@ -123,7 +122,7 @@ function ArtifactPresenter() {
                 }
 
                 if (rate > 1 - 0.5) {
-                    tempArtifacts.push(getNewWalBulletArtifact({
+                    tempArtifacts.push(getNewWallWeaponArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
@@ -132,7 +131,7 @@ function ArtifactPresenter() {
                 }
 
                 if (rate > 1 - 0.3) {
-                    tempArtifacts.push(getNewMetalWallBulletArtifact({
+                    tempArtifacts.push(getNewMetalWallWeaponArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
@@ -141,59 +140,59 @@ function ArtifactPresenter() {
                 }
 
 
-                // if (rate > 1 - 0.8) {
+                if (rate > 1 - 0.8) {
 
-                //     tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
-                //         damageTaken: (Math.ceil(Math.random() * 100)),
-                //         position: {
-                //             r: randomRow,
-                //             c: randomColumn
-                //         }
-                //     }));
-                // }
+                    tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                        damageTaken: (Math.ceil(Math.random() * 100)),
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                // if (rate > 1 - 0.3) {
+                if (rate > 1 - 0.3) {
 
-                //     tempArtifacts.push(getNewGainDamageTakenArtifact({
-                //         damageTaken: -1 * (Math.ceil(Math.random() * 100)),
-                //         position: {
-                //             r: randomRow,
-                //             c: randomColumn
-                //         }
-                //     }));
-                // }
+                    tempArtifacts.push(getNewGainDamageTakenArtifact({
+                        damageTaken: -1 * (Math.ceil(Math.random() * 100)),
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                // if (rate > 1 - 0.8) {
+                if (rate > 1 - 0.8) {
 
-                //     tempArtifacts.push(getNewRandomPositionArtifact({
-                //         position: {
-                //             r: randomRow,
-                //             c: randomColumn
-                //         },
-                //         randomPosition: {
-                //             r: randomPositionRow,
-                //             c: randomPositionColumn
-                //         }
-                //     }));
-                // }
+                    tempArtifacts.push(getNewRandomPositionArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        },
+                        randomPosition: {
+                            r: randomPositionRow,
+                            c: randomPositionColumn
+                        }
+                    }));
+                }
 
-                // if (rate > 1 - 0.3) {
+                if (rate > 1 - 0.3) {
 
-                //     tempArtifacts.push(getNewInvertInputArtifact({
-                //         position: {
-                //             r: randomRow,
-                //             c: randomColumn
-                //         },
-                //     }));
-                // }
+                    tempArtifacts.push(getNewInvertInputArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        },
+                    }));
+                }
 
                 // keep one so we dont have empty array
-                // tempArtifacts.push(getNewSwapTankArtifact({
-                //     position: {
-                //         r: randomRow,
-                //         c: randomColumn
-                //     },
-                // }));
+                tempArtifacts.push(getNewSwapTankArtifact({
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    },
+                }));
 
 
 

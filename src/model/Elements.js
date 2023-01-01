@@ -6,14 +6,14 @@ export function getNewPlayer(params) {
         params = {};
     }
     return {
-        id: params.id ? params.id : "temp",
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
         name: params.name ? params.name : "temp",
         isAlive: true,
         maxLivesCount: params.maxLivesCount ? params.maxLivesCount : 5,
         deathCount: 0,
         locations: params.locations,
         color: params.color ? params.color : "#123123",
-        acheivedArtifacts: params.acheivedArtifacts ? params.acheivedArtifacts : [],
+        acheivedArtifacts: params.acheivedArtifacts ? params.acheivedArtifacts : [], 
     };
 }
 
@@ -24,7 +24,7 @@ export function getNewWall(params) {
     }
     return {
         name: "",
-        id: params.id ? params.id : "temp",
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
         type: elementTypes.wall,
         image: params.image ? params.image : "wall.svg",
         blocked: params.blocked ? params.blocked : true,
@@ -46,7 +46,7 @@ export function getNewMetalWall(params) {
     }
     return {
         name: "",
-        id: params.id ? params.id : "temp",
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
         type: elementTypes.wall,
         image: params.image ? params.image : "metalWall.svg",
         blocked: params.blocked ? params.blocked : true,
@@ -70,7 +70,7 @@ export function getNewTarget(params) {
     }
     return {
         name: params.name ? params.name : "target",
-        id: params.id ? params.id : "temp",
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
         ownerId: params.ownerId ? params.ownerId : 0,
         type: elementTypes.target,
         image: params.image ? params.image : "target2.svg",
@@ -91,9 +91,11 @@ export function getNewTank(params) {
     if (!params) {
         params = {};
     }
+
+    const tankId = Math.ceil(Math.random() * 10000);
     return {
         name: params.name ? params.name : "temp",
-        id: params.id ? params.id : "temp",
+        id: params.id ? params.id : tankId,
         ownerId: params.ownerId ? params.ownerId : 0,
         type: elementTypes.tank,
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -107,22 +109,24 @@ export function getNewTank(params) {
             r: 0,
             c: 0,
         },
-        bullet: params.bullet ? params.bullet : getNewBullet({
-            color: params.color ? params.color : "#123123"
+        weapon: params.weapon ? params.weapon : getNewWeapon({
+            color: params.color ? params.color : "#123123",
+            ownerTankId: params.id ? params.id : tankId,
         }),
         invertInput: false
     };
 }
 
 
-export function getNewBullet(params) {
+export function getNewWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "bullet",
-        id: params.id ? params.id : "temp",
-        type: elementTypes.bullet,
+        name: params.name ? params.name : "1>1",
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "shoot.wav",
         image: params.image ? params.image : "bullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -139,14 +143,15 @@ export function getNewBullet(params) {
 }
 // ----------------------------------- weapon artifacts ----------------------------------------
 
-export function getNewRocketBullet(params) {
+export function getNewRocketWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
         name: params.name ? params.name : "2>1",
-        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        type: elementTypes.weapon,
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
         audio: "pistol.mp3",
         image: params.image ? params.image : "rocketBullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -180,19 +185,20 @@ export function getNewRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewRocketBullet()
+        weapon: getNewRocketWeapon()
     };
 }
 
 
-export function getNewAtomRocketBullet(params) {
+export function getNewAtomRocketWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
         name: params.name ? params.name : "3>1",
-        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "pistol.mp3",
         image: params.image ? params.image : "atomBullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -226,18 +232,19 @@ export function getNewAtomRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewAtomRocketBullet()
+        weapon: getNewAtomRocketWeapon()
     };
 }
 
-export function getNewHRocketBullet(params) {
+export function getNewHRocketWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
         name: params.name ? params.name : "3>2",
-        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "pistol.mp3",
         image: params.image ? params.image : "hBullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -271,19 +278,20 @@ export function getNewHRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewHRocketBullet()
+        weapon: getNewHRocketWeapon()
     };
 }
 
 
-export function getNewWallBullet(params) {
+export function getNewWallWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
         name: params.name ? params.name : "5",
-        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "pistol.mp3",
         image: params.image ? params.image : "wall.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -303,7 +311,7 @@ export function getNewWallBullet(params) {
 }
 
 
-export function getNewWalBulletArtifact(params) {
+export function getNewWallWeaponArtifact(params) {
     if (!params) {
         params = {};
     }
@@ -320,7 +328,7 @@ export function getNewWalBulletArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewWallBullet()
+        weapon: getNewWallWeapon()
     };
 }
 
@@ -328,14 +336,15 @@ export function getNewWalBulletArtifact(params) {
 
 
 
-export function getNewMetalWallBullet(params) {
+export function getNewMetalWallWeapon(params) {
     if (!params) {
         params = {};
     }
     return {
         name: params.name ? params.name : "50",
-        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "pistol.mp3",
         image: params.image ? params.image : "metalWall.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
@@ -355,7 +364,7 @@ export function getNewMetalWallBullet(params) {
 }
 
 
-export function getNewMetalWallBulletArtifact(params) {
+export function getNewMetalWallWeaponArtifact(params) {
     if (!params) {
         params = {};
     }
@@ -372,13 +381,13 @@ export function getNewMetalWallBulletArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewMetalWallBullet()
+        weapon: getNewMetalWallWeapon()
     };
 }
 
 
 
-export function getNewExpoBullet(params) {
+export function getNewExpoWeapon(params) {
     if (!params) {
         params = {};
     }
@@ -386,8 +395,9 @@ export function getNewExpoBullet(params) {
 
     return {
         name: params.name ? params.name : "5>0",
-        id: params.id ? params.id : "expoBullet" + Math.ceil(Math.random() * 10000),
-        type: elementTypes.bullet,
+        id: params.id ? params.id : Math.ceil(Math.random() * 10000),
+        ownerTankId: params.ownerTankId ? params.ownerTankId : "temp",
+        type: elementTypes.weapon,
         audio: "pistol.mp3",
         destroyAudio: "pistol.mp3",
         image: params.image ? params.image : "expo.svg",
@@ -405,7 +415,7 @@ export function getNewExpoBullet(params) {
 }
 
 
-export function getNewExpoBulletArtifact(params) {
+export function getNewExpoWeaponArtifact(params) {
     if (!params) {
         params = {};
     }
@@ -422,7 +432,7 @@ export function getNewExpoBulletArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewExpoBullet()
+        weapon: getNewExpoWeapon()
     };
 }
 
@@ -470,7 +480,7 @@ export function getNewGainDamageTakenArtifact(params) {
         },
         artifactType: artifactTypes.tank,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        bullet: getNewBullet(),
+        weapon: getNewWeapon(),
         invertInput: false
     };
 }

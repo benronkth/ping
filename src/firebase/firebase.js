@@ -26,7 +26,7 @@ export function uploadTank(gameId, tank) {
     });
 }
 export function removeTank(gameId, tank) {
-    remove(ref(db, 'games/' + gameId + "/tanks/" + tank.id + "/"));
+    remove(ref(db, 'games/' + gameId + "/tanks/" + tank.id + "/")); 
 }
 
 export function uploadTarget(gameId, target) {
@@ -65,25 +65,16 @@ export function removeWall(gameId, wall) {
 }
 
 export function uploadPlayer(gameId, player) {
-    console.log(player);
+    console.log("uploading player.......", player);
     update(ref(db, 'games/' + gameId + "/players/" + player.id + "/"), {
         ...player,
-    });
+    }); 
 }
 
 export function removePlayer(gameId, playerId) {
     remove(ref(db, 'games/' + gameId + "/players/" + playerId + "/"));
 }
-
-export function uploadPlayerWeapon(gameId, playerId, bullet) { 
-    update(ref(db, 'games/' + gameId + "/players/" + playerId + "/weapon/" + bullet.id+"/"), {
-        ...bullet,
-    });
-}
-
-export function removePlayerWeapon(gameId, playerId, bulletId) {
-    remove(ref(db, 'games/' + gameId + "/players/" + playerId + "/weapon/" + bulletId + "/"));
-}
+ 
 
 
 export function uploadIsGameStarted(gameId, isGameStarted) {
@@ -121,7 +112,7 @@ export function uploadArtifact(gameId, artifact) {
 }
 export function removeArtifact(gameId, artifactId) {
     // console.log("removing Artifact: , ", artifactId)
-    remove(ref(db, 'games/' + gameId + "/artifacts/" + artifactId + "/")); 
+    remove(ref(db, 'games/' + gameId + "/artifacts/" + artifactId + "/"));
 }
 
 

@@ -4,7 +4,7 @@ import JoinGameView from "../views/JoinGameView";
 import { db, uploadPlayer, uploadTank, uploadTarget } from "../firebase/firebase";
 import { playerIdAtom, playerNameAtom } from "../model/User";
 import { get, ref } from "firebase/database";
-import { getNewBullet, getNewPlayer, getNewTank, getNewTarget } from "../model/Elements";
+import { getNewPlayer, getNewTank, getNewTarget } from "../model/Elements";
 
 function JoinGamePresenter() {
 
@@ -85,8 +85,7 @@ function JoinGamePresenter() {
 
         const locations = getLocations(fetchedPlayers.length, boardRows, boardColumns);
         console.log("locations: ", locations);
-        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations });
-        uploadPlayer(gameId, player);
+        let player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations });
         const newTarget = getNewTarget({
             name: playerName,
             ownerId: playerId,
@@ -110,9 +109,9 @@ function JoinGamePresenter() {
             },
         });
         uploadTank(gameId, newTank);
-
+        uploadPlayer(gameId, player);
+        resizeBlocks();
         setIsGameCreated(true);
-        resizeBlocks();  
 
     }
     return (<JoinGameView
