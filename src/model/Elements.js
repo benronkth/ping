@@ -518,7 +518,29 @@ export function getNewInvertInputArtifact(params) {
     };
 }
 
+//  --------------------------------- world artifacts -------------------------------------------
 
+
+export function getNewSwapTankArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        artifactType: artifactTypes.world,
+        audio: "damageReset.wav",
+        image: params.image ? params.image : "swap.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        swapTank: true,
+    };
+}
 
 
 

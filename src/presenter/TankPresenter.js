@@ -201,7 +201,7 @@ function TankPresenter() {
                             c: elementInFrontOfTank.position.c
                         }
                     }
-                    distructedList.push(distructedElement); 
+                    distructedList.push(distructedElement);
                     let shootAudio = process.env.PUBLIC_URL + "sounds/" + elementInFrontOfTank.destroyAudio;
                     var shootAudioPlayer = new Audio(shootAudio);
                     shootAudioPlayer.volume = 0.05;
@@ -236,6 +236,31 @@ function TankPresenter() {
                                 uploadPlayerWeapon(gameId, playerId, acheivedArtifact.bullet);
                             }
                             // damageTakenArtifactCollectedAudioPlayer.play();
+                            break;
+                        case artifactTypes.world:
+
+                            if (acheivedArtifact.swapTank) {
+                                if (opponentTanks.length > 0) {
+
+                                    let randomOpponentTank = opponentTanks[Math.floor(Math.random() * opponentTanks.length)];
+                                    const randomOpponentTankOwnerId = randomOpponentTank.ownerId;
+                                    const randomOpponentTankName = randomOpponentTank.name;
+                                    removeTank(gameId, randomOpponentTank);
+                                    randomOpponentTank = {
+                                        ...randomOpponentTank,
+                                        ownerId: playerId,
+                                        name: updatedTank.name
+                                    }
+                                    uploadTank(gameId, randomOpponentTank);
+
+                                    updatedTank = {
+                                        ...updatedTank,
+                                        ownerId: randomOpponentTankOwnerId,
+                                        name: randomOpponentTankName
+                                    }
+                                }
+                            }
+
                             break;
                     }
 

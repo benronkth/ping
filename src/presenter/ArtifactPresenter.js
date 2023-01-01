@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact, getNewWalBulletArtifact, getNewMetalWallBulletArtifact, getNewExpoBulletArtifact } from "../model/Elements";
+import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact, getNewWalBulletArtifact, getNewMetalWallBulletArtifact, getNewExpoBulletArtifact, getNewSwapTankArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -150,6 +150,13 @@ function ArtifactPresenter() {
                 }));
 
                 tempArtifacts.push(getNewInvertInputArtifact({
+                    position: {
+                        r: randomRow,
+                        c: randomColumn
+                    },
+                }));
+
+                tempArtifacts.push(getNewSwapTankArtifact({
                     position: {
                         r: randomRow,
                         c: randomColumn

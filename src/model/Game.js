@@ -16,8 +16,9 @@ export const elementTypes = {
     distructed: "distructed",
     artifact: "artifact",
 }
-export const artifactTypes = { 
+export const artifactTypes = {
     tank: "tank",
+    world: "world",
 }
 
 export const orientations = {
