@@ -3,7 +3,7 @@ import ArtifactView from "../views/ArtifactView";
 import { playerIdAtom } from "../model/User";
 import { artifactsAtom, blockSizeAtom, boardColumnsCountAtom, boardRowsCountAtom, bulletsAtom, gameIdAtom, gameOwnerIdAtom, isGameStartedAtom, joinedPlayersAtom, opponentTanksAtom, opponentTargetsAtom, tanksAtom, targetsAtom, wallsAtom } from "../model/Game";
 import { db, removeArtifact, uploadArtifact } from "../firebase/firebase";
-import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact, getNewWalBulletArtifact, getNewMetalWalBulletArtifact } from "../model/Elements";
+import { getNewGainDamageTakenArtifact, getNewDecreaseDamageTakenArtifact, getNewRocketArtifact, getNewAtomRocketArtifact, getNewHRocketArtifact, getNewRandomPositionArtifact, getNewInvertInputArtifact, getNewWalBulletArtifact, getNewMetalWallBulletArtifact, getNewExpoBulletArtifact } from "../model/Elements";
 import { useRecoilState } from "recoil";
 import { onValue, ref } from "firebase/database";
 
@@ -90,65 +90,71 @@ function ArtifactPresenter() {
                         c: randomColumn
                     }
                 }));
-                tempArtifacts.push(getNewWalBulletArtifact({
+                tempArtifacts.push(getNewExpoBulletArtifact({
                     position: {
                         r: randomRow,
                         c: randomColumn
                     }
                 }));
-                tempArtifacts.push(getNewMetalWalBulletArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewAtomRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewWalBulletArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
+                // tempArtifacts.push(getNewMetalWallBulletArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
+                // tempArtifacts.push(getNewAtomRocketArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewHRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewHRocketArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
-                    damageTaken: (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                //     damageTaken: (Math.ceil(Math.random() * 100)),
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewGainDamageTakenArtifact({
-                    damageTaken: -1 * (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewGainDamageTakenArtifact({
+                //     damageTaken: -1 * (Math.ceil(Math.random() * 100)),
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewRandomPositionArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    },
-                    randomPosition: {
-                        r: randomPositionRow,
-                        c: randomPositionColumn
-                    }
-                }));
+                // tempArtifacts.push(getNewRandomPositionArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     },
+                //     randomPosition: {
+                //         r: randomPositionRow,
+                //         c: randomPositionColumn
+                //     }
+                // }));
 
-                tempArtifacts.push(getNewInvertInputArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }, 
-                }));
+                // tempArtifacts.push(getNewInvertInputArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     },
+                // }));
 
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 console.log("uploading artifact:::::::::::::", tempArtifact)

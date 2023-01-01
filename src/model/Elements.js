@@ -355,7 +355,7 @@ export function getNewMetalWallBullet(params) {
 }
 
 
-export function getNewMetalWalBulletArtifact(params) {
+export function getNewMetalWallBulletArtifact(params) {
     if (!params) {
         params = {};
     }
@@ -373,6 +373,56 @@ export function getNewMetalWalBulletArtifact(params) {
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
         bullet: getNewMetalWallBullet()
+    };
+}
+
+
+
+export function getNewExpoBullet(params) {
+    if (!params) {
+        params = {};
+    }
+ 
+
+    return {
+        name: params.name ? params.name : "5>0",
+        id: params.id ? params.id : "expoBullet" + Math.ceil(Math.random() * 10000),
+        type: elementTypes.bullet,
+        audio: "pistol.mp3",
+        destroyAudio: "pistol.mp3",
+        image: params.image ? params.image : "expo.svg",
+        orientation: params.orientation ? params.orientation : orientations.up,
+        color: params.color ? params.color : "#123123",
+        maxHealth: params.maxHealth ? params.maxHealth : 5,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 5,
+        speed: params.speed ? params.speed : 0,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        }
+    };
+}
+
+
+export function getNewExpoBulletArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "5>0",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "expo.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        audio: "weaponCollect.wav",
+        artifactType: artifactTypes.tank,
+        bullet: getNewExpoBullet()
     };
 }
 

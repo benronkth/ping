@@ -8,7 +8,7 @@ import {
     isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom, bulletsAtom
 } from "../model/Game";
 
-import { db, removeArtifact, removeTank, uploadBullet, uploadPlayer, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
+import { db, removeArtifact, removeBullet, removeTank, uploadBullet, uploadDistructeds, uploadPlayer, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
 import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 import { getNewBullet } from "../model/Elements";
@@ -103,6 +103,7 @@ function TankPresenter() {
     function moveTank(movingOrientation) {
 
 
+        let distructedList = [];
         for (let i = 0; i < tanks.length; i++) {
             let tempMovingOrientation = movingOrientation;
             const tank = tanks[i];
@@ -183,6 +184,32 @@ function TankPresenter() {
                     },
                 }
 
+
+                if (elementInFrontOfTank && elementInFrontOfTank.type === elementTypes.bullet) {
+
+                    updatedTank = {
+                        ...updatedTank,
+                        damageTaken: updatedTank.damageTaken + elementInFrontOfTank.attack
+                    }
+                    const distructedElement = {
+                        name: "Exploded",
+                        type: elementTypes.distructed,
+                        id: "d" + Math.ceil(Math.random() * 1000),
+                        blocked: false,
+                        position: {
+                            r: elementInFrontOfTank.position.r,
+                            c: elementInFrontOfTank.position.c
+                        }
+                    }
+                    distructedList.push(distructedElement); 
+                    let shootAudio = process.env.PUBLIC_URL + "sounds/" + elementInFrontOfTank.destroyAudio;
+                    var shootAudioPlayer = new Audio(shootAudio);
+                    shootAudioPlayer.volume = 0.05;
+                    shootAudioPlayer.play();
+                    removeBullet(gameId, elementInFrontOfTank);
+                }
+
+
                 // artifacts
                 if (elementInFrontOfTank && elementInFrontOfTank.type === elementTypes.artifact) {
 
@@ -257,6 +284,7 @@ function TankPresenter() {
 
 
         }
+        uploadDistructeds(gameId, distructedList);
 
 
     }
