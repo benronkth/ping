@@ -393,9 +393,9 @@ export function getNewExpoBullet(params) {
         image: params.image ? params.image : "expo.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
-        maxHealth: params.maxHealth ? params.maxHealth : 5,
+        maxHealth: params.maxHealth ? params.maxHealth : 25,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 5,
+        attack: params.attack ? params.attack : 50,
         speed: params.speed ? params.speed : 0,
         position: params.position ? params.position : {
             r: 0,
