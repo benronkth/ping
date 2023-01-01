@@ -86,6 +86,23 @@ function TankPresenter() {
         }
 
     }
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+
+        // While there remain elements to shuffle.
+        while (currentIndex != 0) {
+
+            // Pick a remaining element.
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+
+        return array;
+    }
 
     function moveTank(movingOrientation) {
 
@@ -224,12 +241,12 @@ function TankPresenter() {
                             if (acheivedArtifact.swapTank) {
                                 if (opponentTanks.length > 0) {
 
-                                    let randomOpponentTank = opponentTanks[Math.floor(Math.random() * opponentTanks.length)];
+                                    let randomOpponentTank = shuffle([...opponentTanks])[0];
                                     const randomOpponentTankOwnerId = randomOpponentTank.ownerId;
                                     const randomOpponentTankName = randomOpponentTank.name;
 
 
-                                    // removeTank(gameId, randomOpponentTank);
+                                    removeTank(gameId, randomOpponentTank);
                                     // removeTank(gameId, updatedTank);
                                     randomOpponentTank = {
                                         ...randomOpponentTank,
@@ -243,6 +260,7 @@ function TankPresenter() {
                                         ownerId: randomOpponentTankOwnerId,
                                         name: randomOpponentTankName,
                                     }
+                                    uploadTank(gameId, updatedTank);
 
                                 }
                             }
@@ -315,7 +333,7 @@ function TankPresenter() {
                 }
             }
 
-            
+
 
             const bullet = {
                 ...updatedTank.weapon,
