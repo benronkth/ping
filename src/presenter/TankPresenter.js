@@ -230,7 +230,7 @@ function TankPresenter() {
 
 
                                     removeTank(gameId, randomOpponentTank);
-                                    removeTank(gameId, updatedTank);
+                                    // removeTank(gameId, updatedTank);
                                     randomOpponentTank = {
                                         ...randomOpponentTank,
                                         ownerId: playerId,
