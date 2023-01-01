@@ -201,7 +201,7 @@ function ArtifactPresenter() {
                 console.log("uploading artifact:::::::::::::", tempArtifact)
                 uploadArtifact(gameId, tempArtifact);
 
-            }, 3000);
+            }, 1000);
             return () => {
                 clearInterval(ref);
             };
