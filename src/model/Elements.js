@@ -276,7 +276,7 @@ export function getNewHRocketArtifact(params) {
 }
 
 
-export function getNewExpoBullet(params) {
+export function getNewWallBullet(params) {
     if (!params) {
         params = {};
     }
@@ -303,7 +303,7 @@ export function getNewExpoBullet(params) {
 }
 
 
-export function getNewExpoArtifact(params) {
+export function getNewWalBulletArtifact(params) {
     if (!params) {
         params = {};
     }
@@ -320,7 +320,7 @@ export function getNewExpoArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        bullet: getNewExpoBullet()
+        bullet: getNewWallBullet()
     };
 }
 
