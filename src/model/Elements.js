@@ -100,7 +100,7 @@ export function getNewTank(params) {
         image: params.image ? params.image : "tank.svg",
         color: params.color ? params.color : "#123123",
         blocked: true,
-        maxHealth: params.maxHealth ? params.maxHealth : 50,
+        maxHealth: params.maxHealth ? params.maxHealth : 100,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 10,
         position: params.position ? params.position : {
@@ -151,7 +151,7 @@ export function getNewRocketBullet(params) {
         image: params.image ? params.image : "rocketBullet.svg",
         orientation: params.orientation ? params.orientation : orientations.up,
         color: params.color ? params.color : "#123123",
-        maxHealth: params.maxHealth ? params.maxHealth : 1,
+        maxHealth: params.maxHealth ? params.maxHealth : 10,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 2,
         speed: params.speed ? params.speed : 1,

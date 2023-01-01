@@ -82,86 +82,120 @@ function ArtifactPresenter() {
                 }
 
                 let tempArtifacts = []
+                const rate = Math.random();
+
+                if (rate > 1 - 0.5) {
+                    tempArtifacts.push(getNewRocketArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
 
-                tempArtifacts.push(getNewRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewExpoBulletArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewWalBulletArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewMetalWallBulletArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
-                tempArtifacts.push(getNewAtomRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                if (rate > 1 - 0.3) {
+                    tempArtifacts.push(getNewAtomRocketArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                tempArtifacts.push(getNewHRocketArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                if (rate > 1 - 0.1) {
 
-                tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
-                    damageTaken: (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                    tempArtifacts.push(getNewHRocketArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                tempArtifacts.push(getNewGainDamageTakenArtifact({
-                    damageTaken: -1 * (Math.ceil(Math.random() * 100)),
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    }
-                }));
+                if (rate > 1 - 0.5) {
+                    tempArtifacts.push(getNewExpoBulletArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                tempArtifacts.push(getNewRandomPositionArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    },
-                    randomPosition: {
-                        r: randomPositionRow,
-                        c: randomPositionColumn
-                    }
-                }));
+                if (rate > 1 - 0.3) {
+                    tempArtifacts.push(getNewWalBulletArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
-                tempArtifacts.push(getNewInvertInputArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    },
-                }));
+                if (rate > 1 - 0.3) {
+                    tempArtifacts.push(getNewMetalWallBulletArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
 
+
+                if (rate > 1 - 0.8) {
+
+                    tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                        damageTaken: (Math.ceil(Math.random() * 100)),
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
+
+                if (rate > 1 - 0.3) {
+
+                    tempArtifacts.push(getNewGainDamageTakenArtifact({
+                        damageTaken: -1 * (Math.ceil(Math.random() * 100)),
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        }
+                    }));
+                }
+
+                if (rate > 1 - 0.8) {
+
+                    tempArtifacts.push(getNewRandomPositionArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        },
+                        randomPosition: {
+                            r: randomPositionRow,
+                            c: randomPositionColumn
+                        }
+                    }));
+                }
+
+                if (rate > 1 - 0.3) {
+
+                    tempArtifacts.push(getNewInvertInputArtifact({
+                        position: {
+                            r: randomRow,
+                            c: randomColumn
+                        },
+                    }));
+                }
+
+                // keep one so we dont have empty array
                 tempArtifacts.push(getNewSwapTankArtifact({
                     position: {
                         r: randomRow,
                         c: randomColumn
                     },
                 }));
+
+
 
                 const tempArtifact = tempArtifacts[Math.floor(Math.random() * tempArtifacts.length)];
                 console.log("uploading artifact:::::::::::::", tempArtifact)
