@@ -5,7 +5,7 @@ import {
     blockSizeAtom, tanksAtom, boardRowsCountAtom, boardColumnsCountAtom,
     wallsAtom, targetsAtom, opponentTanksAtom,
     timeBetweenActionsAtom, gameIdAtom, opponentTargetsAtom, orientations,
-    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom
+    isGameStartedAtom, getInfrontPostion, gameSpeedAtom, artifactsAtom, elementTypes, artifactTypes, joinedPlayersAtom, gameLosersAtom, bulletAudioAtom, bulletsAtom
 } from "../model/Game";
 
 import { db, removeArtifact, removeTank, uploadBullet, uploadPlayer, uploadPlayerWeapon, uploadTank } from "../firebase/firebase";
@@ -48,6 +48,7 @@ function TankPresenter() {
     const [artifacts, setArtifacts] = useRecoilState(artifactsAtom);
     const [gameLosers, setGameLosers] = useRecoilState(gameLosersAtom);
     const [bulletAudio, setBulletAudio] = useRecoilState(bulletAudioAtom);
+    const [bullets, setBullets] = useRecoilState(bulletsAtom);
 
     const [joinedPlayers, setJoinedPlayers] = useRecoilState(joinedPlayersAtom);
 
@@ -88,6 +89,12 @@ function TankPresenter() {
             const wall = walls[i];
             if (wall.position.r === row && wall.position.c === column) {
                 return wall
+            }
+        }
+        for (let i = 0; i < bullets.length; i++) {
+            const bullet = bullets[i];
+            if (bullet.position.r === row && bullet.position.c === column) {
+                return bullet
             }
         }
 

@@ -276,6 +276,55 @@ export function getNewHRocketArtifact(params) {
 }
 
 
+export function getNewExpoBullet(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "3>0",
+        id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
+        type: elementTypes.bullet,
+        audio: "pistol.mp3",
+        image: params.image ? params.image : "wall.svg",
+        orientation: params.orientation ? params.orientation : orientations.up,
+        color: params.color ? params.color : "#123123",
+        maxHealth: params.maxHealth ? params.maxHealth : 5,
+        damageTaken: params.damageTaken ? params.damageTaken : 0,
+        attack: params.attack ? params.attack : 1,
+        speed: params.speed ? params.speed : 0,
+        blocked: true,
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        hitAudio: "click.wav",
+        destroyAudio: "wallDestroy.mp3",
+    };
+}
+
+
+export function getNewExpoArtifact(params) {
+    if (!params) {
+        params = {};
+    }
+    return {
+        name: params.name ? params.name : "3>0",
+        id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
+        creationDate: Date.now(),
+        expiryDate: Date.now() + artifactExpiry * 1000,
+        type: elementTypes.artifact,
+        image: params.image ? params.image : "wallCreation.svg",
+        position: params.position ? params.position : {
+            r: 0,
+            c: 0,
+        },
+        audio: "weaponCollect.wav",
+        artifactType: artifactTypes.tank,
+        bullet: getNewExpoBullet()
+    };
+}
+
+
 
 
 // ----------------------------------- Tank artifacts ----------------------------------------

@@ -9,7 +9,7 @@ function GameEndView({ winnerPlayers, loserPlayers }) {
             let shootAudio = process.env.PUBLIC_URL + "sounds/applause.wav";
             var shootAudioPlayer = new Audio(shootAudio);
             shootAudioPlayer.volume = 0.1;
-            shootAudioPlayer.play();
+            // shootAudioPlayer.play();
             return (<div>
                 <div className="confetti-piece"></div>
                 <div className="confetti-piece"></div>
