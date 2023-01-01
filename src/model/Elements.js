@@ -135,7 +135,7 @@ export function getNewWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 1,
-        ammo: params.ammo ? params.ammo : 10,
+        ammo: params.ammo ? params.ammo : 100,
         position: params.position ? params.position : {
             r: 0,
             c: 0,

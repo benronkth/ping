@@ -571,27 +571,30 @@ body {
   z-index: 2;
   background-color: white;
   padding: 5px;
-  border-radius: 4px;
-  margin-left: 2px;
-  padding-left: 15px;
+  border-radius: 4px; 
+  /* padding-left: 15px; */
 }
 
 .artifact-flag-content {
   height: 3em;
   width: 3em;
-  position: absolute;
+  /* position: absolute; */
   background-repeat: no-repeat;
   background-size: contain;
   z-index: 2;
   /* background-color: white; */
   font-size: 0.5rem;
-  margin-left: -50px;
+  margin-left: -2em; 
+  margin-right: 2px;
+  rotate: -10deg;
+  scale: 1.2;
 }
 
 .weapon-stats {
   font-size: 0.5rem;
   padding: 0px 4px;
   border-radius: 2px;
+  z-index: 3; 
 }
 
 .attack-value {

@@ -304,38 +304,47 @@ function TankPresenter() {
     function shootBullet() {
 
         for (let i = 0; i < tanks.length; i++) {
-            const tank = tanks[i];
+            let updatedTank = tanks[i];
             // const infrontPosition = getInfrontPostion(tank);
-            if (tank.weapon.ammo > 0) {
 
-                const bullet = {
-                    ...tank.weapon,
-                    id: Math.ceil(Math.random() * 10000),
-                    ownerId: playerId,
-                    orientation: tank.orientation,
-                    type: elementTypes.bullet,
-                    position: {
-                        // r: infrontPosition.r,
-                        // c: infrontPosition.c,
-                        r: tank.position.r,
-                        c: tank.position.c,
-                    }
-                };
-                const updatedTank = {
-                    ...tank,
-                    weapon: {
-                        ...tank.weapon,
-                        ammo: tank.weapon.ammo - 1
-                    }
+
+            if (updatedTank.weapon.ammo < 1) {
+                updatedTank = {
+                    ...updatedTank,
+                    weapon: getNewWeapon()
                 }
-                uploadTank(gameId, updatedTank);
-                uploadBullet(gameId, bullet);
-                let shootAudio = process.env.PUBLIC_URL + "sounds/" + bullet.audio;
-                var shootAudioPlayer = new Audio(shootAudio);
-                shootAudioPlayer.volume = 0.1;
-                shootAudioPlayer.play();
             }
+
+            
+
+            const bullet = {
+                ...updatedTank.weapon,
+                id: Math.ceil(Math.random() * 10000),
+                ownerId: playerId,
+                orientation: updatedTank.orientation,
+                type: elementTypes.bullet,
+                position: {
+                    // r: infrontPosition.r,
+                    // c: infrontPosition.c,
+                    r: updatedTank.position.r,
+                    c: updatedTank.position.c,
+                }
+            };
+            updatedTank = {
+                ...updatedTank,
+                weapon: {
+                    ...updatedTank.weapon,
+                    ammo: updatedTank.weapon.ammo - 1
+                }
+            }
+            uploadTank(gameId, updatedTank);
+            uploadBullet(gameId, bullet);
+            let shootAudio = process.env.PUBLIC_URL + "sounds/" + bullet.audio;
+            var shootAudioPlayer = new Audio(shootAudio);
+            shootAudioPlayer.volume = 0.1;
+            shootAudioPlayer.play();
         }
+
 
 
 
