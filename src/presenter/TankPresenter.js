@@ -194,7 +194,7 @@ function TankPresenter() {
                                 maxHealth: acheivedArtifact.maxHealth ? Math.floor(updatedTank.maxHealth + acheivedArtifact.maxHealth) : updatedTank.maxHealth,
                                 attack: acheivedArtifact.attack ? Math.floor(updatedTank.attack + acheivedArtifact.attack) : updatedTank.attack,
                                 bullet: acheivedArtifact.bullet ? acheivedArtifact.bullet : updatedTank.bullet,
-                                invertInput: acheivedArtifact.invertInput ? acheivedArtifact.invertInput : updatedTank.invertInput,
+                                invertInput: acheivedArtifact.invertInput === undefined ? acheivedArtifact.invertInput : updatedTank.invertInput,
                             }
 
                             console.log("after updateing :", updatedTank);
