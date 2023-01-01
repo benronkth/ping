@@ -533,8 +533,8 @@ body {
 }
 
 .artifact-flag-content {
-  height: 4em;
-  width: 4em;
+  height: 3em;
+  width: 3em;
   position: absolute;
   background-repeat: no-repeat;
   background-size: contain;
