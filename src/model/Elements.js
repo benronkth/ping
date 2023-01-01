@@ -76,7 +76,7 @@ export function getNewTarget(params) {
         image: params.image ? params.image : "target2.svg",
         color: params.color ? params.color : "#123123",
         blocked: true,
-        maxHealth: params.maxHealth ? params.maxHealth : 100,
+        maxHealth: params.maxHealth ? params.maxHealth : 500,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         position: params.position ? params.position : {
@@ -190,7 +190,7 @@ export function getNewAtomRocketBullet(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>1",
+        name: params.name ? params.name : "3>1",
         id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
         type: elementTypes.bullet,
         audio: "pistol.mp3",
@@ -199,7 +199,7 @@ export function getNewAtomRocketBullet(params) {
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 3,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 5,
+        attack: params.attack ? params.attack : 3,
         speed: params.speed ? params.speed : 1,
         position: params.position ? params.position : {
             r: 0,
@@ -214,7 +214,7 @@ export function getNewAtomRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>1",
+        name: params.name ? params.name : "3>1",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -235,7 +235,7 @@ export function getNewHRocketBullet(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>2",
+        name: params.name ? params.name : "3>2",
         id: params.id ? params.id : "rocketBullet" + Math.ceil(Math.random() * 10000),
         type: elementTypes.bullet,
         audio: "pistol.mp3",
@@ -244,7 +244,7 @@ export function getNewHRocketBullet(params) {
         color: params.color ? params.color : "#123123",
         maxHealth: params.maxHealth ? params.maxHealth : 5,
         damageTaken: params.damageTaken ? params.damageTaken : 0,
-        attack: params.attack ? params.attack : 5,
+        attack: params.attack ? params.attack : 3,
         speed: params.speed ? params.speed : 2,
         position: params.position ? params.position : {
             r: 0,
@@ -259,7 +259,7 @@ export function getNewHRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>2",
+        name: params.name ? params.name : "3>2",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
