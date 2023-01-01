@@ -318,15 +318,17 @@ function TankPresenter() {
 
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
-            const infrontPosition = getInfrontPostion(tank);
+            // const infrontPosition = getInfrontPostion(tank);
             const bullet = {
                 ...tank.bullet,
                 id: "b" + Math.ceil(Math.random() * 1000),
                 ownerId: playerId,
                 orientation: tank.orientation,
                 position: {
-                    r: infrontPosition.r,
-                    c: infrontPosition.c,
+                    // r: infrontPosition.r,
+                    // c: infrontPosition.c,
+                    r: tank.position.r,
+                    c: tank.position.c,
                 }
             };
             uploadBullet(gameId, bullet);

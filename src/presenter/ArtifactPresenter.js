@@ -122,7 +122,7 @@ function ArtifactPresenter() {
                     }));
                 }
 
-                if (rate > 1 - 0.3) {
+                if (rate > 1 - 0.5) {
                     tempArtifacts.push(getNewWalBulletArtifact({
                         position: {
                             r: randomRow,
@@ -141,59 +141,59 @@ function ArtifactPresenter() {
                 }
 
 
-                if (rate > 1 - 0.8) {
+                // if (rate > 1 - 0.8) {
 
-                    tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
-                        damageTaken: (Math.ceil(Math.random() * 100)),
-                        position: {
-                            r: randomRow,
-                            c: randomColumn
-                        }
-                    }));
-                }
+                //     tempArtifacts.push(getNewDecreaseDamageTakenArtifact({
+                //         damageTaken: (Math.ceil(Math.random() * 100)),
+                //         position: {
+                //             r: randomRow,
+                //             c: randomColumn
+                //         }
+                //     }));
+                // }
 
-                if (rate > 1 - 0.3) {
+                // if (rate > 1 - 0.3) {
 
-                    tempArtifacts.push(getNewGainDamageTakenArtifact({
-                        damageTaken: -1 * (Math.ceil(Math.random() * 100)),
-                        position: {
-                            r: randomRow,
-                            c: randomColumn
-                        }
-                    }));
-                }
+                //     tempArtifacts.push(getNewGainDamageTakenArtifact({
+                //         damageTaken: -1 * (Math.ceil(Math.random() * 100)),
+                //         position: {
+                //             r: randomRow,
+                //             c: randomColumn
+                //         }
+                //     }));
+                // }
 
-                if (rate > 1 - 0.8) {
+                // if (rate > 1 - 0.8) {
 
-                    tempArtifacts.push(getNewRandomPositionArtifact({
-                        position: {
-                            r: randomRow,
-                            c: randomColumn
-                        },
-                        randomPosition: {
-                            r: randomPositionRow,
-                            c: randomPositionColumn
-                        }
-                    }));
-                }
+                //     tempArtifacts.push(getNewRandomPositionArtifact({
+                //         position: {
+                //             r: randomRow,
+                //             c: randomColumn
+                //         },
+                //         randomPosition: {
+                //             r: randomPositionRow,
+                //             c: randomPositionColumn
+                //         }
+                //     }));
+                // }
 
-                if (rate > 1 - 0.3) {
+                // if (rate > 1 - 0.3) {
 
-                    tempArtifacts.push(getNewInvertInputArtifact({
-                        position: {
-                            r: randomRow,
-                            c: randomColumn
-                        },
-                    }));
-                }
+                //     tempArtifacts.push(getNewInvertInputArtifact({
+                //         position: {
+                //             r: randomRow,
+                //             c: randomColumn
+                //         },
+                //     }));
+                // }
 
                 // keep one so we dont have empty array
-                tempArtifacts.push(getNewSwapTankArtifact({
-                    position: {
-                        r: randomRow,
-                        c: randomColumn
-                    },
-                }));
+                // tempArtifacts.push(getNewSwapTankArtifact({
+                //     position: {
+                //         r: randomRow,
+                //         c: randomColumn
+                //     },
+                // }));
 
 
 
