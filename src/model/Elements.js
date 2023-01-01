@@ -109,7 +109,7 @@ export function getNewTank(params) {
             r: 0,
             c: 0,
         },
-        weapon: params.weapon ? params.weapon : getNewWallWeapon({
+        weapon: params.weapon ? params.weapon : getNewMetalWallWeapon({
             color: params.color ? params.color : "#123123",
             ownerTankId: params.id ? params.id : tankId,
         }),
