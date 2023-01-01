@@ -109,7 +109,7 @@ export function getNewTank(params) {
             r: 0,
             c: 0,
         },
-        weapon: params.weapon ? params.weapon : getNewWeapon({
+        weapon: params.weapon ? params.weapon : getNewWallWeapon({
             color: params.color ? params.color : "#123123",
             ownerTankId: params.id ? params.id : tankId,
         }),
@@ -304,7 +304,7 @@ export function getNewWallWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 0,
-        ammo: params.ammo ? params.ammo : 10,
+        ammo: params.ammo ? params.ammo : 20,
         blocked: true,
         position: params.position ? params.position : {
             r: 0,
