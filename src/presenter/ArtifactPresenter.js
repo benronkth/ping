@@ -16,7 +16,6 @@ function ArtifactPresenter() {
     const [boardRowsCount, setBoardRowsCount] = useRecoilState(boardRowsCountAtom);
     const [boardColumnsCount, setBoardColumnsCount] = useRecoilState(boardColumnsCountAtom);
     const [blockSize, setBlockSize] = useRecoilState(blockSizeAtom);
-    const [walls, setWalls] = useRecoilState(wallsAtom);
     const [tanks, setTanks] = useRecoilState(tanksAtom);
     const [targets, setTargets] = useRecoilState(targetsAtom);
     const [opponentTanks, setOpponentTanks] = useRecoilState(opponentTanksAtom);
@@ -82,33 +81,37 @@ function ArtifactPresenter() {
 
                 let tempArtifacts = []
                 const rate = Math.random();
+                const randomAmmoCount = Math.ceil(Math.random()*50);
 
                 if (rate > 1 - 0.5) {
                     tempArtifacts.push(getNewRocketArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 
 
-                if (rate > 1 - 0.3) {
+                if (rate > 1 - 0.5) {
                     tempArtifacts.push(getNewAtomRocketArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 
-                if (rate > 1 - 0.1) {
+                if (rate > 1 - 0.3) {
 
                     tempArtifacts.push(getNewHRocketArtifact({
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 
@@ -117,7 +120,8 @@ function ArtifactPresenter() {
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 
@@ -126,7 +130,8 @@ function ArtifactPresenter() {
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 
@@ -135,7 +140,8 @@ function ArtifactPresenter() {
                         position: {
                             r: randomRow,
                             c: randomColumn
-                        }
+                        },
+                        ammo: randomAmmoCount
                     }));
                 }
 

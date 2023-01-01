@@ -175,7 +175,7 @@ export function getNewRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "2>1",
+        name: params.ammo ? params.ammo : "2>1",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -187,7 +187,7 @@ export function getNewRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewRocketWeapon()
+        weapon: getNewRocketWeapon({ammo: params.ammo})
     };
 }
 
@@ -223,7 +223,7 @@ export function getNewAtomRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "3>1",
+        name: params.ammo ? params.ammo : "3>1",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -235,7 +235,7 @@ export function getNewAtomRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewAtomRocketWeapon()
+        weapon: getNewAtomRocketWeapon({ ammo: params.ammo })
     };
 }
 
@@ -270,7 +270,7 @@ export function getNewHRocketArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "3>2",
+        name: params.ammo ? params.ammo : "3>2",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -282,7 +282,7 @@ export function getNewHRocketArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewHRocketWeapon()
+        weapon: getNewHRocketWeapon({ ammo: params.ammo })
     };
 }
 
@@ -321,7 +321,7 @@ export function getNewWallWeaponArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5",
+        name: params.ammo ? params.ammo : "5",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -333,7 +333,7 @@ export function getNewWallWeaponArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewWallWeapon()
+        weapon: getNewWallWeapon({ ammo: params.ammo })
     };
 }
 
@@ -375,7 +375,7 @@ export function getNewMetalWallWeaponArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "50",
+        name: params.ammo ? params.ammo : "50",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -387,7 +387,7 @@ export function getNewMetalWallWeaponArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewMetalWallWeapon()
+        weapon: getNewMetalWallWeapon({ ammo: params.ammo })
     };
 }
 
@@ -427,7 +427,7 @@ export function getNewExpoWeaponArtifact(params) {
         params = {};
     }
     return {
-        name: params.name ? params.name : "5>0",
+        name: params.ammo ? params.ammo : "5>0",
         id: params.id ? params.id : "art" + Math.ceil(Math.random() * 10000),
         creationDate: Date.now(),
         expiryDate: Date.now() + artifactExpiry * 1000,
@@ -439,7 +439,7 @@ export function getNewExpoWeaponArtifact(params) {
         },
         audio: "weaponCollect.wav",
         artifactType: artifactTypes.tank,
-        weapon: getNewExpoWeapon()
+        weapon: getNewExpoWeapon({ ammo: params.ammo })
     };
 }
 

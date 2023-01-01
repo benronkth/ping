@@ -241,31 +241,43 @@ function TankPresenter() {
                             if (acheivedArtifact.swapTank) {
                                 if (opponentTanks.length > 0) {
 
-                                    let randomOpponentTank = shuffle([...opponentTanks])[0];
+                                    let randomOpponentTank = opponentTanks[Math.floor(Math.random() * opponentTanks.length)];
                                     const randomOpponentTankOwnerId = randomOpponentTank.ownerId;
                                     const randomOpponentTankName = randomOpponentTank.name;
 
-
-                                    removeTank(gameId, randomOpponentTank);
-                                    removeTank(gameId, updatedTank);
-                                    let counter = 0
-                                    while (counter < 200) {
-                                        counter = counter + 1;
+                                    let myTank = {
+                                        ...updatedTank
+                                    }
+                                    let opponentTank = {
+                                        ...randomOpponentTank
                                     }
 
-                                    // removeTank(gameId, updatedTank);
-                                    randomOpponentTank = {
-                                        ...randomOpponentTank,
-                                        ownerId: playerId,
-                                        name: updatedTank.name,
-                                    }
 
-                                    uploadTank(gameId, randomOpponentTank);
-                                    updatedTank = {
-                                        ...updatedTank,
+                                    myTank = {
+                                        ...myTank,
                                         ownerId: randomOpponentTankOwnerId,
                                         name: randomOpponentTankName,
                                     }
+
+
+                                    opponentTank = {
+                                        ...randomOpponentTank,
+                                        ownerId: updatedTank.ownerId,
+                                        name: updatedTank.name,
+                                    }
+
+                                    removeTank(gameId, randomOpponentTank);
+                                    removeTank(gameId, updatedTank);
+
+
+                                    uploadTank(gameId, opponentTank);
+
+                                    // removeTank(gameId, updatedTank);
+                                    updatedTank = {
+                                        ...myTank,
+                                    }
+
+
 
                                 }
                             }
