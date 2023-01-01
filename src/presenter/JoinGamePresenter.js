@@ -25,8 +25,9 @@ function JoinGamePresenter() {
 
 
     function resizeBlocks() {
-        const width = window.innerWidth;
-        const height = window.innerHeight - 120;
+
+        const width = window.innerWidth - 200;
+        const height = window.innerHeight - 20;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);

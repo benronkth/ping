@@ -2,7 +2,7 @@ import JoinedPlayersPresenter from "../presenter/JoinedPlayersPresenter";
 
 function FooterView({isGameCreated}) {
     return (<div className="footer"> 
-        {isGameCreated ? <JoinedPlayersPresenter></JoinedPlayersPresenter> : <div>Create or join a game first</div>}
+        {isGameCreated ? <JoinedPlayersPresenter></JoinedPlayersPresenter> : <div></div>}
     </div> );
 }
 

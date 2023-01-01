@@ -1,6 +1,6 @@
- 
 
-function GameEndView({ winnerPlayers, loserPlayers }) {
+
+function GameEndView({ winnerPlayers, loserPlayers, width, height }) {
 
 
     function generateConfetti() {
@@ -40,7 +40,7 @@ function GameEndView({ winnerPlayers, loserPlayers }) {
     }
 
 
-    return (<div className="winners-view animate__animated animate__zoomIn">
+    return (<div className="winners-view animate__animated animate__zoomIn" style={{ width: width, height: height }}>
         <div className="circle animate__animated animate__flash animate__infinite animate__slower" style={{
             transform: "scale(3)",
             backgroundColor: "aqua"

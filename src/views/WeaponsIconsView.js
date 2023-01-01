@@ -8,7 +8,16 @@ function WeaponsIconsView({ weapon }) {
             backgroundImage: "url(" + image + ")"
         }}>
         </div>
-        <div>{weapon.name}</div>
+        <div className="flex-column">
+            <div>{weapon.ammo}</div>
+            <div className="flex-row">
+                <div className="weapon-stats attack-value">{weapon.attack}</div>
+                <div className="weapon-stats speed-value">{weapon.speed}</div>
+                <div className="weapon-stats health-value">{weapon.maxHealth}</div>
+                
+            </div>
+
+        </div>
     </div>);
 }
 

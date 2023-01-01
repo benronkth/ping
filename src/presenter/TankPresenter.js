@@ -13,7 +13,7 @@ import { onValue, ref } from "firebase/database";
 import { playerIdAtom } from "../model/User";
 import { getNewTank, getNewWeapon } from "../model/Elements";
 
- 
+
 
 
 
@@ -217,7 +217,7 @@ function TankPresenter() {
                                 weapon: acheivedArtifact.weapon ? { ...acheivedArtifact.weapon, ownerTankId: updatedTank.id } : updatedTank.weapon,
                                 invertInput: acheivedArtifact.invertInput !== undefined ? acheivedArtifact.invertInput : updatedTank.invertInput,
                             }
-  
+
                             break;
                         case artifactTypes.world:
 
@@ -271,7 +271,7 @@ function TankPresenter() {
                                 deathCount: tempDeathCount,
                             });
                             uploadTank(gameId, getNewTank({
-                                name: updatedTank.name, 
+                                name: updatedTank.name,
                                 ownerId: updatedTank.ownerId,
                                 color: updatedTank.color,
                                 position: {
@@ -306,24 +306,35 @@ function TankPresenter() {
         for (let i = 0; i < tanks.length; i++) {
             const tank = tanks[i];
             // const infrontPosition = getInfrontPostion(tank);
-            const bullet = {
-                ...tank.weapon,
-                id: Math.ceil(Math.random() * 10000),
-                ownerId: playerId,
-                orientation: tank.orientation,
-                type: elementTypes.bullet,
-                position: {
-                    // r: infrontPosition.r,
-                    // c: infrontPosition.c,
-                    r: tank.position.r,
-                    c: tank.position.c,
+            if (tank.weapon.ammo > 0) {
+
+                const bullet = {
+                    ...tank.weapon,
+                    id: Math.ceil(Math.random() * 10000),
+                    ownerId: playerId,
+                    orientation: tank.orientation,
+                    type: elementTypes.bullet,
+                    position: {
+                        // r: infrontPosition.r,
+                        // c: infrontPosition.c,
+                        r: tank.position.r,
+                        c: tank.position.c,
+                    }
+                };
+                const updatedTank = {
+                    ...tank,
+                    weapon: {
+                        ...tank.weapon,
+                        ammo: tank.weapon.ammo - 1
+                    }
                 }
-            };
-            uploadBullet(gameId, bullet);
-            let shootAudio = process.env.PUBLIC_URL + "sounds/" + bullet.audio;
-            var shootAudioPlayer = new Audio(shootAudio);
-            shootAudioPlayer.volume = 0.1;
-            shootAudioPlayer.play();
+                uploadTank(gameId, updatedTank);
+                uploadBullet(gameId, bullet);
+                let shootAudio = process.env.PUBLIC_URL + "sounds/" + bullet.audio;
+                var shootAudioPlayer = new Audio(shootAudio);
+                shootAudioPlayer.volume = 0.1;
+                shootAudioPlayer.play();
+            }
         }
 
 

@@ -415,54 +415,98 @@ Credit: https: //codepen.io/Jintos */
 
 body {
   font-family: 'Unbounded', cursive;
+} 
+
+.content {
+  display: flex;
+  /* flex-direction: column; */
+  width: 100%;
+  height: 100vh;
+  justify-content: left;
+  align-items: top;
+
+}
+
+.sidebar {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: top;
+  width: 200px;
+  height: 100%;
+  padding: 0px 10px;
+  /* justify-content: space-between; */
+  /* box-shadow: 0px 10px 10px 1px rgba(97, 160, 98, 0.226); */
+  /* z-index: 3; */
+  background-image: url("./assets/image/wall.svg");
+  background-size: contain;
+  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to bottom, #78ffd6, #a8ff78); */
+  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to bottom, #78ffd6, #a8ff78); */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background-color: #91f321;
-  box-shadow: 0px 10px 10px 1px rgba(97, 160, 98, 0.226);
-  height: 50px;
+  margin: 10px;
+  box-shadow: 10px 10px 10px 1px rgba(97, 160, 98, 0.226);
   z-index: 3;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   position: absolute;
   bottom: 0px;
-  width: 100%;
-  background-color: #91f321;
-  font-size: 12px;
-  height: 50px;
-}
-
-.joined-players-holder {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 20px;
+  width: 180px;
 }
 
 .game-control {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin: 10px;
+  padding: 10px 0px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  /* margin: 10px; */
+  font-size: 12px;
+  /* width: 100%; */
 }
 
-.board-holder {
-  /* position: relative; */
-  /* background-color: #2521f3ae; */
-
+.joined-players-holder {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
+
+
+
+
+.line {
+  width: 40px;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 0.266);
+  margin: 0px 6px;
+}
+
 
 .board {
   position: relative;
-  background-color: #f32198ae;
+}
+
+.background {
+  outline: 2px black dashed;
+  z-index: 10;
 }
 
 
@@ -500,8 +544,8 @@ body {
   z-index: 2;
   animation: zoomOut;
   /* referring directly to the animation's @keyframe declaration */
-  animation-duration: 5s;
-  animation-delay: 5s;
+  animation-duration: 8s;
+  animation-delay: 8s;
   /* don't forget to set a duration! */
   scale: 0.8;
 
@@ -544,17 +588,31 @@ body {
   margin-left: -50px;
 }
 
+.weapon-stats {
+  font-size: 0.5rem;
+  padding: 0px 4px;
+  border-radius: 2px;
+}
+
+.attack-value {
+  background-color: red;
+}
+
+.speed-value {
+  background-color: yellow;
+}
+
+.health-value {
+  background-color: greenyellow;
+}
+
 .winners-view {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
   align-items: center;
-  padding: 30px;
-  margin: 30px;
-  /* background-color: wheat; */
   border-radius: 10px;
-  height: 400px;
 
 }
 
@@ -587,7 +645,7 @@ body {
   z-index: 3;
   transition: all 0.2s;
 }
- 
+
 .target {
   display: flex;
   justify-content: center;
@@ -724,11 +782,13 @@ select {
 
 .square {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   margin: 0.2em;
   padding: 0.6em 0.6em;
+  /* width: 100%; */
   background: #FFFFFF;
   border: none;
   border-radius: 0.4em;
@@ -738,6 +798,7 @@ select {
   font-weight: 500;
   letter-spacing: 0.04em;
   perspective: 500px;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.618);
 }
 
 .square>div {
@@ -749,14 +810,15 @@ select {
 }
 
 .line-through {
-  text-decoration: wavy line-through red 2px;
+  text-decoration: double line-through red 2px;
 }
 
 button {
   display: block;
   position: relative;
+  /* width: 100%; */
   margin: 0.2em;
-  padding: 0.8em 2.2em;
+  padding: 0.5em 1.2em;
   cursor: pointer;
   background: #FFFFFF;
   border: none;
@@ -767,6 +829,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.04em;
   perspective: 500px;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.246);
 }
 
 button:hover {
@@ -784,10 +847,4 @@ button:hover:after {
   --z: -0.06;
   -webkit-animation: translateWobble 2.2s ease forwards;
   animation: translateWobble 2.2s ease forwards;
-}
-
-.board-canvas {
-  width: 100%;
-  height: 100%;
-  background-color: aqua;
 }

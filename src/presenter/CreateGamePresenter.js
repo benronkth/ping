@@ -159,7 +159,7 @@ function CreateGamePresenter() {
         console.log(map);
         const game = createGame(map);
         let tempWalls = [];
-        let tempTanks = []; 
+        let tempTanks = [];
         let tempTargets = [];
         let tempBullets = [];
 
@@ -176,13 +176,13 @@ function CreateGamePresenter() {
                     tempBullets.push(element);
                     break;
                 case elementTypes.tank:
-                    tempTanks.push(element);  
+                    tempTanks.push(element);
                     break;
             }
         }
         setBoardRowsCount(game.boardSize.rows);
         setBoardColumnsCount(game.boardSize.columns);
-        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations,});
+        const player = getNewPlayer({ id: playerId, name: playerName, color: playerColor, locations, });
         console.log("generated plaeyer is: ", player)
         const generatedGameId = Math.ceil(Math.random() * 10000);
         uploadGame(generatedGameId, player, game.boardSize, tempWalls, tempTanks, tempTargets, map);
@@ -194,8 +194,8 @@ function CreateGamePresenter() {
 
 
     function resizeBlocks() {
-        const width = window.innerWidth;
-        const height = window.innerHeight - 120;
+        const width = window.innerWidth - 200;
+        const height = window.innerHeight - 20;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);

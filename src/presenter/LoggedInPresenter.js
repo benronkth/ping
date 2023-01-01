@@ -8,8 +8,9 @@ function LoggedInPresenter() {
  
     return (
         <div>
-
-            {isGameCreated ? <BoardPresenter></BoardPresenter> : <LoggedInView></LoggedInView>}
+            {isGameCreated ?
+                <BoardPresenter></BoardPresenter> :
+                <LoggedInView></LoggedInView>}
 
         </div>
         

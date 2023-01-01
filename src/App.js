@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { auth } from './firebase/firebase';
 import { useAuthState } from "react-firebase-hooks/auth";
 import FooterPresenter from './presenter/FooterPresenter';
+import SidebarPresenter from './presenter/SidebarPresenter';
 function App() {
 
   const [isPlayerLoggedIn, setIsPlayerLoggedIn] = useRecoilState(isPlayerLoggedInAtom);
@@ -28,12 +29,11 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        <HeaderPresenter></HeaderPresenter>
-        <div>
-          {isPlayerLoggedIn ? <LoggedInPresenter /> : <OnBoardingPresenter />}
-        </div>
-        <FooterPresenter></FooterPresenter>
+      <div className='content'>
+        <SidebarPresenter></SidebarPresenter>
+        {/* <HeaderPresenter></HeaderPresenter> */} 
+          {isPlayerLoggedIn ? <LoggedInPresenter /> : <OnBoardingPresenter />} 
+        {/* <FooterPresenter></FooterPresenter> */}
       </div>
     </div >
   );

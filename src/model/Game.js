@@ -145,7 +145,7 @@ export const aiCountAtom = atom({
 
 export const wallRatioAtom = atom({
     key: 'wallRatioAtom',
-    default: 0,
+    default: 20,
 });
 
 export const gameIdAtom = atom({

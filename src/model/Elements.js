@@ -135,6 +135,7 @@ export function getNewWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 1,
+        ammo: params.ammo ? params.ammo : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -160,6 +161,7 @@ export function getNewRocketWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 2,
         speed: params.speed ? params.speed : 1,
+        ammo: params.ammo ? params.ammo : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -207,6 +209,7 @@ export function getNewAtomRocketWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 3,
         speed: params.speed ? params.speed : 1,
+        ammo: params.ammo ? params.ammo : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -253,6 +256,7 @@ export function getNewHRocketWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 3,
         speed: params.speed ? params.speed : 2,
+        ammo: params.ammo ? params.ammo : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,
@@ -300,6 +304,7 @@ export function getNewWallWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 1,
         speed: params.speed ? params.speed : 0,
+        ammo: params.ammo ? params.ammo : 10,
         blocked: true,
         position: params.position ? params.position : {
             r: 0,
@@ -353,6 +358,7 @@ export function getNewMetalWallWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 10,
         speed: params.speed ? params.speed : 0,
+        ammo: params.ammo ? params.ammo : 10,
         blocked: true,
         position: params.position ? params.position : {
             r: 0,
@@ -407,6 +413,7 @@ export function getNewExpoWeapon(params) {
         damageTaken: params.damageTaken ? params.damageTaken : 0,
         attack: params.attack ? params.attack : 50,
         speed: params.speed ? params.speed : 0,
+        ammo: params.ammo ? params.ammo : 10,
         position: params.position ? params.position : {
             r: 0,
             c: 0,

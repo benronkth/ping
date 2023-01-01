@@ -4,6 +4,7 @@ import WallPresenter from "./WallPresenter";
 import TargetPresenter from "./TargetPresenter";
 import BulletPresenter from "./BulletPresenter";
 import DistructedPresenter from "./DistructedPresenter";
+import BackgroundView from "../views/BackgroundView";
 import { blockSizeAtom, boardColumnsCountAtom, boardMarginLeftAtom, boardMarginTopAtom, boardRowsCountAtom, gameIdAtom, isGameFinishedAtom } from "../model/Game";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
@@ -27,8 +28,8 @@ function BoardPresenter() {
 
 
     function handleScreenResize(event) {
-        const width = event.target.innerWidth;
-        const height = event.target.innerHeight - 120;
+        const width = event.target.innerWidth - 200;
+        const height = event.target.innerHeight - 20;
 
         const blockSize = Math.min(height / boardRowsCount, width / boardColumnsCount)
         const roundedBlockSize = Math.floor(blockSize);
@@ -57,10 +58,12 @@ function BoardPresenter() {
     return (
         <div>
             {isGameFinished ? <GameEndPresenter></GameEndPresenter> :
-                <div className="board-holder" style={{
-                    marginLeft: boardMarginLeft + "px",
-                    marginTop: boardMarginTop + "px",
-                }}>
+                <div className="board-holder"
+                    style={{
+                        marginLeft: boardMarginLeft + "px",
+                        marginTop: boardMarginTop + "px",
+                    }}
+                >
                     <div id="board" className="board">
                         <WallPresenter></WallPresenter>
                         <TargetPresenter></TargetPresenter>
@@ -69,6 +72,7 @@ function BoardPresenter() {
                         <ArtifactPresenter></ArtifactPresenter>
                         <DistructedPresenter></DistructedPresenter>
                     </div>
+                    <BackgroundView height={boardRowsCount * blockSize} width={boardColumnsCount * blockSize}></BackgroundView>
                 </div>
             }
 
