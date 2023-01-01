@@ -247,6 +247,12 @@ function TankPresenter() {
 
 
                                     removeTank(gameId, randomOpponentTank);
+                                    removeTank(gameId, updatedTank);
+                                    let counter = 0
+                                    while (counter < 200) {
+                                        counter = counter + 1;
+                                    }
+
                                     // removeTank(gameId, updatedTank);
                                     randomOpponentTank = {
                                         ...randomOpponentTank,
@@ -260,7 +266,6 @@ function TankPresenter() {
                                         ownerId: randomOpponentTankOwnerId,
                                         name: randomOpponentTankName,
                                     }
-                                    uploadTank(gameId, updatedTank);
 
                                 }
                             }
