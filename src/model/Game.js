@@ -53,7 +53,7 @@ export const timeBetweenActionsAtom = atom({
 });
 export const gameSpeedAtom = atom({
     key: 'gameSpeedAtom',
-    default: 3,
+    default: 5,
 });
 
 export const boardRowsCountAtom = atom({
